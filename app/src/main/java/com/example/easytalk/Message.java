@@ -13,7 +13,9 @@ public class Message {
     private Date createdAt;
     @SerializedName("updatedAt")
     private Date updatedAt;
-
+    public Message(String content){
+        setContent(content);
+    }
     public void setContent(String content) {
         this.content = content;
     }
