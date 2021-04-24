@@ -80,6 +80,7 @@ public class PublishActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
 
                 Log.i("failure","上传失败"+call.toString());
+                Log.i("failure","上传失败"+e.toString());
             }
 
             @Override
