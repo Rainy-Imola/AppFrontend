@@ -6,15 +6,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.easytalk.Message;
 import com.example.easytalk.R;
+import com.example.easytalk.model.message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
-    private List<Message> mItems=new ArrayList<>();
-    public MessageAdapter(List<Message> messages){
+    private List<message> mItems=new ArrayList<>();
+    public MessageAdapter(List<message> messages){
         this.mItems=messages;
     }
     @NonNull
@@ -26,14 +26,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        holder.bind(mItems.get(position).getContent());
+        holder.bind(mItems.get(position).getAuthor(),mItems.get(position).getContent());
     }
 
     @Override
     public int getItemCount() {
         return mItems.size();
     }
-    public void notifyItems(@NonNull List<Message> items){
+    public void notifyItems(@NonNull List<message> items){
         mItems.clear();
         mItems.addAll(items);
         notifyDataSetChanged();
