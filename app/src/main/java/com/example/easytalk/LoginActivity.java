@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgetpw;
     private EditText usernameEdit;
     private EditText passwordEdit;
+    private EditText emailEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +32,17 @@ public class LoginActivity extends AppCompatActivity {
         forgetpw = (TextView) findViewById(R.id.forget_pw);
         usernameEdit = (EditText) findViewById(R.id.username);
         passwordEdit = (EditText) findViewById(R.id.password);
+        emailEdit = (EditText) findViewById(R.id.email);
 
         //登陆点击事件
         login.setOnClickListener(new View.OnClickListener() {
-            HttpAPI httpAPI = new HttpAPI();
 
             @Override
             public void onClick(View v) {
                 String username = usernameEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
+
+                HttpAPI httpAPI = new HttpAPI();
 
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -60,8 +63,29 @@ public class LoginActivity extends AppCompatActivity {
         });
         //注册点击事件
         register.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                String username = usernameEdit.getText().toString();
+                String password = passwordEdit.getText().toString();
+                String email = emailEdit.getText().toString();
+
+                HttpAPI httpAPI = new HttpAPI();
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("username", username);
+                    jsonObject.put("password", password);
+                    jsonObject.put("email", email);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    httpAPI.postApi(jsonObject, "/users/register");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
