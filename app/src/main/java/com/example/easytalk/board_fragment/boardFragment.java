@@ -15,9 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.easytalk.Message;
 import com.example.easytalk.PublishActivity;
 import com.example.easytalk.R;
+import com.example.easytalk.model.message;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class boardFragment extends Fragment {
     public static boardFragment newInstance() {
         return new boardFragment();
     }
-    private List<Message> messages;
+    private List<message> messages;
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
