@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String res = response.body().string();
-                        Log.e("Login_info:","连接成功");
+                        Log.d("Login_info","连接成功");
                         JSONObject result= null;
                         int status = -100;
                         String msg = null;
@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                         String token = null;
                         try{
                            result  = new JSONObject(res);
+                           Log.e("Login_in",result.toString());
                            JSONArray data = (JSONArray) result.get("data");
                            status = (int)result.get("status");
                            msg = (String)result.get("msg");
@@ -93,8 +94,10 @@ public class LoginActivity extends AppCompatActivity {
                            System.out.println(password);
                            token = (String)data.getJSONObject(1).get("token");
                            System.out.println(token);
-
+                            Log.d("Login_info",msg);
+                            Log.d("Login_info", String.valueOf(status));
                         } catch (JSONException e) {
+                            Log.d("Login_info",e.getMessage());
                             e.printStackTrace();
                         }
                         if(status==0){
@@ -106,8 +109,10 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("password",password);
                             editor.putString("token",token);
                             editor.commit();
+                            //Toast.makeText(LoginActivity.this,"success",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+                            
                         }else{
                             Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
                         }

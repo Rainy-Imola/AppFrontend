@@ -36,9 +36,13 @@ public class HttpAPI {
 //        });
     }
 
-    public void getApi(JSONObject jsonObject, String address) throws IOException {
+    public void getApi(String address,String token) throws IOException {
         OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder().url(Constants.baseUrl + address).build();
+        Request request = new Request.Builder().url(Constants.baseUrl + address)
+                .method("GET",null)
+                .addHeader("Authorization",token)
+                .build();
+
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -48,6 +52,7 @@ public class HttpAPI {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 System.out.println(response.body().string());
+                Log.d("debug",response.body().string());
             }
         });
     }
