@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgetpw;
     private EditText usernameEdit;
     private EditText passwordEdit;
+//    private EditText emailEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +46,17 @@ public class LoginActivity extends AppCompatActivity {
         forgetpw = (TextView) findViewById(R.id.forget_pw);
         usernameEdit = (EditText) findViewById(R.id.username);
         passwordEdit = (EditText) findViewById(R.id.password);
+//        emailEdit = (EditText) findViewById(R.id.email);
 
         //登陆点击事件
         login.setOnClickListener(new View.OnClickListener() {
-            HttpAPI httpAPI = new HttpAPI();
 
             @Override
             public void onClick(View v) {
                 String username = usernameEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
+
+                HttpAPI httpAPI = new HttpAPI();
 
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -64,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 try {
-                    httpAPI.postApi(jsonObject, "/users/login",new Callback() {
+                    httpAPI.postApi(jsonObject, "/users/login", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.e("error", e.getMessage().toString());
@@ -119,18 +122,17 @@ public class LoginActivity extends AppCompatActivity {
 
                     }
                     });
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         });
         //注册点击事件
         register.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
             }
         });
