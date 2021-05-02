@@ -11,9 +11,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_create">CreateActivity</string>
     <string name="title_activity_message_detail">MessageDetail</string>
-    <string name="register">Register</string>
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="email">Email:</string>
     <string name="register">Register</string>
+    <string name="send">Send</string>
 </resources>
