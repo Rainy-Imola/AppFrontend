@@ -46,62 +46,84 @@
             />
     </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="50dp">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:text="密码："
-                android:textSize="20sp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                />
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:inputType="textPassword"
-                />
-        </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="50dp">
 
         <TextView
-            android:id="@+id/forget_pw"
-            android:layout_width="60dp"
-            android:layout_height="20dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="30dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:text="密码："
+            android:textSize="20sp"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/purple_500"
-            android:text="忘记密码"
-            android:textSize="10sp" />
+            />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="50dp">
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:inputType="textPassword"
+            />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/log_in"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:text="登录"
-                android:layout_marginLeft="60dp"
-                />
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_height="50dp">-->
 
-            <Button
-                android:id="@+id/register"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:text="注册"
-                android:layout_marginLeft="40dp" />
+<!--        <TextView-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:text="邮箱："-->
+<!--            android:textSize="20sp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:gravity="center"-->
+<!--            />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/email"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            />-->
+<!--    </LinearLayout>-->
+
+    <TextView
+        android:id="@+id/forget_pw"
+        android:layout_width="60dp"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="30dp"
+        android:gravity="center"
+        android:textColor="@color/purple_500"
+        android:text="忘记密码"
+        android:textSize="10sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="50dp">
+
+        <Button
+            android:id="@+id/log_in"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="登录"
+            android:layout_marginLeft="60dp"
+            />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="注册"
+            android:layout_marginLeft="40dp" />
 
 
-        </LinearLayout>
+    </LinearLayout>
 
     </LinearLayout>
 

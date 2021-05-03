@@ -1,19 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sd_cover"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:actualImageScaleType="centerCrop"
+        app:roundedCornerRadius="8dp"
+        android:layout_marginVertical="6dp"
+        android:layout_marginHorizontal="20dp"
+        app:overlayImage="@drawable/bg_round_rect"
+        />
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/OverallMessage"
-            android:text="content"
-            android:gravity="center"
-            android:textSize="20dp"
-            tools:ignore="MissingConstraints" />
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:id="@+id/msg_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        android:layout_above="@+id/msg_author"
+        android:layout_alignLeft="@id/sd_cover"
+        android:layout_alignRight="@id/sd_cover"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginVertical="4dp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        tools:text="这是内容。。。。。。"
+        />
+    <TextView
+        android:id="@+id/msg_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#ffffff"
+        android:layout_alignRight="@id/sd_cover"
+        android:layout_alignBottom="@id/sd_cover"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="20dp"
+        android:maxLines="1"
+        tools:text="FROM: WRR"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/msg_date"
+        android:layout_above="@+id/msg_author"
+        android:textColor="#808080"
+        android:textSize="14sp"
+        android:layout_marginRight="20dp"
+        android:layout_alignRight="@id/sd_cover"
+        android:layout_alignBottom="@id/sd_cover"
+        tools:text="2019-01-29" />
+</RelativeLayout>
