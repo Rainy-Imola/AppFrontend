@@ -24,9 +24,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/board"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="600dp"   
         android:layout_marginTop="60dp">
-
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,5 +36,9 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="80dp"
         android:src="@drawable/ic_baseline_add_24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>
