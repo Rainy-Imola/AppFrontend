@@ -35,6 +35,7 @@ public class InfoFragment extends Fragment {
         info += sharedPreferences.getString("username","");
         info +="\n";
         info += sharedPreferences.getString("password","");
+
         user_info.setText(info);
         return root;
     }
