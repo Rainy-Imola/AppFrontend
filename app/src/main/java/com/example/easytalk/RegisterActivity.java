@@ -26,7 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button registerBtn;
     private Button sendBtn;
     private EditText usernameEdit;
-    private EditText passwordEdit;
+    private EditText password1Edit;
+    private EditText password2Edit;
     private EditText emailEdit;
     private EditText codeEdit;
 
@@ -37,7 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn = (Button) findViewById(R.id.registerBtn);
         sendBtn = (Button) findViewById(R.id.sendBtn);
         usernameEdit = (EditText) findViewById(R.id.username);
-        passwordEdit = (EditText) findViewById(R.id.password);
+        password1Edit = (EditText) findViewById(R.id.password1);
+        password2Edit = (EditText) findViewById(R.id.password2);
+
         emailEdit = (EditText) findViewById(R.id.email);
         codeEdit = (EditText) findViewById(R.id.codeEdit);
 
@@ -79,7 +82,8 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String username = usernameEdit.getText().toString();
-                String password = passwordEdit.getText().toString();
+                String password1 = password1Edit.getText().toString();
+                String password2 = password2Edit.getText().toString();
                 String email = emailEdit.getText().toString();
                 String code = codeEdit.getText().toString();
 
@@ -123,7 +127,8 @@ public class RegisterActivity extends AppCompatActivity {
                                     JSONObject jsonObject1 = new JSONObject();
                                     try {
                                         jsonObject1.put("username", username);
-                                        jsonObject1.put("password", password);
+                                        jsonObject1.put("password1", password1);
+                                        jsonObject1.put("password2", password2);
                                         jsonObject1.put("email", email);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -153,18 +158,22 @@ public class RegisterActivity extends AppCompatActivity {
                                                 try {
                                                     result1 = new JSONObject(res1);
                                                     Log.e("Register", result1.toString());
-
-                                                    JSONArray data = (JSONArray) result1.get("data");
                                                     status1 = (Integer) result1.get("status");
-                                                    id = (Integer) data.getJSONObject(0).get("id");
-                                                    username = (String) data.getJSONObject(0).get("username");
-                                                    password = (String) data.getJSONObject(0).get("password");
-                                                    token = (String) data.getJSONObject(1).get("token");
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
 
                                                 if (status1 == 0) {
+                                                    try {
+                                                        JSONArray data = (JSONArray) result1.get("data");
+                                                        id = (Integer) data.getJSONObject(0).get("id");
+                                                        username = (String) data.getJSONObject(0).get("username");
+                                                        password = (String) data.getJSONObject(0).get("password");
+                                                        token = (String) data.getJSONObject(1).get("token");
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+
                                                     SharedPreferences user_profile = getSharedPreferences("user_profile", MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = user_profile.edit();
                                                     editor.putInt("status", 0);
@@ -176,7 +185,9 @@ public class RegisterActivity extends AppCompatActivity {
                                                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                 } else {
+                                                    Looper.prepare();
                                                     Toast.makeText(RegisterActivity.this, "Register failed", Toast.LENGTH_SHORT).show();
+                                                    Looper.loop();
                                                 }
                                             }
                                         });

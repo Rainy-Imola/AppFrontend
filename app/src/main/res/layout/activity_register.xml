@@ -55,14 +55,37 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:text="@string/password"
+                android:text="@string/password1"
                 android:textSize="20sp"
                 android:layout_gravity="center"
                 android:gravity="center"
                 />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/password1"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="50dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:text="@string/password2"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+            <EditText
+                android:id="@+id/password2"
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
