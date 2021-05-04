@@ -22,7 +22,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class  RegisterActivity extends AppCompatActivity {
     private Button registerBtn;
     private Button sendBtn;
     private EditText usernameEdit;
