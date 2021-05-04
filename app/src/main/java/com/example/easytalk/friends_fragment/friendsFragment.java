@@ -141,11 +141,11 @@ public class friendsFragment extends Fragment {
                     Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
                     for(int i=0;i<result.length();i++){
                         JSONObject cur_msg=result.getJSONObject(i);
-                        String id=cur_msg.getString("id");
+                        int id=cur_msg.getInt("id");
                         String username=cur_msg.getString("username");
                         String password=cur_msg.getString("password");
 
-                        friend msg=new friend(username,0);
+                        friend msg=new friend(username,id,0);
                         msgs.add(msg);
                         Log.d("MessageInfo","finished one circle");
                     }

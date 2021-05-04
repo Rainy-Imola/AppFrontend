@@ -29,7 +29,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-        holder.bind(fItems.get(position).getName(),fItems.get(position).getImage());
+        holder.bind(fItems.get(position).getName(),fItems.get(position).getId(),fItems.get(position).getImage());
     }
 
     @Override

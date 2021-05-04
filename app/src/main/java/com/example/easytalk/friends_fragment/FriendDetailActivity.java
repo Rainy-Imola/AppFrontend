@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easytalk.Constants;
@@ -31,12 +32,14 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class FriendDetailActivity extends AppCompatActivity {
-
+    private TextView info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_detail);
+        info =getWindow().getDecorView().findViewById(R.id.FriendDetail);
+        int id = getIntent().getIntExtra("id",0);
+        String name = getIntent().getStringExtra("name");
+        info.setText(id+"\n"+name);
     }
-
-
 }

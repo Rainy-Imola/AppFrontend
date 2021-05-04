@@ -14,6 +14,7 @@ import com.example.easytalk.board_fragment.MessageDetailActivity;
 
 public class FriendViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView nameEditor;
+    private int id;
     private String name;
     public FriendViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -21,7 +22,8 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setOnClickListener(this);
     }
 
-    public void bind(String name,int image){
+    public void bind(String name,int id, int image){
+        this.id = id;
         this.name = name;
         nameEditor.setText(name);
     }
@@ -29,6 +31,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
     public void onClick(View v) {
         Log.d("ClickEvent","onClick called");
         Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
+        intent.putExtra("id",id);
         intent.putExtra("name",name);
         v.getContext().startActivity(intent);
     }
