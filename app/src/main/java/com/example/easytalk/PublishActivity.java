@@ -1,22 +1,31 @@
 package com.example.easytalk;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.textclassifier.TextLinks;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.easytalk.model.message;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,49 +41,162 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.FormUrlEncoded;
 
+import static com.example.easytalk.Constants.baseUrl;
+import static com.example.easytalk.Constants.pictureUrl;
+
 public class PublishActivity extends AppCompatActivity {
     private static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
     private EditText editAuthor;
     private EditText editContent;
-    private Button btn;
+    private static final long MAX_FILE_SIZE = 2 * 1024 * 1024;
+    private static final int REQUEST_CODE_COVER_IMAGE = 101;
+    private static final String COVER_IMAGE_TYPE = "image/*";
+    private Uri coverImageUri;
+    private SimpleDraweeView coverSD;
+    private Button publish;
+    private Button selectPicture;
     private messagePost api;
-    private Retrofit retrofit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(PublishActivity.this);
         setContentView(R.layout.activity_publish);
-//        initNetwork();
-        editAuthor = (EditText)findViewById(R.id.author);
+        //init
         editContent = (EditText)findViewById(R.id.content);
-        btn = (Button)findViewById(R.id.publish_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        coverSD = (SimpleDraweeView) findViewById(R.id.sd_cover);
+        publish = (Button)findViewById(R.id.publish_btn);
+        selectPicture = (Button)findViewById(R.id.btn_cover);
+        selectPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                publishContent();
+                getFile(REQUEST_CODE_COVER_IMAGE,COVER_IMAGE_TYPE,"选择图片");
+            }
+        });
+        publish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    publishContent();
+
             }
         });
     }
 
-    private void publishContent(){
-        String name = editAuthor.getText().toString();
+    private void publishContent()  {
+
+        byte[] coverImageData = readDataFromUri(coverImageUri);
+        Log.i("length", String.valueOf(coverImageData.length));
+
+        if (coverImageData.length == 0) {
+            Toast.makeText(this, "图片不存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if ( coverImageData.length >= MAX_FILE_SIZE) {
+            Toast.makeText(this, "文件过大", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        OkHttpClient pictureClient = new OkHttpClient();
+        if(coverImageData!=null) {
+            Log.i("starting", "开始create");
+            MultipartBody.Part coverPart = MultipartBody.Part.createFormData("image", "cover.png",
+                    RequestBody.create(MediaType.parse("multipart/form-data"), coverImageData));
+            RequestBody requestBody = new MultipartBody.Builder().addPart(coverPart).build();
+            Log.i("starting", "开始上传");
+            Request request = new Request.Builder().url(pictureUrl).post(requestBody).build();
+            pictureClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                    Log.i("failure", "上传失败" + call.toString());
+                    Log.i("failure", "上传失败" + e.toString());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.i("response", response.protocol() + " " + response.code() + " " + response.message());
+                    Headers headers = response.headers();
+                    for (int i = 0; i < headers.size(); i++) {
+                        Log.i("header:", headers.name(i) + ":" + headers.value(i));
+                    }
+                    //Log.i("onResponse: ", response.body().string());
+                    try {
+                        JSONObject res  = new JSONObject( response.body().string());
+                        String picture = (String)res.get("name");
+                        Publish_core(pictureUrl+"/"+picture+".jpg");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        }
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_COVER_IMAGE == requestCode) {
+            if (resultCode == Activity.RESULT_OK) {
+                coverImageUri = data.getData();
+                coverSD.setImageURI(coverImageUri);
+
+                if (coverImageUri != null) {
+                    Log.d("infomation_tag", "pick cover image " + coverImageUri.toString());
+                } else {
+                    Log.d("infomation_tag", "uri2File fail " + data.getData());
+                }
+
+            } else {
+                Log.d("infomation_tag", "file pick fail");
+            }
+        }
+    }
+
+    private void getFile(int requestCode, String type, String title) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(type);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
+        intent.putExtra(Intent.EXTRA_TITLE, title);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, requestCode);
+    }
+    private byte[] readDataFromUri(Uri uri) {
+        byte[] data = null;
+        try {
+            InputStream is = getContentResolver().openInputStream(uri);
+            data = Util.inputStream2bytes(is);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+    private void Publish_core(String picture){
         String content = editContent.getText().toString();
-        if(TextUtils.isEmpty(name)||TextUtils.isEmpty(content)){
+        if(TextUtils.isEmpty(content)){
 //            Toast.makeText(this,"信息不完整",Toast.LENGTH_SHORT).show();
             return;
         }
-
+        SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+        String token = sharedPreferences.getString("token","");
+        int author = sharedPreferences.getInt("id",0);
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("author",name);
+            jsonObject.put("author",sharedPreferences.getInt("id",0));
             jsonObject.put("content",content);
+            jsonObject.put("picture", picture);
+
         }catch (JSONException e){
             e.printStackTrace();
         }
         Log.i("json",String.valueOf(jsonObject));
+        //publish part
         OkHttpClient okHttpClient = new OkHttpClient();
-
         RequestBody formBody = RequestBody.create(JSON,String.valueOf(jsonObject));
-        Request request = new Request.Builder().url("http://47.103.123.145/msgboard/release").post(formBody).build();
+        Request request = new Request.Builder().url(baseUrl+"/msgboard/release").post(formBody).addHeader("Authorization",token).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -93,32 +215,6 @@ public class PublishActivity extends AppCompatActivity {
                 Log.i("onResponse: " ,response.body().string());
             }
         });
-
-//        MultipartBody.Part authorPart = MultipartBody.Part.createFormData("author",name);
-//        MultipartBody.Part contentPart = MultipartBody.Part.createFormData("content",content);
-//
-//        Call<message> call = api.submitMessage(authorPart,contentPart);
-//        call.enqueue(new Callback<message>() {
-//            @Override
-//            public void onResponse(Call<message> call, Response<message> response) {
-//                Toast.makeText(PublishActivity.this,"上传成功",Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<message> call, Throwable t) {
-//                Toast.makeText(PublishActivity.this,"上传失败",Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
     }
-
-//    private void initNetwork() {
-//        retrofit=new Retrofit.Builder()
-//                .baseUrl(Constants.baseUrl)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        Log.i("print test","aa");
-//        api=retrofit.create(messagePost.class);
-//    }
 
 }

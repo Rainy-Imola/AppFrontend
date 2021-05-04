@@ -14,4 +14,11 @@
     <string name="user_info_setting">设置</string>
     <string name="user_info_write">更改</string>
     <string name="user_info_exit">退出</string>
+    <string name="username">Username:</string>
+    <string name="password1">Password1:</string>
+    <string name="password2">Password2:</string>
+    <string name="email">Email:</string>
+    <string name="register">Register</string>
+    <string name="send">Send</string>
+    <string name="search_hint">输入名字</string>
 </resources>
