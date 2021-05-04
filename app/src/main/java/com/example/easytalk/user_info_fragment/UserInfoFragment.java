@@ -63,10 +63,7 @@ public class UserInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mItems=new ArrayList<>();
-        message mmessage=new message("tong","dewadewawwwwwwwwwwwwwwww");
-        mItems.add(mmessage);
-        mmessage = new message("test","hello,world");
-        mItems.add(mmessage);
+
         mLayoutManager=new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
