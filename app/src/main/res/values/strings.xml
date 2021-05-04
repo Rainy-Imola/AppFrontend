@@ -11,4 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_create">CreateActivity</string>
     <string name="title_activity_message_detail">MessageDetail</string>
+    <string name="user_info_setting">设置</string>
+    <string name="user_info_write">更改</string>
+    <string name="user_info_exit">退出</string>
 </resources>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ExtraText">
+
+    <ImageView
+        android:id="@+id/user_info_imageView"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="48dp"
+        android:maxWidth="155dp"
+        android:maxHeight="155dp"
+        android:src="@drawable/defaultavatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/user_info_name"
+        android:layout_width="179dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
+        app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
+
+    <TextView
+        android:id="@+id/user_info_constellation"
+        android:layout_width="199dp"
+        android:layout_height="42dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
+        app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+
+    <com.donkingliang.labels.LabelsView
+        android:id="@+id/labels"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        app:isIndicator="true"
+        app:labelBackground="@drawable/ic_userinfo_lable"
+        app:labelTextColor="@drawable/ic_userinfo_lable_text"
+        app:labelTextPaddingBottom="5dp"
+        app:labelTextPaddingLeft="10dp"
+        app:labelTextPaddingRight="10dp"
+        app:labelTextPaddingTop="5dp"
+        app:labelTextSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
+        app:lineMargin="10dp"
+        app:maxColumns="5"
+        app:maxLines="3"
+        app:maxSelect="5"
+        app:minSelect="1"
+        app:selectType="SINGLE"
+        app:wordMargin="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/labels" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,9 +18,9 @@
         tools:layout="@layout/friends_fragment" />
     <fragment
         android:id="@+id/navigation_myinfo"
-        android:name="com.example.easytalk.info_fragment.InfoFragment"
+        android:name="com.example.easytalk.user_info_fragment.UserInfoFragment"
         android:label="myinfo"
-        tools:layout="@layout/info_fragment" />
+        tools:layout="@layout/userinfo_fragment" />
 
 
 
