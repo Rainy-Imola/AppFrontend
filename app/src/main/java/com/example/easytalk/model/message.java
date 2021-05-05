@@ -2,9 +2,10 @@ package com.example.easytalk.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class message {
+public class message implements Serializable {
     @SerializedName("author")
     private String author;
     @SerializedName("content")
