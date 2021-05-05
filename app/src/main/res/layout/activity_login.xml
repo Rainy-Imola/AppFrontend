@@ -6,125 +6,155 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp">
-    <TextView
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:text="Log In"
-        android:textSize="20sp"
-        android:layout_gravity="center"
+        android:layout_width="1383dp"
+        android:layout_height="846dp"
+        android:background="@drawable/background"
         android:gravity="center"
-        />
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="50dp">
+        <LinearLayout
+            android:layout_width="408dp"
+            android:layout_height="456dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:text="用户名："
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            />
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Welcome"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+                <!--
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    android:text="用户名："
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            -->
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="300dp"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textstyle"
+                    android:hint="  Enter your username"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
+                <!--
+                                <TextView
+                                    android:layout_width="100dp"
+                                    android:layout_height="40dp"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="密码："
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+                -->
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="300dp"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/textstyle"
+                    android:hint="  Enter your password"
+                    android:inputType="textPassword"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/forget_pw"
+                    android:layout_width="285dp"
+                    android:layout_height="33dp"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginRight="50dp"
+                    android:gravity="center"
+                    android:text="     Forget Password?  Tap here"
+                    android:textColor="#289BE5"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <!--    <LinearLayout-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_marginTop="20dp"-->
+            <!--        android:layout_height="50dp">-->
+
+            <!--        <TextView-->
+            <!--            android:layout_width="100dp"-->
+            <!--            android:layout_height="40dp"-->
+            <!--            android:text="邮箱："-->
+            <!--            android:textSize="20sp"-->
+            <!--            android:layout_gravity="center"-->
+            <!--            android:gravity="center"-->
+            <!--            />-->
+
+            <!--        <EditText-->
+            <!--            android:id="@+id/email"-->
+            <!--            android:layout_width="200dp"-->
+            <!--            android:layout_height="40dp"-->
+            <!--            android:layout_marginTop="5dp"-->
+            <!--            />-->
+            <!--    </LinearLayout>-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/log_in"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="15dp"
+                    android:alpha="0.8"
+                    android:background="#289BE5"
+                    android:text="LOG IN"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/register"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="35dp"
+                    android:alpha="0.5"
+                    android:background="#289BE5"
+                    android:text="REGISTER"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="50dp">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:text="密码："
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:inputType="textPassword"
-            />
-    </LinearLayout>
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_height="50dp">-->
-
-<!--        <TextView-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:text="邮箱："-->
-<!--            android:textSize="20sp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:gravity="center"-->
-<!--            />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/email"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            />-->
-<!--    </LinearLayout>-->
-
-    <TextView
-        android:id="@+id/forget_pw"
-        android:layout_width="60dp"
-        android:layout_height="20dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="30dp"
-        android:gravity="center"
-        android:textColor="@color/purple_500"
-        android:text="忘记密码"
-        android:textSize="10sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="50dp">
-
-        <Button
-            android:id="@+id/log_in"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="登录"
-            android:layout_marginLeft="60dp"
-            />
-
-        <Button
-            android:id="@+id/register"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="注册"
-            android:layout_marginLeft="40dp" />
-
-
-    </LinearLayout>
-
-    </LinearLayout>
-
 </RelativeLayout>
