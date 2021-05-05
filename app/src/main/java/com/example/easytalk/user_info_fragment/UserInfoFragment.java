@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,8 +25,11 @@ import android.widget.TextView;
 import com.donkingliang.labels.LabelsView;
 import com.example.easytalk.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.easytalk.model.User;
 import com.example.easytalk.model.message;
 
 public class UserInfoFragment extends Fragment {
@@ -38,6 +43,7 @@ public class UserInfoFragment extends Fragment {
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
+    private User mUser;
     public static UserInfoFragment newInstance() {
         return new UserInfoFragment();
     }
@@ -62,29 +68,7 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mItems=new ArrayList<>();
 
-        mLayoutManager=new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MessageAdapter(this.getContext(), mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, String str) {
-                Log.d("debug","onClickCalled");
-            }
-
-            @Override
-            public void onItemLongClick(View view, String str) {
-                Log.d("debug","onClicklongCalled");
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-        ArrayList<String> label = new ArrayList<>();
-        label.add("self");
-        label.add("可话");
-        user_hobby.setLabels(label);
-        user_constellation.setText("水平座");
-        user_name.setText("testname");
     }
 
     @Override
@@ -97,6 +81,7 @@ public class UserInfoFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.user_info_setting:
+                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_modifyFragment);
                 return true;
             case R.id.user_info_write:
                 return true;
@@ -110,7 +95,37 @@ public class UserInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
-        // TODO: Use the ViewModel
+        try {
+            mItems=mViewModel.getMessage();
+            mUser = mViewModel.getUser();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        mLayoutManager=new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        user_hobby.setLabels(mUser.getUser_hobby());
+        user_constellation.setText(mUser.getUser_constellation());
+        user_name.setText(mUser.getUser_name());
+        mAdapter = new MessageAdapter(this.getContext(), mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, String str) {
+                Log.d("debug","onClickCalled");
+            }
+
+            @Override
+            public void onItemLongClick(View view, String str) {
+                Log.d("debug","onClicklongCalled");
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override

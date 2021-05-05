@@ -20,8 +20,16 @@
         android:id="@+id/navigation_myinfo"
         android:name="com.example.easytalk.user_info_fragment.UserInfoFragment"
         android:label="myinfo"
-        tools:layout="@layout/userinfo_fragment" />
-
+        tools:layout="@layout/userinfo_fragment" >
+        <action
+            android:id="@+id/action_navigation_myinfo_to_modifyFragment"
+            app:destination="@id/modifyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/modifyFragment"
+        android:name="com.example.easytalk.modify_fragment.ModifyFragment"
+        android:label="modify_fragment"
+        tools:layout="@layout/modify_fragment" />
 
 
 </navigation>

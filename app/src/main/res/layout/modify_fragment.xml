@@ -3,13 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoFragment">
+    tools:context=".modify_fragment.ModifyFragment">
+
     <TextView
-        android:id="@+id/user_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="未登录"
-        android:textSize="30sp"
-        android:textColor="@color/black"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello" />
 
 </FrameLayout>
