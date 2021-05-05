@@ -14,11 +14,13 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="408dp"
-            android:layout_height="456dp"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:background="#09000000"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -26,64 +28,52 @@
                 android:layout_width="150dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="100dp"
                 android:gravity="center"
                 android:text="Welcome"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center">
-                <!--
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:gravity="right"
-                    android:text="用户名："
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            -->
-                <EditText
-                    android:id="@+id/username"
-                    android:layout_width="300dp"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/textstyle"
-                    android:hint="  Enter your username"
-                    android:textSize="20sp" />
 
 
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="65dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center">
-                <!--
-                                <TextView
-                                    android:layout_width="100dp"
-                                    android:layout_height="40dp"
-                                    android:layout_gravity="center"
-                                    android:gravity="center"
-                                    android:text="密码："
-                                    android:textSize="20sp"
-                                    android:textStyle="bold" />
-                -->
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="300dp"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/textstyle"
-                    android:hint="  Enter your password"
-                    android:inputType="textPassword"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/username"
+                        android:drawableLeft="@drawable/ic_baseline_person_24"
+                        android:layout_width="300dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textstyle"
+                        android:hint="  Enter your username"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
+
+                    <EditText
+                        android:id="@+id/password"
+                        android:drawableLeft="@drawable/ic_baseline_lock_24"
+                        android:layout_width="300dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/textstyle"
+                        android:hint="  Enter your password"
+                        android:inputType="textPassword"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,9 +87,9 @@
                     android:layout_height="33dp"
                     android:layout_gravity="left"
                     android:layout_marginTop="50dp"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginRight="20dp"
                     android:gravity="center"
-                    android:text="     Forget Password?  Tap here"
+                    android:text="Forget Password?  Tap here"
                     android:textColor="#289BE5"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -130,7 +120,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="81dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center">
 
@@ -140,8 +130,9 @@
                     android:layout_height="60dp"
                     android:layout_marginLeft="15dp"
                     android:alpha="0.8"
-                    android:background="#289BE5"
+                    android:background="@drawable/bt_login"
                     android:text="LOG IN"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <Button
@@ -150,8 +141,9 @@
                     android:layout_height="60dp"
                     android:layout_marginLeft="35dp"
                     android:alpha="0.5"
-                    android:background="#289BE5"
+                    android:background="@drawable/bt_rg"
                     android:text="REGISTER"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
