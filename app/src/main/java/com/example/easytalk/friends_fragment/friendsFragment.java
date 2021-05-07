@@ -41,8 +41,10 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class friendsFragment extends Fragment {
@@ -122,8 +124,17 @@ public class friendsFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
         String token=sharedPreferences.getString("token","");
         Log.d("MessageInfo_token",token);
-        Request request=new Request.Builder().url(Constants.baseUrl+"/users/getUsers")
+        JSONObject jsonObject = new JSONObject();
+        try{
+            jsonObject.put("username",sharedPreferences.getString("username",""));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+        RequestBody formBody = RequestBody.create(MediaType.parse("application/json"),String.valueOf(jsonObject));
+        Log.i("json",String.valueOf(jsonObject));
+        Request request=new Request.Builder().url(Constants.baseUrl+"/friends/").method("GET",formBody)
                 .addHeader("Authorization",token)
+                .addHeader("Content-Type","application/json")
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -136,22 +147,22 @@ public class friendsFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 String res=response.body().string();
                 Log.d("MessageInfo",res);
-                try {
-                    JSONArray result=new JSONArray(res);
-                    Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
-                    for(int i=0;i<result.length();i++){
-                        JSONObject cur_msg=result.getJSONObject(i);
-                        int id=cur_msg.getInt("id");
-                        String username=cur_msg.getString("username");
-                        String password=cur_msg.getString("password");
-
-                        friend msg=new friend(username,id,0);
-                        msgs.add(msg);
-                        Log.d("MessageInfo","finished one circle");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    JSONArray result=new JSONArray(res);
+//                    Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
+//                    for(int i=0;i<result.length();i++){
+//                        JSONObject cur_msg=result.getJSONObject(i);
+//                        int id=cur_msg.getInt("id");
+//                        String username=cur_msg.getString("username");
+//                        String password=cur_msg.getString("password");
+//
+//                        friend msg=new friend(username,id,0);
+//                        msgs.add(msg);
+//                        Log.d("MessageInfo","finished one circle");
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
             }
         });

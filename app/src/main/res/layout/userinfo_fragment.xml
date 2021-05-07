@@ -74,7 +74,9 @@
         android:layout_marginBottom="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
-        app:layout_constraintTop_toBottomOf="@+id/labels" />
+        app:layout_constraintTop_toBottomOf="@+id/labels"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -123,6 +124,11 @@ public class PublishActivity extends AppCompatActivity {
                         JSONObject res  = new JSONObject( response.body().string());
                         String picture = (String)res.get("name");
                         Publish_core(pictureUrl+"/"+picture+".jpg");
+                        //int resultCode = (int)res.get("result_code");
+                        Looper.prepare();
+                        Toast.makeText(PublishActivity.this,"上传图片成功",Toast.LENGTH_SHORT).show();
+                        Looper.loop();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -213,6 +219,9 @@ public class PublishActivity extends AppCompatActivity {
                     Log.i("header:", headers.name(i) + ":" + headers.value(i));
                 }
                 Log.i("onResponse: " ,response.body().string());
+                Looper.prepare();
+                Toast.makeText(PublishActivity.this,"上传动态成功",Toast.LENGTH_SHORT).show();
+                Looper.loop();
             }
         });
     }
