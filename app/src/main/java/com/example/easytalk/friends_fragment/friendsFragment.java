@@ -1,10 +1,12 @@
 package com.example.easytalk.friends_fragment;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -122,9 +124,10 @@ public class friendsFragment extends Fragment {
         List<friend> msgs=new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        String token=sharedPreferences.getString("token","");
+        String token = sharedPreferences.getString("token","");
+        String username = sharedPreferences.getString("username","");
         Log.d("MessageInfo_token",token);
-        Request request=new Request.Builder().url(Constants.baseUrl+"/users/getUsers")
+        Request request=new Request.Builder().url(Constants.baseUrl+"/friends/"+username)
                 .addHeader("Authorization",token)
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -134,20 +137,26 @@ public class friendsFragment extends Fragment {
                 Toast.makeText(getContext(),"用户数据拉取失败",Toast.LENGTH_SHORT).show();
             }
 
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String res=response.body().string();
                 Log.d("MessageInfo",res);
                 try {
-                    JSONArray result=new JSONArray(res);
+                    JSONObject result=new JSONObject(res);
                     Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
-                    for(int i=0;i<result.length();i++){
-                        JSONObject cur_msg=result.getJSONObject(i);
-                        int id=cur_msg.getInt("id");
-                        String username=cur_msg.getString("username");
-                        String password=cur_msg.getString("password");
+                    JSONArray data = result.getJSONArray("data");
 
-                        friend msg=new friend(username,id,0);
+                    Log.d("friend_list", String.valueOf(data));
+
+                    for(int i=0;i<data.length();i++){
+                        String cur_msg=String.valueOf(data.get(i));
+                        Log.d("friends info", String.valueOf(cur_msg));
+                        //int id=cur_msg.getInt("id");
+                        //String username=cur_msg.getString("username");
+                        //String password=cur_msg.getString("password");
+
+                        friend msg=new friend(String.valueOf(cur_msg),0,0);
                         msgs.add(msg);
                         Log.d("MessageInfo","finished one circle");
                     }

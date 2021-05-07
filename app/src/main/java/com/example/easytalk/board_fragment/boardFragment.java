@@ -118,6 +118,7 @@ public class boardFragment extends Fragment {
                 Log.d("MessageInfo",res);
                 try {
                     JSONArray result=new JSONArray(res);
+                    //JSONArray result = (new JSONObject(res)).getJSONArray("data");
                     Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
                     for(int i=0;i<result.length();i++){
                         JSONObject cur_msg=result.getJSONObject(i);
