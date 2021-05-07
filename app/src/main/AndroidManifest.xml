@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyTalk">
-        <activity android:name=".friends_fragment.FriendDetailActivity"></activity>
+        <activity android:name=".chat.MainChatActivity"></activity>
+        <activity android:name=".friends_fragment.FriendDetailActivity" />
         <activity
             android:name=".SearchReaultsActivity"
             android:label="@string/app_name">
