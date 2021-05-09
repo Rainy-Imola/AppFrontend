@@ -77,7 +77,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                         Date FormattedDate=format.parse(date);
 
-                        message msg=new message(author,content,FormattedDate,picture);
+                        message msg=new message(id,author,content,FormattedDate,picture);
                         msgs.add(msg);
                         Log.d("userinfo MessageInfo","finished one circle");
                     }
