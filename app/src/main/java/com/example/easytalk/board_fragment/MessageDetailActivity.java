@@ -1,6 +1,8 @@
 package com.example.easytalk.board_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,14 +10,22 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.easytalk.R;
+import com.example.easytalk.model.comment;
 import com.example.easytalk.model.message;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MessageDetailActivity extends AppCompatActivity {
 
     private TextView contentView;
     private SimpleDraweeView coverView;
     private message msg;
+    private commentAdapter mCommentAdapter;
+    private RecyclerView CommentRecyclerView;
+    private List<comment> comments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,5 +40,25 @@ public class MessageDetailActivity extends AppCompatActivity {
         contentView.setText(msg.getContent());
         Log.d("debug", (String) contentView.getText());
         coverView.setImageURI(msg.getImageUrl());
+
+        CommentRecyclerView=findViewById(R.id.commentRecyclerView);
+
+        // TODO:get comments
+        comments=testGetComments();
+        mCommentAdapter=new commentAdapter(comments);
+        CommentRecyclerView.setAdapter(mCommentAdapter);
+        CommentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+    public List<comment> getComments(){
+        return new ArrayList<>();
+    }
+    public List<comment> testGetComments(){
+        comment c1=new comment("author1","这个动态针不戳","1",null);
+        comment c2=new comment("author2","这个动态挺好的，就是有点坏","1",null);
+        List<comment> res=new ArrayList<>();
+        res.add(c1);
+        res.add(c2);
+        return res;
+    }
+
 }

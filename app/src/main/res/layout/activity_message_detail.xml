@@ -4,39 +4,93 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/cover"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:actualImageScaleType="centerCrop"
-        app:roundedCornerRadius="8dp"
-        android:layout_marginVertical="6dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        app:overlayImage="@drawable/bg_round_rect"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/cover"
-        android:id="@+id/scollView">
-        <TextView
+        android:layout_height="match_parent">
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/contentDetail"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginVertical="4dp"
-            android:ellipsize="end"
-            tools:text="这是内容。。。。。。"/>
+            android:orientation="horizontal">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/cover"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:actualImageScaleType="centerCrop"
+                app:roundedCornerRadius="8dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                app:overlayImage="@drawable/bg_round_rect"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cover"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/author_date_layout">
+
+                <TextView
+                    android:id="@+id/author_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    tools:text="author_name:" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/date_textView"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:textColor="#808080"
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    android:text="2021-5-8 10:48:37"
+                    />
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/author_date_layout"
+                android:id="@+id/textScollView">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/contentDetail"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginVertical="4dp"
+                    android:ellipsize="end"
+                    tools:text="这是内容。。。。。。"/>
+            </ScrollView>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/icon_layout"
+                android:layout_below="@+id/textScollView">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/postCommentButton"
+                    android:text="评论" />
+
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/textScollView"
+                android:id="@+id/commentRecyclerView"
+                android:layout_marginBottom="50dp"/>
+        </RelativeLayout>
     </ScrollView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scollView"
-        android:text="评论区"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:gravity="center"/>
+
 </RelativeLayout>

@@ -26,6 +26,7 @@ import com.example.easytalk.R;
 import com.example.easytalk.model.message;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,8 +76,6 @@ public class boardFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //mViewModel = new ViewModelProvider(this).get(BoardViewModel.class);
-        // TODO: Use the ViewModel
     }
     @Override
     public void onStart() {
@@ -87,7 +86,7 @@ public class boardFragment extends Fragment {
             e.printStackTrace();
         }
         try {
-            Thread.sleep(100);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -117,22 +116,26 @@ public class boardFragment extends Fragment {
                 String res=response.body().string();
                 Log.d("MessageInfo",res);
                 try {
-                    JSONArray result=new JSONArray(res);
+                    JSONObject mid=new JSONObject(res);
+                    JSONArray result= (JSONArray) mid.get("data");
                     Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
                     for(int i=0;i<result.length();i++){
+                        Log.d("MessageInfo","enter loop");
                         JSONObject cur_msg=result.getJSONObject(i);
+                        Log.d("MessageInfo","try");
                         String id=cur_msg.getString("id");
                         String author=cur_msg.getString("author");
                         String content=cur_msg.getString("content");
                         String date=cur_msg.getString("date");
+                        Log.d("MessageInfo","date:"+date);
                         String picture=cur_msg.getString("picture");
                         Log.d("MessageInfo","cur_msg_info:"+"id:"+id+" "+" author:"+author+" content:"+content);
                         //handle date
-                        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
                         Log.d("MessageInfo","test");
                         Date FormattedDate=format.parse(date);
 
-                        message msg=new message(author,content,FormattedDate,picture);
+                        message msg=new message(id,author,content,FormattedDate,picture);
                         msgs.add(msg);
                         Log.d("MessageInfo","finished one circle");
                     }
