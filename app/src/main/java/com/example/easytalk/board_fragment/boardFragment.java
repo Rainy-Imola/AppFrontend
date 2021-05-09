@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easytalk.Constants;
@@ -62,6 +64,9 @@ public class boardFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.board_fragment, container, false);
         mRecyclerView=root.findViewById(R.id.board);
+        TextView title = (TextView) root.findViewById(R.id.title_b);
+        title.setText("Board");
+        title.setGravity(Gravity.CENTER);
         fabAdd = root.findViewById(R.id.fab);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".friends_fragment.friendsFragment">
 
+    <include layout="@layout/title_friend"></include>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,20 +15,18 @@
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:text="好友"
-            android:textSize="20dp" />
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center_horizontal"-->
+        <!--            android:layout_marginTop="40dp"-->
+        <!--            android:text="好友"-->
+        <!--            android:textSize="20dp" />-->
     </LinearLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friends"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="60dp"></androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>
