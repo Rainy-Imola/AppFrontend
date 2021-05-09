@@ -24,12 +24,19 @@
         <action
             android:id="@+id/action_navigation_myinfo_to_modifyFragment"
             app:destination="@id/modifyFragment" />
+        <action
+            android:id="@+id/action_navigation_myinfo_to_loginActivity"
+            app:destination="@id/loginActivity" />
     </fragment>
     <fragment
         android:id="@+id/modifyFragment"
         android:name="com.example.easytalk.modify_fragment.ModifyFragment"
         android:label="modify_fragment"
         tools:layout="@layout/modify_fragment" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.easytalk.LoginActivity"
+        android:label="LoginActivity" />
 
 
 </navigation>

@@ -9,19 +9,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.easytalk.R;
 import com.example.easytalk.model.message;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements View.OnClickListener,View.OnLongClickListener{
     //定义Item点击事件
     public  interface OnRecyclerViewItemClickListener{
         //点击事件
-        void onItemClick(View view, String str);
+        void onItemClick(View view, int str);
         //长按事件
-        void onItemLongClick(View view, String str);
+        void onItemLongClick(View view, int str);
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener;
@@ -36,14 +38,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onClick(View v) {
         if(mOnItemClickListener != null){
-            mOnItemClickListener.onItemClick(v, (String)v.getTag());
+            mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
         }
     }
 
     @Override
     public boolean onLongClick(View v) {
         if(mOnItemClickListener != null){
-            mOnItemClickListener.onItemLongClick(v, (String)v.getTag());
+            mOnItemClickListener.onItemLongClick(v, (Integer) v.getTag());
         }
         return false;
     }
@@ -59,9 +61,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        holder.itemView.setTag(mItems.get(position));
+        SimpleDateFormat format=new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss");
+        holder.itemView.setTag(position);
         holder.mAuthor.setText(mItems.get(position).getAuthor());
         holder.mContent.setText(mItems.get(position).getContent());
+        holder.mcreateat.setText(format.format(mItems.get(position).getCreatedAt()));
+        holder.mcoverView.setImageURI(mItems.get(position).getImageUrl());
     }
 
     @Override
@@ -70,12 +75,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     public class MessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView mAuthor;
-        private TextView mContent;
+        private TextView mAuthor,mContent,mcreateat;
+        private SimpleDraweeView mcoverView;
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             mAuthor = (TextView)itemView.findViewById(R.id.message_author);
             mContent = (TextView)itemView.findViewById(R.id.message_content);
+            mcreateat = itemView.findViewById(R.id.usr_msg_date);
+            mcoverView = itemView.findViewById(R.id.sd_cover1);
         }
     }
 

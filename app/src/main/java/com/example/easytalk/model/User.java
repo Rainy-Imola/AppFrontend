@@ -17,6 +17,8 @@ public class User {
 
     public User(String user_name) {
         this.user_name = user_name;
+        this.user_hobby = null;
+        this.user_constellation = null;
     }
 
     public String getUser_name() {
@@ -41,7 +43,5 @@ public class User {
 
     public void setUser_constellation(String user_constellation) {
         this.user_constellation = user_constellation;
-        this.user_hobby = null;
-        this.user_constellation = null;
     }
 }

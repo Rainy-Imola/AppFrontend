@@ -47,23 +47,23 @@ public class UserInfoViewModel extends AndroidViewModel {
     public List<message> getMessage() throws IOException{
         List<message> msgs=new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();
-        String token=sharedPreferences.getString("token","");
-        Log.d("MessageInfo_token",token);
+        String token = sharedPreferences.getString("token","");
+        Integer user_id = sharedPreferences.getInt("id",2);
         Request request=new Request.Builder().url(Constants.baseUrl+"/msgboard/")
                 .addHeader("Authorization",token)
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.d("MessageInfo","request_handle_failed");
-                //Toast.makeText(getContext(),"请求留言数据失败！",Toast.LENGTH_SHORT).show();
+                Log.d("user_info","request_handle_failed");
             }
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String res=response.body().string();
-                Log.d("userinfo Message",res);
+                Log.d("user_info_all_message",res);
                 try {
-                    JSONArray result=new JSONArray(res);
+                    JSONObject results = new JSONObject(res);
+                    JSONArray result=results.getJSONArray("data");
                     Log.d("userinfo Message", "resultLength:"+String.valueOf(result.length()));
                     for(int i=0;i<result.length();i++){
                         JSONObject cur_msg=result.getJSONObject(i);
@@ -71,18 +71,24 @@ public class UserInfoViewModel extends AndroidViewModel {
                         String author=cur_msg.getString("author");
                         String content=cur_msg.getString("content");
                         String date=cur_msg.getString("date");
-                        String picture=cur_msg.getString("picture");
-                        Log.d("MessageInfo","cur_msg_info:"+"id:"+id+" "+" author:"+author+" content:"+content);
+                        String picture;
+                        try {
+                            picture=cur_msg.getString("picture");
+                        }
+                        catch (JSONException e){
+                            picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
+                        }
+                        Log.d("MessageInfo","cur_msg_info:"+"id:"+" "+ id+ " author:"+author+" content:"+content);
                         //handle date
-                        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                        Date FormattedDate=format.parse(date);
-
+                        //SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                        //Date FormattedDate=format.parse(date);
+                        Date FormattedDate=new Date();
                         message msg=new message(author,content,FormattedDate,picture);
                         msgs.add(msg);
-                        Log.d("userinfo MessageInfo","finished one circle");
+                        Log.d("user_info MessageInfo","finished one circle");
                     }
                     Log.d("MessageInfo","msgs_Size: "+ String.valueOf(msgs.size()));
-                } catch (JSONException | ParseException e) {
+                } catch (JSONException e) {
                     Log.d("userinfo MessageInfo","dateParse failed");
                     e.printStackTrace();
                 }

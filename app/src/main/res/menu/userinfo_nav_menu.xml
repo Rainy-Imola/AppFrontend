@@ -5,12 +5,12 @@
         android:id="@+id/user_info_setting"
         android:icon="@drawable/setting"
         android:title="@string/user_info_setting"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/user_info_write"
         android:title="@string/user_info_write"
         android:icon="@drawable/write"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
     <item
         android:id="@+id/user_info_exit"
         android:title="@string/user_info_exit"

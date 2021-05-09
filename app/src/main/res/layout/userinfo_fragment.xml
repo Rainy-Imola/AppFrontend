@@ -1,82 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:ignore="ExtraText">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/user_info_imageView"
-        android:layout_width="155dp"
-        android:layout_height="155dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="48dp"
-        android:maxWidth="155dp"
-        android:maxHeight="155dp"
-        android:src="@drawable/defaultavatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
 
-    <TextView
-        android:id="@+id/user_info_name"
-        android:layout_width="179dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
-        app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
+        android:layout_width="match_parent"
+        android:layout_height="186dp"
+        android:background="@android:color/background_light"
+        android:theme="@style/Theme.EasyTalk.AppBarOverlay">
 
-    <TextView
-        android:id="@+id/user_info_constellation"
-        android:layout_width="199dp"
-        android:layout_height="42dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
-        app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
 
-    <com.donkingliang.labels.LabelsView
-        android:id="@+id/labels"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        app:isIndicator="true"
-        app:labelBackground="@drawable/ic_userinfo_lable"
-        app:labelTextColor="@drawable/ic_userinfo_lable_text"
-        app:labelTextPaddingBottom="5dp"
-        app:labelTextPaddingLeft="10dp"
-        app:labelTextPaddingRight="10dp"
-        app:labelTextPaddingTop="5dp"
-        app:labelTextSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
-        app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
-        app:lineMargin="10dp"
-        app:maxColumns="5"
-        app:maxLines="3"
-        app:maxSelect="5"
-        app:minSelect="1"
-        app:selectType="SINGLE"
-        app:wordMargin="10dp" />
+            app:toolbarId="@+id/toolbar">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.donkingliang.labels.LabelsView
+                    android:id="@+id/labels"
+                    android:layout_width="297dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    app:isIndicator="true"
+                    app:labelBackground="@drawable/ic_userinfo_lable"
+                    app:labelTextColor="@drawable/ic_userinfo_lable_text"
+                    app:labelTextPaddingBottom="5dp"
+                    app:labelTextPaddingLeft="10dp"
+                    app:labelTextPaddingRight="10dp"
+                    app:labelTextPaddingTop="5dp"
+                    app:labelTextSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
+                    app:layout_constraintVertical_bias="0.322"
+                    app:lineMargin="10dp"
+                    app:maxColumns="5"
+                    app:maxLines="3"
+                    app:maxSelect="5"
+                    app:minSelect="1"
+                    app:selectType="SINGLE"
+                    app:wordMargin="10dp" />
+
+                <TextView
+                    android:id="@+id/user_info_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
+
+                <TextView
+                    android:id="@+id/user_info_constellation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
+                    app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+
+                <ImageView
+                    android:id="@+id/user_info_imageView"
+                    android:layout_width="70dp"
+                    android:layout_height="77dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="32dp"
+                    android:maxWidth="155dp"
+                    android:maxHeight="155dp"
+                    android:src="@drawable/defaultavatar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="414dp"
+                android:layout_height="56dp"
+                app:popupTheme="@style/Theme.EasyTalk.PopupOverlay"
+                app:titleTextColor="@android:color/black"></androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
-        app:layout_constraintTop_toBottomOf="@+id/labels"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_width="match_parent"
+        android:layout_height="548dp"
+        android:layout_marginBottom="32dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintHorizontal_bias="1.0" />
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
