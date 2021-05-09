@@ -76,6 +76,8 @@ public class boardFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //mViewModel = new ViewModelProvider(this).get(BoardViewModel.class);
+        // TODO: Use the ViewModel
     }
     @Override
     public void onStart() {
@@ -86,7 +88,7 @@ public class boardFragment extends Fragment {
             e.printStackTrace();
         }
         try {
-            Thread.sleep(500);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
