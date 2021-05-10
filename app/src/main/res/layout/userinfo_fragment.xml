@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="ExtraText">
+    <include layout="@layout/title_info"></include>
+
 
     <ImageView
         android:id="@+id/user_info_imageView"
@@ -12,7 +14,7 @@
         android:layout_height="155dp"
         android:layout_marginStart="48dp"
         android:layout_marginLeft="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="55dp"
         android:maxWidth="155dp"
         android:maxHeight="155dp"
         android:src="@drawable/defaultavatar"

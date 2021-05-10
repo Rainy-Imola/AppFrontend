@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!--    <include layout="@layout/title_welcome"></include>-->
+
     <LinearLayout
         android:layout_width="1383dp"
         android:layout_height="846dp"
@@ -140,7 +142,7 @@
                     android:layout_width="100dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="35dp"
-                    android:alpha="0.5"
+                    android:alpha="0.9"
                     android:background="@drawable/bt_rg"
                     android:text="REGISTER"
                     android:textSize="16sp"
