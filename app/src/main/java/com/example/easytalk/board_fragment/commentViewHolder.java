@@ -21,5 +21,7 @@ public class commentViewHolder extends RecyclerView.ViewHolder {
     }
     public void bind(comment c){
         this.comment=c;
+        authorView.setText(this.comment.getAuthor());
+        contentView.setText(this.comment.getContent());
     }
 }

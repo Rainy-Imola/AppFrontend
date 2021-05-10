@@ -13,6 +13,7 @@ import java.util.List;
 
 public class commentAdapter extends RecyclerView.Adapter<commentViewHolder> {
     private List<comment> comments;
+
     @NonNull
     @Override
     public commentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
