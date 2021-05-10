@@ -52,4 +52,5 @@ dependencies {
     implementation 'com.facebook.fresco:webpsupport:2.4.0'
     implementation 'com.github.donkingliang:LabelsView:1.6.5'
     implementation "androidx.cardview:cardview:1.0.0"
+    implementation 'com.airbnb.android:lottie:2.7.0'
 }

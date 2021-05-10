@@ -80,7 +80,9 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:id="@+id/postCommentButton"
-                    android:text="评论" />
+                    android:text="评论"
+                    android:textSize="10dp"
+                    android:gravity="center_horizontal"/>
 
             </RelativeLayout>
             <androidx.recyclerview.widget.RecyclerView
