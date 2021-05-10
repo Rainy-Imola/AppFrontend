@@ -32,13 +32,16 @@
         <activity android:name=".board_fragment.MessageDetailActivity" />
         <activity android:name=".PublishActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".WelcomeAcitivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity"/>
+
+
         <activity android:name=".MainActivity" />
     </application>
 
