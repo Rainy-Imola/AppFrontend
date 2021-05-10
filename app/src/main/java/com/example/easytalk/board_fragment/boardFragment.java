@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,10 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,20 +69,21 @@ public class boardFragment extends Fragment {
     private AnimatorSet animatorSet;
     private ObjectAnimator alphaAnimator_lottie,alphaAnimator_message;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.board_fragment, container, false);
         mRecyclerView=root.findViewById(R.id.board);
         TextView title = (TextView) root.findViewById(R.id.title_b);
-        title.setText("Board");
+        title.setText("主干道");
         title.setGravity(Gravity.CENTER);
         fabAdd = root.findViewById(R.id.fab);
         animationView=root.findViewById(R.id.animationView);
         animationView.playAnimation();
-        animationView.setAlpha(1f);
-        mRecyclerView.setAlpha(0f);
         animatorSet=new AnimatorSet();
+        mAdapter=new MessageAdapter(messages);
+
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +91,8 @@ public class boardFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        animationView.setAlpha(1f);
+        mRecyclerView.setAlpha(0f);
         return root;
     }
 
@@ -94,33 +101,24 @@ public class boardFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         //mViewModel = new ViewModelProvider(this).get(BoardViewModel.class);
         // TODO: Use the ViewModel
+        try {
+            refreshMessages(2000);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void onStart() {
         super.onStart();
         try {
-            messages=getMessages();
+            refreshMessages(2000);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        getView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("MessageInfo","animation run Called");
-                //动画淡出，列表淡入
-                alphaAnimator_lottie=ObjectAnimator.ofFloat(animationView,"scaleX",
-                        0f);
-                alphaAnimator_message=ObjectAnimator.ofFloat(mRecyclerView,"alpha",
-                        1f);
-                animatorSet.play(alphaAnimator_lottie).with(alphaAnimator_message);
-                animatorSet.start();
-                Log.d("MessageInfo",messages.toString());
-                mAdapter=new MessageAdapter(messages);
-                mRecyclerView.setAdapter(mAdapter);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                Log.d("MessageInfo","onStartFinished");
-            }
-        },1000);
     }
     public List<message> getMessages() throws IOException {
         List<message> msgs=new ArrayList<>();
@@ -174,5 +172,27 @@ public class boardFragment extends Fragment {
             }
         });
         return msgs;
+    }
+
+    public void refreshMessages(int sleepTime) throws IOException, InterruptedException {
+        messages=getMessages();
+        getView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("MessageInfo","animation run Called");
+                //动画淡出，列表淡入
+                alphaAnimator_lottie=ObjectAnimator.ofFloat(animationView,"scaleX",
+                        0f);
+                alphaAnimator_message=ObjectAnimator.ofFloat(mRecyclerView,"alpha",
+                        1f);
+                animatorSet.play(alphaAnimator_lottie).with(alphaAnimator_message);
+                animatorSet.start();
+                Log.d("MessageInfo",messages.toString());
+                mAdapter.setmItems(messages);
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                Log.d("MessageInfo","onActivityCreatedFinished");
+            }
+        },sleepTime);
     }
 }
