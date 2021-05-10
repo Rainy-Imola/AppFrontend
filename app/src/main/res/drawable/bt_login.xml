@@ -16,7 +16,7 @@
         <shape>
             <gradient android:angle="270" android:endColor="#289BE5" android:startColor="#289BE5"/>
 
-            <size android:height="60dp" android:width="120dp" />
+            <size android:height="60dp" android:width="140dp" />
 
             <corners android:radius="8dp" />
         </shape>

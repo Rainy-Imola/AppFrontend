@@ -47,14 +47,13 @@ public class LoginActivity extends AppCompatActivity {
 //        tv_title.setText("登录");
 //        tv_title.setGravity(Gravity.CENTER);
 
-        this.getSupportActionBar().hide();//注意是在 setContentView(R.layout.activity_main)后
+        this.getSupportActionBar().hide();//在 setContentView(R.layout.activity_main)后
         checkOut();
         login = (Button) findViewById(R.id.log_in);
         register = (Button) findViewById(R.id.register);
-        forgetpw = (TextView) findViewById(R.id.forget_pw);
+        forgetpw = (Button) findViewById(R.id.forget_pw);
         usernameEdit = (EditText) findViewById(R.id.username);
         passwordEdit = (EditText) findViewById(R.id.password);
-//        emailEdit = (EditText) findViewById(R.id.email);
 
         //登陆点击事件
         login.setOnClickListener(new View.OnClickListener() {

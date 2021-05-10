@@ -14,10 +14,8 @@
     <!-- View未点击时初始化颜色-->
     <item>
         <shape>
-            <gradient android:angle="270" android:endColor="#289BE5" android:startColor="#289BE5" android:alpha="0.8"/>
-
-            <size android:height="60dp" android:width="120dp" />
-
+            <solid android:color="#ffffff"/>
+            <size android:height="60dp" android:width="140dp" />
             <corners android:radius="8dp" />
         </shape>
     </item>
