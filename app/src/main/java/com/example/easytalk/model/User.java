@@ -4,6 +4,7 @@ import android.media.Image;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -17,10 +18,14 @@ public class User {
 
     public User(String user_name) {
         this.user_name = user_name;
-        this.user_hobby = null;
-        this.user_constellation = null;
+        this.user_hobby = new ArrayList<>();
+        this.user_constellation = "";
     }
-
+    public User(){
+        this.user_name = "";
+        this.user_hobby = new ArrayList<>();
+        this.user_constellation = "";
+    }
     public String getUser_name() {
         return user_name;
     }

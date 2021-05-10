@@ -4,39 +4,37 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.SavedStateHandle;
-import androidx.lifecycle.ViewModel;
 
 import com.example.easytalk.Constants;
 import com.example.easytalk.model.User;
-import com.example.easytalk.model.friend;
 import com.example.easytalk.model.message;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class UserInfoViewModel extends AndroidViewModel {
+
     private SharedPreferences sharedPreferences;
     private SavedStateHandle handle;
+    private User mUser = new User();
     public UserInfoViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
         this.handle =handle;
@@ -96,8 +94,27 @@ public class UserInfoViewModel extends AndroidViewModel {
         });
         return msgs;
     }
+
     public User getUser() {
-        User mUser = new User("default");
+        questUser();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mUser;
+    }
+    public void setUserName(String newname) {
+        mUser.setUser_name(newname);
+    }
+    public void setUserHobby(List<String> hobbylist) {
+        mUser.setUser_hobby(hobbylist);
+    }
+    public void setUserConstellation(String newconstellation) {
+        mUser.setUser_constellation(newconstellation);
+    }
+
+    public void questUser() {
         OkHttpClient okHttpClient=new OkHttpClient();
         String token=sharedPreferences.getString("token","");
         Log.d("MessageInfo_token",token);
@@ -140,7 +157,61 @@ public class UserInfoViewModel extends AndroidViewModel {
             }
         });
         Log.d("userinfo username",mUser.getUser_name());
-        return mUser;
+    }
+
+    public void requestSave() {
+        new Thread() {
+            @Override
+            public void run() {
+                // @Headers({"Content-Type:application/json","Accept: application/json"})//需要添加头
+                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("username", mUser.getUser_name());
+                    json.put("hobby", mUser.getUser_hobby());
+                    json.put("constellation", mUser.getUser_constellation());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //申明给服务端传递一个json串
+                //创建一个OkHttpClient对象
+                String token=sharedPreferences.getString("token","");
+                OkHttpClient okHttpClient = new OkHttpClient();
+                //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
+                //json为String类型的json数据
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                //创建一个请求对象
+//                        String format = String.format(KeyPath.Path.head + KeyPath.Path.waybillinfosensor, username, key, current_timestamp);
+                Request request = new Request.Builder()
+                        .url(Constants.baseUrl+"/users/"+sharedPreferences.getString("username","")+"/info")
+                        .addHeader("Authorization",token)
+                        .post(requestBody)
+                        .build();
+
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        //DialogUtils.showPopMsgInHandleThread(Release_Fragment.this.getContext(), mHandler, "数据获取失败，请重新尝试！");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String string = response.body().string();
+                        Log.d("info",string+"");
+                        try {
+                            JSONObject json = new JSONObject(string);
+                            int status = (int) json.get("status");
+                            String msg = (String) json.get("msg");
+                            if (status==0) {
+                                Log.d("save","success");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
     }
 
     // TODO: Implement the ViewModel

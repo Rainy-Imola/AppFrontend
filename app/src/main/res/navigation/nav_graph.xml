@@ -32,11 +32,36 @@
         android:id="@+id/modifyFragment"
         android:name="com.example.easytalk.modify_fragment.ModifyFragment"
         android:label="modify_fragment"
-        tools:layout="@layout/modify_fragment" />
+        tools:layout="@layout/modify_fragment" >
+        <action
+            android:id="@+id/action_modifyFragment_to_modify_nameFragment"
+            app:destination="@id/modify_nameFragment" />
+        <action
+            android:id="@+id/action_modifyFragment_to_modify_hobbyFragment"
+            app:destination="@id/modify_hobbyFragment" />
+        <action
+            android:id="@+id/action_modifyFragment_to_modify_constellationFragment"
+            app:destination="@id/modify_constellationFragment" />
+    </fragment>
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.easytalk.LoginActivity"
         android:label="LoginActivity" />
+    <fragment
+        android:id="@+id/modify_nameFragment"
+        android:name="com.example.easytalk.modify_fragment.modify_nameFragment"
+        android:label="fragment_modify_name"
+        tools:layout="@layout/fragment_modify_name" />
+    <fragment
+        android:id="@+id/modify_hobbyFragment"
+        android:name="com.example.easytalk.modify_fragment.modify_hobbyFragment"
+        android:label="fragment_modify_hobby"
+        tools:layout="@layout/fragment_modify_hobby" />
+    <fragment
+        android:id="@+id/modify_constellationFragment"
+        android:name="com.example.easytalk.modify_fragment.modify_constellationFragment"
+        android:label="fragment_modify_constellation"
+        tools:layout="@layout/fragment_modify_constellation" />
 
 
 </navigation>

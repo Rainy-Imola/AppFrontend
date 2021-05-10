@@ -48,7 +48,6 @@ public class UserInfoFragment extends Fragment {
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
-    private User mUser;
     public static UserInfoFragment newInstance() {
         return new UserInfoFragment();
     }
@@ -59,7 +58,6 @@ public class UserInfoFragment extends Fragment {
         setHasOptionsMenu(true);
 
     }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -70,41 +68,10 @@ public class UserInfoFragment extends Fragment {
         user_hobby = (LabelsView) root.findViewById(R.id.labels);
         return root;
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.userinfo_nav_menu,menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.user_info_setting:
-                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_modifyFragment);
-                return true;
-            case R.id.user_info_write:
-                return true;
-            case R.id.user_info_exit:
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("status",2);
-                editor.commit();
-                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_loginActivity);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(UserInfoViewModel.class);
+        mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         /*
         List<String> mmlabel = new ArrayList<>(Arrays.asList("打羽毛球", "football", "movie"));
 
@@ -132,13 +99,8 @@ public class UserInfoFragment extends Fragment {
             e.printStackTrace();
         }
          */
-        mUser = mViewModel.getUser();
+        User mUser = mViewModel.getUser();
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
             user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
         }else {
@@ -168,6 +130,39 @@ public class UserInfoFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.userinfo_nav_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.user_info_setting:
+
+                return true;
+            case R.id.user_info_write:
+                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_modifyFragment);
+                return true;
+            case R.id.user_info_exit:
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("status",2);
+                editor.commit();
+                NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_loginActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
     @Override
     public void onStart() {

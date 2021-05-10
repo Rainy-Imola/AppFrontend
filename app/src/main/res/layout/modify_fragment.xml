@@ -1,13 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modify_fragment.ModifyFragment">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="@color/black">
 
-    <TextView
+    <!--    标题栏-->
+    <com.example.easytalk.widget.TitleLayout
+        android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"/>
 
-</FrameLayout>
+    <!--    头像-->
+    <LinearLayout
+        android:id="@+id/ll_portrait"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:paddingBottom="10dp"
+        android:background="@color/white">
+
+        <com.example.easytalk.widget.RoundImageView
+            android:id="@+id/ri_portrait"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/padding_left_and_right"
+            android:scaleType="centerCrop"
+            android:src="@drawable/defaultavatar"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改头像"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/padding_left_and_right"/>
+
+    </LinearLayout>
+    <!--    编辑界面，此处可以写成一个ItemGroup上传至com上-->
+    <com.example.easytalk.widget.ItemGroup
+        android:id="@+id/ig_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:jt_visible="false"
+        app:paddingLeft="@dimen/padding_left_and_right"
+        app:title="ID号" />
+
+    <com.example.easytalk.widget.ItemGroup
+        android:id="@+id/ig_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:edt_hint_content="修改昵称"
+        app:paddingLeft="@dimen/padding_left_and_right"
+        app:title="昵称" />
+    <com.example.easytalk.widget.ItemGroup
+        android:id="@+id/ig_hobby"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:edt_hint_content="tag_hobby"
+        app:paddingLeft="@dimen/padding_left_and_right"
+        app:title="tag"/>
+    <com.example.easytalk.widget.ItemGroup
+        android:id="@+id/ig_constellation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:edt_hint_content="星座"
+        app:paddingLeft="@dimen/padding_left_and_right"
+        app:title="星座"/>
+
+    <com.example.easytalk.widget.ItemGroup
+        android:id="@+id/ig_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:edt_hint_content="性别"
+        app:paddingLeft="@dimen/padding_left_and_right"
+        app:title="xingbie"/>
+
+    <com.example.easytalk.widget.ItemGroup
+        android:id="@+id/ig_region"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        app:edt_hint_content="未选择"
+        app:paddingLeft="@dimen/padding_left_and_right"
+        app:title="常住地" />
+
+</LinearLayout>
