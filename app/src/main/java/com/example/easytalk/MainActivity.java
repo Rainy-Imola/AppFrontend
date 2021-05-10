@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fresco.initialize(MainActivity.this);
         setContentView(R.layout.activity_main);
-
+        this.getSupportActionBar().hide();//注意是在 setContentView(R.layout.activity_main)后
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

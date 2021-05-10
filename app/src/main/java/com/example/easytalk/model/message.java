@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class message implements Serializable {
+    @SerializedName("id")
+    private String id;
     @SerializedName("author")
     private String author;
     @SerializedName("content")
@@ -18,6 +20,9 @@ public class message implements Serializable {
     private int imageW;
     @SerializedName("image_h")
     private int imageH;
+
+    public void setId(String id){this.id=id;}
+    public String getId(){return this.id;}
 
     public void setAuthor(String author1){author=author1;}
     public String getAuthor(){return author;}
@@ -49,7 +54,8 @@ public class message implements Serializable {
         return imageH;
     }
 
-    public message(String author1,String content1,Date date,String imageUrl){
+    public message(String id,String author1,String content1,Date date,String imageUrl){
+        setId(id);
         setAuthor(author1);
         setContent(content1);
         setCreatedAt(date);

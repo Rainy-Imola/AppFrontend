@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,6 +64,9 @@ public class UserInfoFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root=  inflater.inflate(R.layout.userinfo_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
+        TextView title = (TextView) root.findViewById(R.id.title_i);
+        title.setText("MyInfo");
+        title.setGravity(Gravity.CENTER);
         user_name = (TextView)root.findViewById(R.id.user_info_name);
         user_constellation = (TextView) root.findViewById(R.id.user_info_constellation);
         user_hobby = (LabelsView) root.findViewById(R.id.labels);

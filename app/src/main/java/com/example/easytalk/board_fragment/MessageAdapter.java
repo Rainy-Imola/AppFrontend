@@ -15,7 +15,7 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     private List<message> mItems=new ArrayList<>();
     public MessageAdapter(List<message> messages){
-        this.mItems=messages;
+        setmItems(messages);
     }
     @NonNull
     @Override
@@ -38,6 +38,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         mItems.clear();
         mItems.addAll(items);
         notifyDataSetChanged();
+    }
+    public void setmItems(List<message> messages){
+        this.mItems=messages;
     }
 }
 

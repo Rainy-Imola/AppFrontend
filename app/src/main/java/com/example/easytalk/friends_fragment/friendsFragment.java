@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easytalk.Constants;
@@ -64,6 +66,9 @@ public class friendsFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.friends_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.friends);
+        TextView title = (TextView) root.findViewById(R.id.title_f);
+        title.setText("Friends");
+        title.setGravity(Gravity.CENTER);
         setHasOptionsMenu(true);
         return root;
     }
@@ -73,6 +78,8 @@ public class friendsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
         // TODO: Use the ViewModel
+
+
     }
 
     @Override

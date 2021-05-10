@@ -76,9 +76,8 @@ public class PublishActivity extends AppCompatActivity {
         publish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                     publishContent();
-
+                    finish();
             }
         });
     }

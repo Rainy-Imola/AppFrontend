@@ -8,7 +8,10 @@
     <fragment
         android:id="@+id/navigation_board"
         android:name="com.example.easytalk.board_fragment.boardFragment"
-        android:label="board"
+        android:label="Board"
+        android:layout_centerInParent = "true"
+        android:layout_width = "wrap_content"
+        android:layout_gravity = "center"
         tools:layout="@layout/board_fragment" />
 
     <fragment
@@ -16,6 +19,7 @@
         android:name="com.example.easytalk.friends_fragment.friendsFragment"
         android:label="friends"
         tools:layout="@layout/friends_fragment" />
+
     <fragment
         android:id="@+id/navigation_myinfo"
         android:name="com.example.easytalk.user_info_fragment.UserInfoFragment"

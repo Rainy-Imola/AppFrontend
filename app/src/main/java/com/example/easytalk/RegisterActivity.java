@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -35,6 +37,12 @@ public class  RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+//        TextView tv_title = (TextView) findViewById(R.id.title_w);
+//        tv_title.setText("注册");
+//        tv_title.setGravity(Gravity.CENTER);
+
+        this.getSupportActionBar().hide();//注意是在 setContentView(R.layout.activity_main)后
         registerBtn = (Button) findViewById(R.id.registerBtn);
         sendBtn = (Button) findViewById(R.id.sendBtn);
         usernameEdit = (EditText) findViewById(R.id.username);

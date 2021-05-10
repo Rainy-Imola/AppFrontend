@@ -58,4 +58,5 @@ dependencies {
         exclude group: "com.android.support"
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.airbnb.android:lottie:2.7.0'
 }

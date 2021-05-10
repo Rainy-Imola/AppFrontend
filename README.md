@@ -12,3 +12,8 @@
 - [ ] 好友页面
 - [ ] 好友添加页面
 - [ ] 暗黑模式
+
+## Front Page to show
+
+
+![welcome](./pics/welcome.png)  ![register](./pics/register.png) ![login](./pics/login.png) 

@@ -3,29 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/boardFrameLayout"
     tools:context=".board_fragment.boardFragment">
 
-    <LinearLayout
+    <include layout = "@layout/title_board"></include>
+
+    <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:text="动态"
-            android:textSize="20dp" />
-    </LinearLayout>
-
+        android:layout_height="699dp"
+        android:id="@+id/animationView"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/material_wave_loading"
+        android:layout_marginBottom="60dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/board"
         android:layout_width="match_parent"
-        android:layout_height="600dp"   
-        android:layout_marginTop="60dp">
+        android:layout_height="699dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp">
+
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -37,8 +38,8 @@
         android:layout_marginBottom="80dp"
         android:src="@drawable/ic_baseline_add_24" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
 
 </FrameLayout>
