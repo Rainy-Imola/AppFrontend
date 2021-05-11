@@ -60,4 +60,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.airbnb.android:lottie:2.7.0'
     compile 'com.github.loperSeven:TitleBar:1.0.4'
+
+    implementation "org.java-websocket:Java-WebSocket:1.4.0"
 }
