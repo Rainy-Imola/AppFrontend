@@ -54,7 +54,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-//TODO: fix animation view
+//TODO: 加入上拉刷新机制 or 在标题上加个按钮刷新
 public class boardFragment extends Fragment {
 
     //private BoardViewModel mViewModel;
@@ -99,8 +99,6 @@ public class boardFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //mViewModel = new ViewModelProvider(this).get(BoardViewModel.class);
-        // TODO: Use the ViewModel
         try {
             refreshMessages(2000);
         } catch (IOException e) {
@@ -109,17 +107,7 @@ public class boardFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    @Override
-    public void onStart() {
-        super.onStart();
-        try {
-            refreshMessages(2000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
     public List<message> getMessages() throws IOException {
         List<message> msgs=new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();
