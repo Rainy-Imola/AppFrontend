@@ -10,7 +10,6 @@ import com.example.easytalk.R;
 import com.example.easytalk.model.comment;
 import com.example.easytalk.model.message;
 
-//TODO: finish comment recyclerView
 public class commentViewHolder extends RecyclerView.ViewHolder {
     private comment comment;
     private TextView authorView,contentView;
