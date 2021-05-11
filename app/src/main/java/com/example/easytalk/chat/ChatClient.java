@@ -47,37 +47,37 @@ public class ChatClient extends WebSocketClient{
         System.out.println("ERROR: " + ex.getMessage());
     }
 
-    public static void main(String[] args) throws URISyntaxException, InterruptedException {
-        URI uri = new URI("ws://echo.websocket.org");
-        ChatClient client = new ChatClient(uri);
-        System.out.println("Begin to Connection");
-        //try to connect
-        try{
-            client.connectBlocking();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return;
-        }
-//        json 处理使用了Android的包，无法单个调试
-//        JSONObject msgbody = new JSONObject();
+//    public static void main(String[] args) throws URISyntaxException, InterruptedException {
+//        URI uri = new URI("ws://echo.websocket.org");
+//        ChatClient client = new ChatClient(uri);
+//        System.out.println("Begin to Connection");
+//        //try to connect
 //        try{
-//            msgbody.put("sender","wxz");
-//            msgbody.put("receiver","peer");
-//            msgbody.put("msgContent","Nice to meet you");
+//            client.connectBlocking();
 //        }
-//        catch (JSONException e){
+//        catch (Exception e){
 //            e.printStackTrace();
+//            return;
 //        }
-//       json转字符串
-//       String res = String.valueOf(res)；
-//       字符串转json
-//       JSONObject res = new JSONObject(res)；
-//        client.send("hello");
-//        if (client != null && client.isOpen()) {
-        client.send("你好");
-//        }
-        //client.closeBlocking();
-
-    }
+////        json 处理使用了Android的包，无法单个调试
+////        JSONObject msgbody = new JSONObject();
+////        try{
+////            msgbody.put("sender","wxz");
+////            msgbody.put("receiver","peer");
+////            msgbody.put("msgContent","Nice to meet you");
+////        }
+////        catch (JSONException e){
+////            e.printStackTrace();
+////        }
+////       json转字符串
+////       String res = String.valueOf(res)；
+////       字符串转json
+////       JSONObject res = new JSONObject(res)；
+////        client.send("hello");
+////        if (client != null && client.isOpen()) {
+//        client.send("你好");
+////        }
+//        //client.closeBlocking();
+//
+//    }
 }
