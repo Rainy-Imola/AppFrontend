@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--个人信息界面（编辑资料界面）的每个item-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,48 +9,69 @@
     android:background="@color/white"
     android:paddingLeft="0dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/item_group_layout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/title_tv"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="24dp"
             android:textColor="@color/black"
             android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="姓名" />
+
+
+        <!--点击跳转或者弹出选择框 todo -->
 
         <TextView
             android:id="@+id/content_edt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:background="@null"
             android:gravity="center_horizontal|center_vertical"
             android:hint="请输入姓名"
             android:paddingLeft="@dimen/padding_left_and_right"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-
-        <!--点击跳转或者弹出选择框 todo -->
         <ImageView
             android:id="@+id/jt_right_iv"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:padding="8dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/forward"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/content_edt" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="98dp" />
 
-            android:src="@drawable/exit" />
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="326dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"

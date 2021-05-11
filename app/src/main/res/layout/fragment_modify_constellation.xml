@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".modify_fragment.modify_constellationFragment">
 
+    <com.loper7.layout.TitleBar
+        android:id="@+id/commmon_return"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tBackImage="@drawable/user_return"
+        app:tBackgroundColor="@color/white"
+        app:tCenterTitle="true"
+        app:tMenuText="保存"
+        app:tTitleText="costellation"
+        app:tTitleTextColor="@android:color/primary_text_light"
+        app:tTitleTextSize="16sp" />
 
     <EditText
         android:id="@+id/new_constellation"
@@ -19,17 +34,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/commmon_return" />
 
-    <Button
-        android:id="@+id/save_constellation_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="保存"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_name" />
-    <!-- TODO: Update blank fragment layout -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

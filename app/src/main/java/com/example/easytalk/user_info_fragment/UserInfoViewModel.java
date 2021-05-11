@@ -18,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,17 +37,25 @@ public class UserInfoViewModel extends AndroidViewModel {
     private SharedPreferences sharedPreferences;
     private SavedStateHandle handle;
     private User mUser = new User();
+    private List<message> mMessage = new ArrayList<>();
     public UserInfoViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
         this.handle =handle;
         sharedPreferences = application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-
     }
     public User readUser(){
         return mUser;
     }
-    public List<message> getMessage() throws IOException{
-        List<message> msgs=new ArrayList<>();
+    public List<message> getMessage() throws IOException {
+        requestMessage();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mMessage;
+    }
+    public void requestMessage() throws IOException{
         OkHttpClient okHttpClient=new OkHttpClient();
         String token = sharedPreferences.getString("token","");
         Integer user_id = sharedPreferences.getInt("id",2);
@@ -80,21 +90,19 @@ public class UserInfoViewModel extends AndroidViewModel {
                         }
                         Log.d("MessageInfo","cur_msg_info:"+"id:"+" "+ id+ " author:"+author+" content:"+content);
                         //handle date
-                        //SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-                        //Date FormattedDate=format.parse(date);
-                        Date FormattedDate=new Date();
+                        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
+                        Date FormattedDate=format.parse(date);
                         message msg=new message(id,author,content,FormattedDate,picture);
-                        msgs.add(msg);
+                        mMessage.add(msg);
                         Log.d("user_info MessageInfo","finished one circle");
                     }
-                    Log.d("MessageInfo","msgs_Size: "+ String.valueOf(msgs.size()));
-                } catch (JSONException e) {
+                    Log.d("MessageInfo","msgs_Size: "+ String.valueOf(mMessage.size()));
+                } catch (JSONException | ParseException e) {
                     Log.d("userinfo MessageInfo","dateParse failed");
                     e.printStackTrace();
                 }
             }
         });
-        return msgs;
     }
 
     public User getUser() {
@@ -147,6 +155,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                         for(int i = 0;i<hobbyJson.length();++i){
                             hobbyList.add(hobbyJson.getString(i));
                         }
+                        mUser.setUser_id((Integer) data.getJSONObject(0).get("id"));
                         mUser.setUser_hobby(hobbyList);
                         mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
                         Log.d("User_info","设置成功");
@@ -215,6 +224,7 @@ public class UserInfoViewModel extends AndroidViewModel {
             }
         }.start();
     }
+
 
     // TODO: Implement the ViewModel
     

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.easytalk.R;
 import com.example.easytalk.user_info_fragment.UserInfoViewModel;
+import com.loper7.layout.TitleBar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +40,7 @@ public class modify_constellationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private EditText constellationEdit;
-    private Button msave;
+    private TitleBar mTitleBar;
     private UserInfoViewModel mViewModel;
     public modify_constellationFragment() {
         // Required empty public constructor
@@ -77,7 +79,7 @@ public class modify_constellationFragment extends Fragment {
         // Inflate the layout for this fragment
         View root =  inflater.inflate(R.layout.fragment_modify_constellation, container, false);
         constellationEdit = root.findViewById(R.id.new_constellation);
-        msave = root.findViewById(R.id.save_constellation_button);
+        mTitleBar = root.findViewById(R.id.commmon_return);
         return root;
     }
 
@@ -86,23 +88,25 @@ public class modify_constellationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         Context mContext = this.getContext();
-        msave.setOnClickListener(new View.OnClickListener() {
+        mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
             @Override
-            public void onClick(View v) {
+            public void onMenuClick() {
                 String newname = constellationEdit.getText().toString();
                 if(TextUtils.isEmpty(newname)){
-                    Toast.makeText(v.getContext(),"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
                     Log.d("Login_info","用户名和密码不能为空");
                     return;
                 }
                 mViewModel.setUserConstellation(newname);
-                Toast.makeText(v.getContext(),"new name"+newname,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"new name"+newname,Toast.LENGTH_SHORT).show();
+            }
+        });
+        mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {
+            @Override
+            public void onBackClick() {
+                Navigation.findNavController(view).navigateUp();
             }
         });
     }
 
-    @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 }

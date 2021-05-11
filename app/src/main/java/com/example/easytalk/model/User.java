@@ -1,7 +1,5 @@
 package com.example.easytalk.model;
 
-import android.media.Image;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -14,7 +12,16 @@ public class User {
     private List<String> user_hobby;
     @SerializedName("user_constellation")
     private String user_constellation;
+    @SerializedName("user_id")
+    private int user_id;
 
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
     public User(String user_name) {
         this.user_name = user_name;
@@ -25,6 +32,7 @@ public class User {
         this.user_name = "";
         this.user_hobby = new ArrayList<>();
         this.user_constellation = "";
+        this.user_id=0;
     }
     public String getUser_name() {
         return user_name;

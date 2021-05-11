@@ -14,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.example.easytalk.user_info_fragment.UserInfoViewModel;
 import com.example.easytalk.widget.ItemGroup;
 import com.example.easytalk.widget.RoundImageView;
 import com.example.easytalk.widget.TitleLayout;
+import com.loper7.layout.TitleBar;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -53,7 +55,8 @@ public class ModifyFragment extends Fragment {
     private UserInfoViewModel mViewModel;
     private ItemGroup nameIG, idIG, hobbyIG, constellationIG;
     private RoundImageView avatarView;
-    private TitleLayout mtitleLayout;
+    private TitleBar mtitleLayout;
+    private NavController mnavController;
 
     public static ModifyFragment newInstance() {
         return new ModifyFragment();
@@ -77,8 +80,11 @@ public class ModifyFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
+        mnavController = Navigation.findNavController(view);
         Context mContext = this.getContext();
         nameIG.setContentEdt(mViewModel.readUser().getUser_name());
+        idIG.setContentEdt(String.valueOf(mViewModel.readUser().getUser_id()));
+        constellationIG.setContentEdt(mViewModel.readUser().getUser_constellation());
         nameIG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,10 +113,16 @@ public class ModifyFragment extends Fragment {
                 show_popup_windows();
             }
         });
-        mtitleLayout.setSaveClick(new TitleLayout.addClickListener() {
+        mtitleLayout.setOnMenuListener(new TitleBar.OnMenuListener() {
             @Override
-            public void onItemClick(View view) {
+            public void onMenuClick() {
                 mViewModel.requestSave();
+            }
+        });
+        mtitleLayout.setOnBackListener(new TitleBar.OnBackListener() {
+            @Override
+            public void onBackClick() {
+                mnavController.navigateUp();
             }
         });
     }

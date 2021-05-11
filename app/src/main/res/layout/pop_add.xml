@@ -9,19 +9,19 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="194dp"
-        android:layout_height="284dp"
+        android:layout_width="141dp"
+        android:layout_height="223dp"
         android:layout_marginEnd="8dp"
         android:background="@android:color/darker_gray"
         android:orientation="vertical"
-        android:paddingStart="26dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="20dp">
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="138dp"
-            android:layout_height="236dp">
+            android:layout_width="120dp"
+            android:layout_height="201dp">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -29,7 +29,7 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:src="@drawable/setting"
+                android:src="@drawable/write"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,6 +47,15 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+            <ImageView
+                android:id="@+id/imageView_setting"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/setting"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_3"
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/tv_3" />
+
             <TextView
                 android:id="@+id/tv_3"
                 android:layout_width="wrap_content"
@@ -60,6 +69,15 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_1"
                 app:layout_constraintTop_toBottomOf="@+id/tv_1" />
 
+            <ImageView
+                android:id="@+id/imageView_exit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/exit"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_2"
+                app:layout_constraintStart_toStartOf="@+id/imageView_setting"
+                app:layout_constraintTop_toTopOf="@+id/tv_2" />
+
             <TextView
                 android:id="@+id/tv_2"
                 android:layout_width="wrap_content"
@@ -71,6 +89,7 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/tv_3"
                 app:layout_constraintTop_toBottomOf="@+id/tv_3" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

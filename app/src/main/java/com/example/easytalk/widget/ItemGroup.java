@@ -13,10 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.easytalk.R;
 public class ItemGroup extends FrameLayout {
 
-    private LinearLayout itemGroupLayout; //组合控件的布局
+    private ConstraintLayout itemGroupLayout; //组合控件的布局
     private TextView titleTv; //标题
     private TextView contentEdt; //输入框
     private ImageView jtRightIv; //向右的箭头
@@ -45,7 +47,7 @@ public class ItemGroup extends FrameLayout {
     //初始化View
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_group_widget, null);
-        itemGroupLayout = (LinearLayout) view.findViewById(R.id.item_group_layout);
+        itemGroupLayout = (ConstraintLayout) view.findViewById(R.id.item_group_layout);
         titleTv = (TextView) view.findViewById(R.id.title_tv);
         contentEdt = (TextView) view.findViewById(R.id.content_edt);
         jtRightIv = (ImageView) view.findViewById(R.id.jt_right_iv);

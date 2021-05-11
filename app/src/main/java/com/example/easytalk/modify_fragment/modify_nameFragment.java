@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.example.easytalk.LoginActivity;
 import com.example.easytalk.R;
 import com.example.easytalk.user_info_fragment.UserInfoViewModel;
+import com.loper7.layout.TitleBar;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +38,7 @@ public class modify_nameFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private EditText usernameEdit;
-    private Button msave;
+    private TitleBar mTitleBar;
     private UserInfoViewModel mViewModel;
     public modify_nameFragment() {
         // Required empty public constructor
@@ -56,7 +58,7 @@ public class modify_nameFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_modify_name, container, false);
         usernameEdit = root.findViewById(R.id.new_name);
-        msave = root.findViewById(R.id.save_name_button);
+        mTitleBar = root.findViewById(R.id.commmon_return);
         return root;
     }
 
@@ -65,24 +67,24 @@ public class modify_nameFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         Context mContext = this.getContext();
-        msave.setOnClickListener(new View.OnClickListener() {
+        mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
             @Override
-            public void onClick(View v) {
+            public void onMenuClick() {
                 String newname = usernameEdit.getText().toString();
                 if(TextUtils.isEmpty(newname)){
-                    Toast.makeText(v.getContext(),"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext,"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
                     Log.d("Login_info","用户名和密码不能为空");
                     return;
                 }
                 mViewModel.setUserName(newname);
-                Toast.makeText(v.getContext(),"new name"+newname,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"new name"+newname,Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+        mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {
+            @Override
+            public void onBackClick() {
+                Navigation.findNavController(view).navigateUp();
+            }
+        });
     }
 }

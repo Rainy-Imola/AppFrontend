@@ -37,6 +37,7 @@ import com.example.easytalk.R;
 import com.example.easytalk.board_fragment.MessageDetailActivity;
 import com.example.easytalk.model.User;
 import com.example.easytalk.model.message;
+import com.example.easytalk.widget.RoundImageView;
 import com.loper7.layout.TitleBar;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class UserInfoFragment extends Fragment {
     private TextView user_name;
     private LabelsView user_hobby;
     private TextView user_constellation;
-    private ImageView user_avatar;
+    private RoundImageView user_avatar;
     private List<message> mItems= new ArrayList<>();
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -124,7 +125,11 @@ public class UserInfoFragment extends Fragment {
         }
          */
         User mUser = mViewModel.getUser();
-
+        try {
+            mItems = mViewModel.getMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
             user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
         }else {
@@ -161,12 +166,6 @@ public class UserInfoFragment extends Fragment {
                 animUtil = new AnimUtil();
                 showPop();
                 toggleBright();
-            }
-        });
-        mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {
-            @Override
-            public void onBackClick() {
-                mnavController.navigateUp();
             }
         });
     }

@@ -7,29 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".modify_fragment.modify_hobbyFragment">
 
-
-    <EditText
-        android:id="@+id/new_name"
-        android:layout_width="300dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/textstyle"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
-        android:hint="  Enter your new username"
-        android:textSize="20sp"
+    <com.loper7.layout.TitleBar
+        android:id="@+id/commmon_return"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_collapseMode="pin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tBackImage="@drawable/user_return"
+        app:tBackgroundColor="@color/white"
+        app:tCenterTitle="true"
+        app:tTitleText="hobby"
+        app:tMenuText="保存"
+        app:tTitleTextColor="@android:color/primary_text_light"
+        app:tTitleTextSize="16sp" />
 
-    <Button
-        android:id="@+id/save_hobby_button"
-        android:layout_width="wrap_content"
+    <com.donkingliang.labels.LabelsView
+        android:id="@+id/labels_hobby"
+        android:layout_width="297dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="保存"
+        android:layout_marginTop="112dp"
+        app:isIndicator="true"
+        app:labelBackground="@drawable/ic_userinfo_lable"
+        app:labelTextColor="@drawable/ic_userinfo_lable_text"
+        app:labelTextPaddingBottom="5dp"
+        app:labelTextPaddingLeft="10dp"
+        app:labelTextPaddingRight="10dp"
+        app:labelTextPaddingTop="5dp"
+        app:labelTextSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_name" />
+        app:layout_constraintTop_toBottomOf="@+id/commmon_return"
+        app:lineMargin="10dp"
+        app:maxColumns="5"
+        app:maxLines="3"
+        app:maxSelect="5"
+        app:minSelect="1"
+        app:selectType="SINGLE"
+        app:wordMargin="10dp" />
+
     <!-- TODO: Update blank fragment layout -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
