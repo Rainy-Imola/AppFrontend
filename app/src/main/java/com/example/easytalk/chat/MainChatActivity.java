@@ -7,9 +7,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -30,20 +33,26 @@ public class MainChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button send;
+    private EditText editText;
+    private ChatClient chatClient ;
+    boolean up = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         initMsg();
+
         setContentView(R.layout.activity_main_chat);
         recyclerView = findViewById(R.id.chat_list);
         swipeRefreshLayout = findViewById(R.id.swipe_chat);
         send = findViewById(R.id.btn_send);
+        editText = findViewById(R.id.et_content);
         LinearLayoutManager mLinearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearManager);
         mAdapter = new ChatAdapter(msglist);
         recyclerView.setAdapter(mAdapter);
-
+        initChat();
+        upDateUI();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -60,7 +69,7 @@ public class MainChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkWs();
+                sendMessage();
             }
         });
     }
@@ -74,23 +83,31 @@ public class MainChatActivity extends AppCompatActivity {
         msglist.add(item3);
     }
 
-    private void checkWs(){
+    private void initChat(){
+        System.out.println("Begin to Connection");
+        URI uri = null;
+        try {
+            uri = new URI("ws://echo.websocket.org");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        chatClient = new ChatClient(uri){
+            @Override
+            public void onMessage(String message) {
+                super.onMessage(message);
+                chatMsg msg = new chatMsg("test2","test2",1,message);
+                msglist.add(msg);
+                mAdapter.setmItems(msglist);
+            }
+        };
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-
-                URI uri = null;
-                try {
-                    uri = new URI("ws://127.0.0.1/websocket/test2");
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-                ChatClient client = new ChatClient(uri);
                 System.out.println("Begin to Connection");
+
                 //try to connect
                 try {
-                    client.connectBlocking();
+                    chatClient.connectBlocking();
                 } catch (Exception e) {
                     e.printStackTrace();
                     return;
@@ -104,13 +121,64 @@ public class MainChatActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                client.send("hello");
-                if (client != null && client.isOpen()) {
-                    client.send(String.valueOf(msgbody));
+                chatClient.send("hello");
+                if (chatClient != null && chatClient.isOpen()) {
+                    chatClient.send(String.valueOf(msgbody));
                 }
 
+
             }
-        });
+        }).start();
+    }
+    private  void sendMessage(){
+        String content = editText.getText().toString();
+        editText.setText("");
+        Log.d("send event:","content");
+        chatMsg msg = new chatMsg("test2","test2",0,content);
+        msglist.add(msg);
+        mAdapter.setmItems(msglist);
+        JSONObject jsonObject = new JSONObject();
+        try{
+            jsonObject.put("TO","test2");
+            jsonObject.put("From","test2");
+            jsonObject.put("message", "hello");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (chatClient != null && chatClient.isOpen()) {
+            chatClient.send(String.valueOf(jsonObject));
+        }
+
+
+
+    }
+    private void upDateUI(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mAdapter.setmItems(msglist);
+                }
+            }
+        }).start();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        up = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(up){
+            up=false;
+        }
+    }
 }

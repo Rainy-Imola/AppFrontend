@@ -11,8 +11,10 @@ import org.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class ChatClient extends WebSocketClient{
+import javax.security.auth.callback.Callback;
 
+public class ChatClient extends WebSocketClient{
+    static String msg = "";
     public ChatClient(URI serverUri) {
         super(serverUri, new Draft_6455());
     }
@@ -24,12 +26,17 @@ public class ChatClient extends WebSocketClient{
         System.out.println("JWebScoketClient: " + "onOpen()");
     }
 
+    public static String getMsg() {
+        return msg;
+    }
+
     @Override
     public void onMessage(String message) {
 //        Log.d("recv message:", message);
 //        Log.e("JWebSocketClient", "onMessage()");
         System.out.println("WebSocketClient: onOpen()");
         System.out.println("Recv message:" + message);
+        msg = message;
 
     }
 
@@ -46,6 +53,8 @@ public class ChatClient extends WebSocketClient{
         System.out.println("WebSocketClient: onErr()");
         System.out.println("ERROR: " + ex.getMessage());
     }
+//    static ChatClient chatClient = null;
+//    chat
 
 //    public static void main(String[] args) throws URISyntaxException, InterruptedException {
 //        URI uri = new URI("ws://echo.websocket.org");
