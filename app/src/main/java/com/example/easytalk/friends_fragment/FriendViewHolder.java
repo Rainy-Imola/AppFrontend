@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easytalk.R;
 import com.example.easytalk.board_fragment.MessageDetailActivity;
+import com.example.easytalk.chat.MainChatActivity;
 
 public class FriendViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView nameEditor;
@@ -30,7 +31,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
     @Override
     public void onClick(View v) {
         Log.d("ClickEvent","onClick called");
-        Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
+        Intent intent=new Intent(v.getContext(), MainChatActivity.class);
         intent.putExtra("id",id);
         intent.putExtra("name",name);
         v.getContext().startActivity(intent);
