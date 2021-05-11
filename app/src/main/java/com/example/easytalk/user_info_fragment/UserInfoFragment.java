@@ -124,12 +124,17 @@ public class UserInfoFragment extends Fragment {
             e.printStackTrace();
         }
          */
-        User mUser = mViewModel.getUser();
+        mViewModel.questUser();
+
         try {
-            mItems = mViewModel.getMessage();
-        } catch (IOException e) {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        User mUser = mViewModel.readUser();
+
+
+
         if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
             user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
         }else {
@@ -141,6 +146,39 @@ public class UserInfoFragment extends Fragment {
             user_constellation.setText(mUser.getUser_constellation());
         }
         user_name.setText(mUser.getUser_name());
+
+        mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
+            @Override
+            public void onMenuClick() {
+                mPopupWindow = new PopupWindow();
+                animUtil = new AnimUtil();
+                showPop();
+                toggleBright();
+            }
+        });
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        try {
+            mViewModel.requestMessage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Thread.sleep(750);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (message imessage:mViewModel.getMessage()
+                 ) {
+                mItems.add(imessage);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mLayoutManager=new LinearLayoutManager(getActivity());
         mAdapter = new MessageAdapter(this.getContext(), mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
             @Override
@@ -159,15 +197,6 @@ public class UserInfoFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-        mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
-            @Override
-            public void onMenuClick() {
-                mPopupWindow = new PopupWindow();
-                animUtil = new AnimUtil();
-                showPop();
-                toggleBright();
-            }
-        });
     }
 
     @Override

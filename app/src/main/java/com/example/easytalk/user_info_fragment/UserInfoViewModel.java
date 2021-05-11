@@ -47,15 +47,10 @@ public class UserInfoViewModel extends AndroidViewModel {
         return mUser;
     }
     public List<message> getMessage() throws IOException {
-        requestMessage();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return mMessage;
     }
     public void requestMessage() throws IOException{
+        mMessage = new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();
         String token = sharedPreferences.getString("token","");
         Integer user_id = sharedPreferences.getInt("id",2);
@@ -107,11 +102,6 @@ public class UserInfoViewModel extends AndroidViewModel {
 
     public User getUser() {
         questUser();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return mUser;
     }
     public void setUserName(String newname) {

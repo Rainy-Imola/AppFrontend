@@ -5,12 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".friends_fragment.FriendDetailActivity">
-    <TextView
+
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:id="@+id/FriendDetail"
-        android:textSize="40dp"
-        android:text="hello"/>
-
+        android:name="com.example.easytalk.commom_user_fragment.CommonUserInfoFragment"
+        android:id="@+id/detailfragment" />
 </androidx.constraintlayout.widget.ConstraintLayout>
