@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,13 +39,18 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MessageDetailActivity extends AppCompatActivity {
-
-    private TextView contentView;
+    //TODO: post comment
+    //TODO: get comments
+    //TODO: click author name to author information layout
+    private TextView contentView,authorView,dateView;
+    private EditText commentPostEditTextView;
+    private Button commentPostButton;
     private SimpleDraweeView coverView;
     private message msg;
     private commentAdapter mCommentAdapter;
     private RecyclerView CommentRecyclerView;
     private List<comment> comments;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +66,27 @@ public class MessageDetailActivity extends AppCompatActivity {
         contentView.setText(msg.getContent());
         Log.d("debug", (String) contentView.getText());
         coverView.setImageURI(msg.getImageUrl());
+        authorView=findViewById(R.id.author_textView);
+        dateView=findViewById(R.id.date_textView);
+        authorView.setText(msg.getAuthor()+" ");
+        Date date=msg.getCreatedAt();
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+        String resDate=format.format(date);
+        dateView.setText(resDate);
+        commentPostEditTextView=findViewById(R.id.postCommentText);
+        commentPostButton=findViewById(R.id.postCommentButton);
+        commentPostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(postComment()){
+                    Toast.makeText(MessageDetailActivity.this,"评论发布成功",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         CommentRecyclerView=findViewById(R.id.commentRecyclerView);
 
-        // TODO:get comments
+
         comments=testGetComments();
         mCommentAdapter=new commentAdapter(comments);
         CommentRecyclerView.setAdapter(mCommentAdapter);
@@ -104,7 +129,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         comment c1=new comment("author1","这个动态针不戳","1",null);
         comment c2=new comment("author2","这个动态挺好的，就是有点坏","1",null);
         String longContent="It is widely acknowledged that in academic study, paper writing is extremely crucial. During the development of academic papers, researchers and famous journals have formed a fixed module for research literature to help better state the main points of the research and make it easier and more time-saving for readers to understand. However, although the form of academic literature is seemingly clear and easy to follow, it is still quite confusing for new starters to actually write a specific academic paper, as there are obviously different studying modes across different research fields. It is apparently meaningless to apply the most efficient method in Computer Science, the Analysis of Large Data for instance, to a more humanistic and sense-based discipline like Ancient Chinese Literature. This is absolutely the same when it comes to academic paper writing. Researchers in different studying fields apply different basic frameworks to their research paper, thus it is a little bit confusing for new researchers to decide which framework they would like to use. In this paper, we analyzed the similarities and differences between academic papers across different fields, detailed all the single modules in each example paper, and then come to a conclusion on the overall differences of academic papers in different fields, together with offering new readers some useful tips in reading and writing academic literature in those specific fields.";
-        //TODO:修复长文本显示问题
+
         comment c3=new comment("author3",longContent,"1",null);
         List<comment> res=new ArrayList<>();
         res.add(c1);
@@ -112,5 +137,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         res.add(c3);
         return res;
     }
-
+    public boolean postComment(){
+        return true;
+    }
 }

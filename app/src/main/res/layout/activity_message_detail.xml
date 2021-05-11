@@ -44,6 +44,7 @@
                     android:id="@+id/date_textView"
                     android:layout_gravity="right"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
                     android:textColor="#808080"
                     android:textSize="14sp"
                     android:layout_marginTop="5dp"
@@ -54,7 +55,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/author_date_layout"
                 android:id="@+id/textScollView">
@@ -72,9 +73,13 @@
             </ScrollView>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:id="@+id/icon_layout"
                 android:layout_below="@+id/textScollView">
+                <EditText
+                    android:layout_width="320dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/postCommentText"/>
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -82,6 +87,7 @@
                     android:id="@+id/postCommentButton"
                     android:text="评论"
                     android:textSize="10dp"
+                    android:layout_toRightOf="@id/postCommentText"
                     android:gravity="center_horizontal"/>
 
             </RelativeLayout>
@@ -89,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/textScollView"
+                android:layout_below="@+id/icon_layout"
                 android:id="@+id/commentRecyclerView"
                 android:layout_marginBottom="50dp"/>
         </RelativeLayout>

@@ -12,7 +12,7 @@
         android:layout_marginTop="5dp"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:id="@+id/comment_content_scollView"
         android:layout_below="@+id/author_view"
         android:layout_marginTop="10dp">
