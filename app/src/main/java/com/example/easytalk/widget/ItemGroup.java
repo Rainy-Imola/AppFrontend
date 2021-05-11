@@ -94,6 +94,7 @@ public class ItemGroup extends FrameLayout {
 
         contentEdt.setText(content);
         contentEdt.setTextSize(contentSize);
+
         contentEdt.setTextColor(contentColor);
         contentEdt.setHint(hintContent);
         contentEdt.setHintTextColor(hintColor);
@@ -101,5 +102,9 @@ public class ItemGroup extends FrameLayout {
 //        contentEdt.setClickable(true);
 //        contentEdt.setKeyListener(null);
         jtRightIv.setVisibility(showJtIcon ? View.VISIBLE : View.GONE);  //设置向右的箭头图标是否可见
+    }
+
+    public void setContentEdt(String content) {
+        contentEdt.setText(content);
     }
 }

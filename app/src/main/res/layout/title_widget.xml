@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_titlebar"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
+    android:layout_height="50dp"
     android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/iv_backward"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:ellipsize="none"
         android:layout_gravity="center"
         android:singleLine="true"
-        android:src="@drawable/exit" />
+        android:src="@drawable/user_return" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -22,7 +22,7 @@
         android:ellipsize="marquee"
         android:gravity="center_horizontal|center"
         android:singleLine="true"
-        android:text="标题栏"
+        android:text="个人信息修改"
         android:textColor="@android:color/black"
         android:textSize="20dp" />
 

@@ -75,7 +75,7 @@ public class modify_hobbyFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_modify_hobby, container, false);
-        msave = root.findViewById(R.id.save_name_button);
+        msave = root.findViewById(R.id.save_hobby_button);
         return root;
     }
 

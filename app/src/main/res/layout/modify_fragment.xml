@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:background="@color/black">
+    android:background="@android:color/white">
 
     <!--    标题栏-->
     <com.example.easytalk.widget.TitleLayout
@@ -53,9 +53,8 @@
         android:id="@+id/ig_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:edt_hint_content="修改昵称"
         app:paddingLeft="@dimen/padding_left_and_right"
-        app:title="昵称" />
+        app:title="修改昵称" />
     <com.example.easytalk.widget.ItemGroup
         android:id="@+id/ig_hobby"
         android:layout_width="match_parent"
@@ -75,16 +74,8 @@
         android:id="@+id/ig_gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:edt_hint_content="性别"
         app:paddingLeft="@dimen/padding_left_and_right"
         app:title="xingbie"/>
 
-    <com.example.easytalk.widget.ItemGroup
-        android:id="@+id/ig_region"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        app:edt_hint_content="未选择"
-        app:paddingLeft="@dimen/padding_left_and_right"
-        app:title="常住地" />
 
 </LinearLayout>

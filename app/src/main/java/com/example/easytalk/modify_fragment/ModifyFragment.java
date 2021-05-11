@@ -78,6 +78,7 @@ public class ModifyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         Context mContext = this.getContext();
+        nameIG.setContentEdt(mViewModel.readUser().getUser_name());
         nameIG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,10 +115,6 @@ public class ModifyFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     //展示修改头像的选择框，并设置选择框的监听器
     private void show_popup_windows(){

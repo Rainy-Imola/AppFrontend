@@ -11,94 +11,114 @@
         android:id="@+id/appbar"
 
         android:layout_width="match_parent"
-        android:layout_height="186dp"
+        android:layout_height="247dp"
         android:background="@android:color/background_light"
         android:theme="@style/Theme.EasyTalk.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="244dp"
             app:contentScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
 
             app:toolbarId="@+id/toolbar">
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="243dp"
+                android:orientation="vertical">
 
-                <com.donkingliang.labels.LabelsView
-                    android:id="@+id/labels"
-                    android:layout_width="297dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    app:isIndicator="true"
-                    app:labelBackground="@drawable/ic_userinfo_lable"
-                    app:labelTextColor="@drawable/ic_userinfo_lable_text"
-                    app:labelTextPaddingBottom="5dp"
-                    app:labelTextPaddingLeft="10dp"
-                    app:labelTextPaddingRight="10dp"
-                    app:labelTextPaddingTop="5dp"
-                    app:labelTextSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
-                    app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
-                    app:layout_constraintVertical_bias="0.322"
-                    app:lineMargin="10dp"
-                    app:maxColumns="5"
-                    app:maxLines="3"
-                    app:maxSelect="5"
-                    app:minSelect="1"
-                    app:selectType="SINGLE"
-                    app:wordMargin="10dp" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="414dp"
+                    android:layout_height="56dp"
+                    app:popupTheme="@style/Theme.EasyTalk.PopupOverlay"
+                    app:titleTextColor="@android:color/black">
 
-                <TextView
-                    android:id="@+id/user_info_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
-                    app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
+                    <com.loper7.layout.TitleBar
+                        android:id="@+id/main_titleBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
 
-                <TextView
-                    android:id="@+id/user_info_constellation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
-                    app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+                        app:tBackgroundColor="@android:color/primary_text_dark_nodisable"
+                        app:tBackImage="@drawable/user_return"
+                        app:tMenuImage="@drawable/menu"
+                        app:tTitleText="个人信息"
+                        app:tTitleTextColor="@android:color/primary_text_light"
+                        app:tTitleTextSize="16sp"
+                        app:tCenterTitle="true"/>
+                </androidx.appcompat.widget.Toolbar>
 
-                <ImageView
-                    android:id="@+id/user_info_imageView"
-                    android:layout_width="70dp"
-                    android:layout_height="77dp"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginTop="32dp"
-                    android:maxWidth="155dp"
-                    android:maxHeight="155dp"
-                    android:src="@drawable/defaultavatar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="186dp">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.donkingliang.labels.LabelsView
+                        android:id="@+id/labels"
+                        android:layout_width="297dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        app:isIndicator="true"
+                        app:labelBackground="@drawable/ic_userinfo_lable"
+                        app:labelTextColor="@drawable/ic_userinfo_lable_text"
+                        app:labelTextPaddingBottom="5dp"
+                        app:labelTextPaddingLeft="10dp"
+                        app:labelTextPaddingRight="10dp"
+                        app:labelTextPaddingTop="5dp"
+                        app:labelTextSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
+                        app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
+                        app:layout_constraintVertical_bias="0.322"
+                        app:lineMargin="10dp"
+                        app:maxColumns="5"
+                        app:maxLines="3"
+                        app:maxSelect="5"
+                        app:minSelect="1"
+                        app:selectType="SINGLE"
+                        app:wordMargin="10dp" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="414dp"
-                android:layout_height="56dp"
-                app:popupTheme="@style/Theme.EasyTalk.PopupOverlay"
-                app:titleTextColor="@android:color/black"></androidx.appcompat.widget.Toolbar>
+                    <TextView
+                        android:id="@+id/user_info_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="8dp"
+                        android:text="TextView"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
+                        app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
+
+                    <TextView
+                        android:id="@+id/user_info_constellation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="TextView"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
+                        app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+
+                    <ImageView
+                        android:id="@+id/user_info_imageView"
+                        android:layout_width="70dp"
+                        android:layout_height="77dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="32dp"
+                        android:maxWidth="155dp"
+                        android:maxHeight="155dp"
+                        android:src="@drawable/defaultavatar"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -112,7 +132,6 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
 
         app:layout_constraintHorizontal_bias="1.0" />
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

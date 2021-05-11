@@ -41,7 +41,9 @@ public class UserInfoViewModel extends AndroidViewModel {
         sharedPreferences = application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
 
     }
-
+    public User readUser(){
+        return mUser;
+    }
     public List<message> getMessage() throws IOException{
         List<message> msgs=new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();
@@ -81,7 +83,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                         //SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
                         //Date FormattedDate=format.parse(date);
                         Date FormattedDate=new Date();
-                        message msg=new message(author,content,FormattedDate,picture);
+                        message msg=new message(id,author,content,FormattedDate,picture);
                         msgs.add(msg);
                         Log.d("user_info MessageInfo","finished one circle");
                     }

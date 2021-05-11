@@ -23,4 +23,9 @@
     <style name="Theme.EasyTalk.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EasyTalk.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="pop_add">
+        <item name="android:windowEnterAnimation">@anim/pop_add_show</item>
+        <item name="android:windowExitAnimation">@anim/pop_add_hide</item>
+    </style>
+
 </resources>
