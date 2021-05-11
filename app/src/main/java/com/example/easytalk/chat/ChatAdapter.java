@@ -24,6 +24,9 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         mItems = msglist;
     }
 
+    public void setmItems(List<chatMsg> mItems) {
+        this.mItems = mItems;
+    }
 
     static class Sender extends RecyclerView.ViewHolder{
         ImageView image;
