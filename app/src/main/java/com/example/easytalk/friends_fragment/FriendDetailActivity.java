@@ -1,6 +1,8 @@
 package com.example.easytalk.friends_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.easytalk.Constants;
 import com.example.easytalk.R;
+import com.example.easytalk.commom_user_fragment.CommonUserInfoFragment;
 import com.example.easytalk.model.friend;
 import com.example.easytalk.model.message;
 
@@ -39,10 +42,8 @@ public class FriendDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_detail);
         this.getSupportActionBar().hide();
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
-
     }
 }

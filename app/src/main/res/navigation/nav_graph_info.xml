@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_info.xml"
+    app:startDestination="@id/commonUserInfoFragment">
+
+    <fragment
+        android:id="@+id/commonUserInfoFragment"
+        android:name="com.example.easytalk.commom_user_fragment.CommonUserInfoFragment"
+        android:label="common_user_info_fragment"
+        tools:layout="@layout/common_user_info_fragment" >
+        <action
+            android:id="@+id/action_commonUserInfoFragment_to_addFriendFragment"
+            app:destination="@id/addFriendFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/friendDetailActivity"
+        android:name="com.example.easytalk.friends_fragment.FriendDetailActivity"
+        android:label="FriendDetailActivity" />
+    <fragment
+        android:id="@+id/addFriendFragment"
+        android:name="com.example.easytalk.commom_user_fragment.AddFriendFragment"
+        android:label="fragment_add_friend"
+        tools:layout="@layout/fragment_add_friend" />
+</navigation>

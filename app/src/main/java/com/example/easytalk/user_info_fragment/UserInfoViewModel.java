@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.example.easytalk.Constants;
@@ -38,6 +39,13 @@ public class UserInfoViewModel extends AndroidViewModel {
     private SavedStateHandle handle;
     private User mUser = new User();
     private List<message> mMessage = new ArrayList<>();
+    private MutableLiveData<String> status = new MutableLiveData<>();
+    public MutableLiveData<String> getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status.postValue(status);
+    }
     public UserInfoViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
         this.handle =handle;
@@ -50,54 +58,61 @@ public class UserInfoViewModel extends AndroidViewModel {
         return mMessage;
     }
     public void requestMessage() throws IOException{
-        mMessage = new ArrayList<>();
-        OkHttpClient okHttpClient=new OkHttpClient();
-        String token = sharedPreferences.getString("token","");
-        Integer user_id = sharedPreferences.getInt("id",2);
-        Request request=new Request.Builder().url(Constants.baseUrl+"/msgboard/")
-                .addHeader("Authorization",token)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        new Thread() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("user_info","request_handle_failed");
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String res=response.body().string();
-                Log.d("user_info_all_message",res);
-                try {
-                    JSONObject results = new JSONObject(res);
-                    JSONArray result=results.getJSONArray("data");
-                    Log.d("userinfo Message", "resultLength:"+String.valueOf(result.length()));
-                    for(int i=0;i<result.length();i++){
-                        JSONObject cur_msg=result.getJSONObject(i);
-                        String id=cur_msg.getString("id");
-                        String author=cur_msg.getString("author");
-                        String content=cur_msg.getString("content");
-                        String date=cur_msg.getString("date");
-                        String picture;
-                        try {
-                            picture=cur_msg.getString("picture");
-                        }
-                        catch (JSONException e){
-                            picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
-                        }
-                        Log.d("MessageInfo","cur_msg_info:"+"id:"+" "+ id+ " author:"+author+" content:"+content);
-                        //handle date
-                        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
-                        Date FormattedDate=format.parse(date);
-                        message msg=new message(id,author,content,FormattedDate,picture);
-                        mMessage.add(msg);
-                        Log.d("user_info MessageInfo","finished one circle");
+            public void run() {
+                mMessage = new ArrayList<>();
+                OkHttpClient okHttpClient = new OkHttpClient();
+                String token = sharedPreferences.getString("token", "");
+                Integer user_id = sharedPreferences.getInt("id", 2);
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/")
+                        .addHeader("Authorization", token)
+                        .build();
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("user_info", "request_handle_failed");
                     }
-                    Log.d("MessageInfo","msgs_Size: "+ String.valueOf(mMessage.size()));
-                } catch (JSONException | ParseException e) {
-                    Log.d("userinfo MessageInfo","dateParse failed");
-                    e.printStackTrace();
-                }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String res = response.body().string();
+                        Log.d("user_info_all_message", res);
+                        try {
+                            JSONObject results = new JSONObject(res);
+                            JSONArray result = results.getJSONArray("data");
+                            Log.d("userinfo Message", "resultLength:" + String.valueOf(result.length()));
+                            for (int i = 0; i < result.length(); i++) {
+                                JSONObject cur_msg = result.getJSONObject(i);
+                                String id = cur_msg.getString("id");
+                                String author = cur_msg.getString("author");
+                                String content = cur_msg.getString("content");
+                                String date = cur_msg.getString("date");
+                                String picture;
+                                try {
+                                    picture = cur_msg.getString("picture");
+                                } catch (JSONException e) {
+                                    picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
+                                }
+                                Log.d("MessageInfo", "cur_msg_info:" + "id:" + " " + id + " author:" + author + " content:" + content);
+                                //handle date
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
+                                Date FormattedDate = format.parse(date);
+                                message msg = new message(id, author, content, FormattedDate, picture);
+                                mMessage.add(msg);
+                                Log.d("user_info MessageInfo", "finished one circle");
+                            }
+                            setStatus("0");
+                            setStatus("message");
+                            Log.d("MessageInfo", "msgs_Size: " + String.valueOf(mMessage.size()));
+                        } catch (JSONException | ParseException e) {
+                            Log.d("userinfo MessageInfo", "dateParse failed");
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
-        });
+        }.start();
     }
 
     public User getUser() {
@@ -115,49 +130,57 @@ public class UserInfoViewModel extends AndroidViewModel {
     }
 
     public void questUser() {
-        OkHttpClient okHttpClient=new OkHttpClient();
-        String token=sharedPreferences.getString("token","");
-        Log.d("MessageInfo_token",token);
-        Request request=new Request.Builder().url(Constants.baseUrl+"/users/"+sharedPreferences.getString("username","")+"/info")
-                .addHeader("Authorization",token)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        new Thread() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("UserInfo","request_handle_failed");
-                //Toast.makeText(getContext(),"请求留言数据失败！",Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String res=response.body().string();
-                Log.d("User_info","接收成功");
-                Log.d("userinfo user",res);
-
-                try {
-                    JSONObject result=new JSONObject(res);
-                    JSONArray data = (JSONArray) result.get("data");
-                    int status = (int) result.get("status");
-                    String msg = (String) result.get("msg");
-                    if(status==0){
-                        mUser.setUser_name((String) data.getJSONObject(0).get("username"));
-                        JSONArray hobbyJson = (JSONArray) data.getJSONObject(0).get("hobby");
-                        List<String> hobbyList = new ArrayList<>();
-                        for(int i = 0;i<hobbyJson.length();++i){
-                            hobbyList.add(hobbyJson.getString(i));
-                        }
-                        mUser.setUser_id((Integer) data.getJSONObject(0).get("id"));
-                        mUser.setUser_hobby(hobbyList);
-                        mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
-                        Log.d("User_info","设置成功");
+            public void run() {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                String token = sharedPreferences.getString("token", "");
+                Log.d("MessageInfo_token", token);
+                Request request = new Request.Builder().url(Constants.baseUrl + "/users/" + sharedPreferences.getString("username", "") + "/info")
+                        .addHeader("Authorization", token)
+                        .build();
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("UserInfo", "request_handle_failed");
+                        //Toast.makeText(getContext(),"请求留言数据失败！",Toast.LENGTH_SHORT).show();
                     }
 
-                } catch (JSONException e) {
-                    Log.d("userinfo","userinfo dateParse failed");
-                    e.printStackTrace();
-                }
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String res = response.body().string();
+                        Log.d("User_info", "接收成功");
+                        Log.d("userinfo user", res);
+
+                        try {
+                            JSONObject result = new JSONObject(res);
+                            JSONArray data = (JSONArray) result.get("data");
+                            int status = (int) result.get("status");
+                            String msg = (String) result.get("msg");
+                            if (status == 0) {
+                                mUser.setUser_name((String) data.getJSONObject(0).get("username"));
+                                JSONArray hobbyJson = (JSONArray) data.getJSONObject(0).get("hobby");
+                                List<String> hobbyList = new ArrayList<>();
+                                for (int i = 0; i < hobbyJson.length(); ++i) {
+                                    hobbyList.add(hobbyJson.getString(i));
+                                }
+                                mUser.setUser_id((Integer) data.getJSONObject(0).get("id"));
+                                mUser.setUser_hobby(hobbyList);
+                                mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
+                                Log.d("User_info", "设置成功");
+                                setStatus("0");
+                                setStatus("user");
+                            }
+
+                        } catch (JSONException e) {
+                            Log.d("userinfo", "userinfo dateParse failed");
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                Log.d("userinfo username", mUser.getUser_name());
             }
-        });
-        Log.d("userinfo username",mUser.getUser_name());
+        }.start();
     }
 
     public void requestSave() {
@@ -216,6 +239,5 @@ public class UserInfoViewModel extends AndroidViewModel {
     }
 
 
-    // TODO: Implement the ViewModel
     
 }

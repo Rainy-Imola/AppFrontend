@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -125,28 +126,59 @@ public class UserInfoFragment extends Fragment {
         }
          */
         mViewModel.questUser();
-
         try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
+            mViewModel.requestMessage();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        User mUser = mViewModel.readUser();
+        mViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String status) {
+                if(status == "user") {
+                    User mUser = mViewModel.readUser();
+                    if (mUser.getUser_hobby() != null && mUser.getUser_hobby().isEmpty()) {
+                        user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
+                    } else {
+                        user_hobby.setLabels(mUser.getUser_hobby());
+                    }
+                    if (mUser.getUser_constellation().length() == 0) {
+                        user_constellation.setText("未添加星座");
+                    } else {
+                        user_constellation.setText(mUser.getUser_constellation());
+                    }
+                    user_name.setText(mUser.getUser_name());
+                }
+                else if(status == "message") {
+                    try {
+                        for (message imessage:mViewModel.getMessage()
+                        ) {
+                            mItems.add(imessage);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    mLayoutManager=new LinearLayoutManager(getActivity());
+                    mAdapter = new MessageAdapter(mRecyclerView.getContext(), mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            Log.d("debug", String.valueOf(mItems.get(position)));
+                            Intent intent=new Intent(view.getContext(), MessageDetailActivity.class);
+                            intent.putExtra("message", (message)mItems.get(position));
+                            view.getContext().startActivity(intent);
+                        }
+                        @Override
+                        public void onItemLongClick(View view, int position) {
+                            //TODO: delete message
+                            Log.d("debug","onClicklongCalled");
+                        }
+                    });
+                    mRecyclerView.setAdapter(mAdapter);
+                    mRecyclerView.setLayoutManager(mLayoutManager);
+                    mRecyclerView.setHasFixedSize(true);
 
-
-
-        if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
-            user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
-        }else {
-            user_hobby.setLabels(mUser.getUser_hobby());
-        }
-        if(mUser.getUser_constellation().length() == 0){
-            user_constellation.setText("未添加星座");
-        }else {
-            user_constellation.setText(mUser.getUser_constellation());
-        }
-        user_name.setText(mUser.getUser_name());
-
+                }
+            }
+        });
         mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
             @Override
             public void onMenuClick() {
@@ -158,58 +190,16 @@ public class UserInfoFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        try {
-            mViewModel.requestMessage();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            for (message imessage:mViewModel.getMessage()
-                 ) {
-                mItems.add(imessage);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mLayoutManager=new LinearLayoutManager(getActivity());
-        mAdapter = new MessageAdapter(this.getContext(), mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Log.d("debug", String.valueOf(mItems.get(position)));
-                Intent intent=new Intent(view.getContext(), MessageDetailActivity.class);
-                intent.putExtra("message", (message)mItems.get(position));
-                view.getContext().startActivity(intent);
-            }
-            @Override
-            public void onItemLongClick(View view, int position) {
-                //TODO: delete message
-                Log.d("debug","onClicklongCalled");
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
-    }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.userinfo_nav_menu,menu);
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.user_info_setting:
-
                 return true;
             case R.id.user_info_write:
                 NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_modifyFragment);
@@ -315,6 +305,4 @@ public class UserInfoFragment extends Fragment {
         // 此方法用来设置浮动层，防止部分手机变暗无效
         this.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
-
-
 }
