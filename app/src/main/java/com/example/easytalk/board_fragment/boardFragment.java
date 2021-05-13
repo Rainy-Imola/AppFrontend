@@ -1,5 +1,6 @@
 package com.example.easytalk.board_fragment;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.animation.AnimatorSet;
@@ -62,12 +63,13 @@ public class boardFragment extends Fragment {
     public static boardFragment newInstance() {
         return new boardFragment();
     }
-    private List<message> messages;
+    private List<message> messages=new ArrayList<>();
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LottieAnimationView animationView;
     private AnimatorSet animatorSet;
     private ObjectAnimator alphaAnimator_lottie,alphaAnimator_message;
+    private BoardViewModel boardViewModel;
 
 
     @Override
@@ -107,7 +109,14 @@ public class boardFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view,savedInstanceState);
+        boardViewModel=new ViewModelProvider(requireActivity()).get(BoardViewModel.class);
+        boardViewModel.requestMessage();
+        //his.messages=boardViewModel.getmMessage();
+    }
+    /*
     public List<message> getMessages() throws IOException {
         List<message> msgs=new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();
@@ -132,7 +141,7 @@ public class boardFragment extends Fragment {
                     JSONObject mid=new JSONObject(res);
                     JSONArray result= (JSONArray) mid.get("data");
                     Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
-                    for(int i=0;i<result.length();i++){
+                    for(int i=result.length()-1;i>=0;i--){
                         //og.d("MessageInfo","enter loop");
                         JSONObject cur_msg=result.getJSONObject(i);
                         //Log.d("MessageInfo","try");
@@ -160,10 +169,23 @@ public class boardFragment extends Fragment {
             }
         });
         return msgs;
-    }
+    }*/
 
     public void refreshMessages(int sleepTime) throws IOException, InterruptedException {
-        messages=getMessages();
+        boardViewModel.requestMessage();
+        boardViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String status) {
+                if(status=="message"){
+                    messages.clear();
+                    Log.d("MessageStatus",String.valueOf(boardViewModel.getmMessage().size()));
+                    for(message imessage:boardViewModel.getmMessage()){
+                        messages.add(imessage);
+                    }
+                    Log.d("MessageStatus", String.valueOf(messages.size()));
+                }
+            }
+        });
         getView().postDelayed(new Runnable() {
             @Override
             public void run() {
