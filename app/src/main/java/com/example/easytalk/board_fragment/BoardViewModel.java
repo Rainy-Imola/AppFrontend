@@ -102,6 +102,7 @@ public class BoardViewModel extends AndroidViewModel {
                             setStatus("message");
                             Log.d("MessageInfo_viewModel", "msgs_Size: " + String.valueOf(mMessage.size()));
                         } catch (JSONException | ParseException e) {
+                            //TODO:处理token expire的异常，code:401
                             Log.d("MessageInfo_viewModel", "dateParse failed");
                             e.printStackTrace();
                         }

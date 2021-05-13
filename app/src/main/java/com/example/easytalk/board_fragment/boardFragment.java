@@ -116,60 +116,6 @@ public class boardFragment extends Fragment {
         //boardViewModel.requestMessage();
         //his.messages=boardViewModel.getmMessage();
     }
-    /*
-    public List<message> getMessages() throws IOException {
-        List<message> msgs=new ArrayList<>();
-        OkHttpClient okHttpClient=new OkHttpClient();
-        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        String token=sharedPreferences.getString("token","");
-        Log.d("MessageInfo_token",token);
-        Request request=new Request.Builder().url(Constants.baseUrl+"/msgboard/")
-                .addHeader("Authorization",token)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("MessageInfo","request_handle_failed");
-                Toast.makeText(getContext(),"请求留言数据失败！",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String res=response.body().string();
-                Log.d("MessageInfo",res);
-                try {
-                    JSONObject mid=new JSONObject(res);
-                    JSONArray result= (JSONArray) mid.get("data");
-                    Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
-                    for(int i=result.length()-1;i>=0;i--){
-                        //og.d("MessageInfo","enter loop");
-                        JSONObject cur_msg=result.getJSONObject(i);
-                        //Log.d("MessageInfo","try");
-                        String id=(cur_msg.has("id"))? cur_msg.getString("id"):"1";
-                        String author=cur_msg.getString("author");
-                        String content=cur_msg.getString("content");
-                        String date=cur_msg.getString("date");
-                        //Log.d("MessageInfo","date:"+date);
-                        String picture=(cur_msg.has("picture")? cur_msg.getString("picture"):null);
-                        //Log.d("MessageInfo","cur_msg_info:"+"id:"+id+" "+" author:"+author+" content:"+content);
-                        //handle date
-                        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
-                        //Log.d("MessageInfo","test");
-                        Date FormattedDate=format.parse(date);
-                        message msg=new message(id,author,content,FormattedDate,picture);
-
-                        msgs.add(msg);
-                        //Log.d("MessageInfo","finished one circle");
-                    }
-                    Log.d("MessageInfo","msgs_Size: "+ String.valueOf(msgs.size()));
-                } catch (JSONException | ParseException e) {
-                    Log.d("MessageInfo","Parse failed");
-                    e.printStackTrace();
-                }
-            }
-        });
-        return msgs;
-    }*/
 
     public void refreshMessages(int sleepTime) throws IOException, InterruptedException {
         boardViewModel.requestMessage();

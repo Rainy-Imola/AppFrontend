@@ -1,6 +1,8 @@
 package com.example.easytalk.board_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +42,7 @@ import okhttp3.Response;
 
 public class MessageDetailActivity extends AppCompatActivity {
     //TODO: post comment
-    //TODO: get comments
+    //TODO: get comments: 估计是生命周期的问题，仍然存在activity中因为延时拿不到数据的情况
     //TODO: click author name to author information layout
     private TextView contentView,authorView,dateView;
     private EditText commentPostEditTextView;
@@ -49,8 +51,8 @@ public class MessageDetailActivity extends AppCompatActivity {
     private message msg;
     private commentAdapter mCommentAdapter;
     private RecyclerView CommentRecyclerView;
-    private List<comment> comments;
-
+    private List<comment> comments=new ArrayList<>();
+    private commentViewModel mCommentViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +88,25 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         CommentRecyclerView=findViewById(R.id.commentRecyclerView);
 
+        //TODO:use commentViewModel
 
-        comments=testGetComments();
+        mCommentViewModel=new ViewModelProvider(this).get(commentViewModel.class);
+
+        mCommentViewModel.requestData(msg.getId());
+        mCommentViewModel.getStatus().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String status) {
+                Log.d("comment_activity","onChanged called");
+                if(status=="comment"){
+                    Log.d("comment_activity","onChanged if called");
+                    Log.d("comment_activity", String.valueOf(mCommentViewModel.getmComments().size()));
+                    for(comment icomment:mCommentViewModel.getmComments()){
+                        comments.add(icomment);
+                    }
+                }
+            }
+        });
+        Log.d("comment_activity", String.valueOf(comments.size()));
         mCommentAdapter=new commentAdapter(comments);
         CommentRecyclerView.setAdapter(mCommentAdapter);
         CommentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
