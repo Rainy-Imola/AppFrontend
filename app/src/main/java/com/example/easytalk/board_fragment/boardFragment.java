@@ -113,7 +113,7 @@ public class boardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view,savedInstanceState);
         boardViewModel=new ViewModelProvider(requireActivity()).get(BoardViewModel.class);
-        boardViewModel.requestMessage();
+        //boardViewModel.requestMessage();
         //his.messages=boardViewModel.getmMessage();
     }
     /*
@@ -173,6 +173,7 @@ public class boardFragment extends Fragment {
 
     public void refreshMessages(int sleepTime) throws IOException, InterruptedException {
         boardViewModel.requestMessage();
+        Log.d("MessageInfo","fragment:msg_size:"+String.valueOf(messages.size()));
         boardViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
