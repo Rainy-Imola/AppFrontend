@@ -21,7 +21,7 @@ public class ChatClient extends WebSocketClient{
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
-        send("Hello, I am wxz");
+        //send("Hello, I am wxz");
         //Log.e("JWebSocketClient", "onOpen()");
         System.out.println("JWebScoketClient: " + "onOpen()");
     }
@@ -53,9 +53,10 @@ public class ChatClient extends WebSocketClient{
         System.out.println("WebSocketClient: onErr()");
         System.out.println("ERROR: " + ex.getMessage());
     }
+
 //    static ChatClient chatClient = null;
 //    chat
-
+//
 //    public static void main(String[] args) throws URISyntaxException, InterruptedException {
 //        URI uri = new URI("ws://echo.websocket.org");
 //        ChatClient client = new ChatClient(uri);
