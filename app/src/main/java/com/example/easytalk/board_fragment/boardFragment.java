@@ -63,7 +63,7 @@ public class boardFragment extends Fragment {
     public static boardFragment newInstance() {
         return new boardFragment();
     }
-    private List<message> messages;
+    private List<message> messages=new ArrayList<>();
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LottieAnimationView animationView;
@@ -114,7 +114,7 @@ public class boardFragment extends Fragment {
         super.onViewCreated(view,savedInstanceState);
         boardViewModel=new ViewModelProvider(requireActivity()).get(BoardViewModel.class);
         boardViewModel.requestMessage();
-        this.messages=boardViewModel.getmMessage();
+        //his.messages=boardViewModel.getmMessage();
     }
     /*
     public List<message> getMessages() throws IOException {
@@ -178,9 +178,11 @@ public class boardFragment extends Fragment {
             public void onChanged(String status) {
                 if(status=="message"){
                     messages.clear();
+                    Log.d("MessageStatus",String.valueOf(boardViewModel.getmMessage().size()));
                     for(message imessage:boardViewModel.getmMessage()){
                         messages.add(imessage);
                     }
+                    Log.d("MessageStatus", String.valueOf(messages.size()));
                 }
             }
         });

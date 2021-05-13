@@ -77,6 +77,7 @@ public class BoardViewModel extends AndroidViewModel {
                             JSONObject results = new JSONObject(res);
                             JSONArray result = results.getJSONArray("data");
                             Log.d("MessageInfo_viewModel", "resultLength:" + String.valueOf(result.length()));
+                            mMessage.clear();//不知道为什么，不加这句留言数量会double
                             for (int i = result.length()-1; i>=0; i--) {
                                 JSONObject cur_msg = result.getJSONObject(i);
                                 String id = cur_msg.getString("id");
