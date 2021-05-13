@@ -37,6 +37,7 @@ public class BoardViewModel extends AndroidViewModel {
     private List<message> mMessage=new ArrayList<>();
     private SavedStateHandle handle;
     private SharedPreferences sharedPreferences;
+    private boolean isGetMsgSucc=true;
     private MutableLiveData<String> status = new MutableLiveData<>();
     public MutableLiveData<String> getStatus() {
         return status;
@@ -44,6 +45,7 @@ public class BoardViewModel extends AndroidViewModel {
     public void setStatus(String status) {
         this.status.postValue(status);
     }
+    public boolean isGetMsgSucc(){return this.isGetMsgSucc;}
     public BoardViewModel(@NonNull Application application, SavedStateHandle handle){
         super(application);
         this.handle=handle;
@@ -103,6 +105,7 @@ public class BoardViewModel extends AndroidViewModel {
                             Log.d("MessageInfo_viewModel", "msgs_Size: " + String.valueOf(mMessage.size()));
                         } catch (JSONException | ParseException e) {
                             //TODO:处理token expire的异常，code:401
+                            isGetMsgSucc=false;
                             Log.d("MessageInfo_viewModel", "dateParse failed");
                             e.printStackTrace();
                         }

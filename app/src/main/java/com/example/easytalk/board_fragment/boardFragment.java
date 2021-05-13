@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.easytalk.Constants;
 import com.example.easytalk.HttpAPI;
+import com.example.easytalk.LoginActivity;
 import com.example.easytalk.PublishActivity;
 import com.example.easytalk.R;
 import com.example.easytalk.model.message;
@@ -133,6 +134,11 @@ public class boardFragment extends Fragment {
                 }
             }
         });
+        if(!boardViewModel.isGetMsgSucc()){
+            Toast.makeText(getContext(),"用户状态异常，请重新登陆！",Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        }
         getView().postDelayed(new Runnable() {
             @Override
             public void run() {

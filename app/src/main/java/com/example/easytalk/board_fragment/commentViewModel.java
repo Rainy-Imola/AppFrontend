@@ -2,6 +2,7 @@ package com.example.easytalk.board_fragment;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,7 +45,6 @@ public class commentViewModel extends AndroidViewModel {
         super(application);
         this.handle=handle;
         sharedPreferences=application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-
     }
     public List<comment> getmComments(){
         return this.mComments;
@@ -52,6 +52,7 @@ public class commentViewModel extends AndroidViewModel {
     public void setStatus(String status){
         this.status.postValue(status);
     }
+
     public void requestData(String message_id){
         new Thread(){
             @Override
