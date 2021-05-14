@@ -17,8 +17,10 @@ import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,6 +45,7 @@ public class MainChatActivity extends AppCompatActivity {
     private Button send;
     private EditText editText;
     private ChatClient chatClient ;
+    private InputMethodManager inputMethodManager;
     //Service things
     private ChatService.JWebSocketClientBinder binder;
     private ChatService chatService;
@@ -76,6 +79,7 @@ public class MainChatActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipe_chat);
         send = findViewById(R.id.btn_send);
         editText = findViewById(R.id.et_content);
+        inputMethodManager = (InputMethodManager) getSystemService(MainChatActivity.this.INPUT_METHOD_SERVICE);
         initChatUi();
         //initChat();
         //upDateUI();
@@ -99,6 +103,14 @@ public class MainChatActivity extends AppCompatActivity {
                 sendMessage();
 
             }//pay attention
+        });
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                return false;
+            }
+
         });
     }
 
@@ -161,7 +173,7 @@ public class MainChatActivity extends AppCompatActivity {
         mAdapter.setmItems(msglist);
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("TO","test2");
+            jsonObject.put("To","test2");
             jsonObject.put("From","test2");
             jsonObject.put("message", content);
         } catch (JSONException e) {

@@ -78,7 +78,7 @@ public class ChatService extends Service {
         URI uri = null;
         try{
             //uri = new URI("ws://47.103.123.145/webSocket/test2");
-            uri = new URI("ws://echo.websocket.org");
+            //uri = new URI("ws://echo.websocket.org");
         }catch (Exception e){
             e.printStackTrace();
         }
