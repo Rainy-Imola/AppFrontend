@@ -28,7 +28,16 @@ public class chatMsg {
 
     private String content;
 
-
+    @Override
+    public String toString() {
+        return "chatMsg{" +
+                "senderID='" + senderID + '\'' +
+                ", receiveID='" + receiveID + '\'' +
+                ", status=" + status +
+                ", type=" + type +
+                ", content='" + content + '\'' +
+                '}';
+    }
 
     public String getSenderID() {
         return senderID;
