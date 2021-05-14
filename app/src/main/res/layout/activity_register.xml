@@ -8,39 +8,42 @@
 
     <!--    <include layout="@layout/title_welcome"></include>-->
 
-    <LinearLayout
-        android:layout_width="1383dp"
-        android:layout_height="846dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/bg2"
         android:gravity="center"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginLeft="0dp"
-        android:background="#09000000">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#09000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="603dp"
+            tools:layout_conversion_absoluteWidth="411dp">
 
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="45dp"
-            android:text="@string/register"
-            android:textSize="30sp"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="85dp"
+                android:layout_marginBottom="384dp"
+                android:gravity="center"
+                android:text="@string/register"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/codeEdit"
+                app:layout_constraintEnd_toEndOf="@+id/username"
+                app:layout_constraintStart_toStartOf="@+id/username"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="40dp"
-            android:layout_height="65dp"
-            android:gravity="center">
-        <!--
+
+            <!--
                     <TextView
                 android:layout_width="100dp"
                 android:layout_height="40dp"
@@ -52,131 +55,139 @@
         -->
             <EditText
                 android:id="@+id/username"
-                android:drawableLeft="@drawable/ic_baseline_person_24"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:inputType="text"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="35dp"
                 android:background="@drawable/textstyle"
-                android:hint = "  Username"
+                android:drawableLeft="@drawable/ic_baseline_person_24"
+                android:hint="  Username"
+                android:inputType="text"
                 android:textSize="20sp"
-                />
-        </LinearLayout>
+                app:layout_constraintBottom_toTopOf="@+id/password1"
+                app:layout_constraintEnd_toEndOf="@+id/password1"
+                app:layout_constraintStart_toStartOf="@+id/password1"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center">
 
             <EditText
                 android:id="@+id/password1"
-                android:drawableLeft="@drawable/ic_baseline_lock_24"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:inputType="textPassword"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="35dp"
                 android:background="@drawable/textstyle"
+                android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:hint="  Password"
-                android:textSize="20sp" />
-        </LinearLayout>
+                android:inputType="textPassword"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/password2"
+                app:layout_constraintEnd_toEndOf="@+id/password2"
+                app:layout_constraintStart_toStartOf="@+id/password2"
+                app:layout_constraintTop_toBottomOf="@+id/username" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="65dp"
-            android:gravity="center">
 
             <EditText
                 android:id="@+id/password2"
-                android:drawableLeft="@drawable/ic_baseline_lock_24"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:inputType="textPassword"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="37dp"
                 android:background="@drawable/textstyle"
-                android:hint = "  Comfirm "
+                android:drawableLeft="@drawable/ic_baseline_lock_24"
+                android:hint="  Comfirm "
+                android:inputType="textPassword"
                 android:textSize="20sp"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="65dp"
-            android:gravity="center"
-            >
+                app:layout_constraintBottom_toTopOf="@+id/email"
+                app:layout_constraintEnd_toEndOf="@+id/email"
+                app:layout_constraintStart_toStartOf="@+id/email"
+                app:layout_constraintTop_toBottomOf="@+id/password1" />
 
 
             <EditText
                 android:id="@+id/email"
-                android:drawableLeft="@drawable/ic_baseline_email_24"
-                android:layout_width="300dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:inputType="textEmailAddress"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="22dp"
                 android:background="@drawable/textstyle"
-                android:hint = "  Email"
+                android:drawableLeft="@drawable/ic_baseline_email_24"
+                android:hint="  Email"
+                android:inputType="textEmailAddress"
                 android:textSize="20sp"
-                />
-        </LinearLayout>
+                app:layout_constraintBottom_toTopOf="@+id/sendBtn"
+                app:layout_constraintEnd_toEndOf="@+id/sendBtn"
+                app:layout_constraintStart_toStartOf="@+id/codeEdit"
+                app:layout_constraintTop_toBottomOf="@+id/password2" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center">
 
             <EditText
                 android:id="@+id/codeEdit"
 
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="0dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="252dp"
+                android:layout_marginLeft="252dp"
+                android:layout_marginEnd="21dp"
+                android:layout_marginRight="21dp"
+                android:layout_marginBottom="23dp"
                 android:background="@drawable/textstyle"
                 android:hint="  CAPTCHA"
-                android:layout_marginRight="20dp"
                 android:inputType="number"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/text_register"
+                app:layout_constraintEnd_toStartOf="@+id/sendBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <Button
                 android:id="@+id/sendBtn"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="212dp"
+                android:layout_marginRight="212dp"
+                android:layout_marginBottom="36dp"
                 android:gravity="center"
                 android:text="@string/send"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/registerBtn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/codeEdit"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="90dp"
-            android:gravity="center">
 
             <TextView
                 android:id="@+id/text_register"
-                android:layout_width="100dp"
-                android:layout_height="84dp"
-                android:layout_gravity="left"
-                android:layout_marginTop="100dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="293dp"
+                android:layout_marginLeft="293dp"
+                android:layout_marginEnd="60dp"
                 android:layout_marginRight="60dp"
+                android:layout_marginBottom="446dp"
                 android:gravity="center"
                 android:text="Sign up"
                 android:textColor="@color/blue_1"
                 android:textSize="26sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/registerBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/codeEdit" />
 
             <Button
                 android:id="@+id/registerBtn"
-                android:layout_marginTop="0dp"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="252dp"
+
+                android:layout_marginRight="252dp"
+                android:layout_marginBottom="455dp"
                 android:background="@drawable/forward"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_register"
+                app:layout_constraintTop_toBottomOf="@+id/sendBtn" />
 
-                />
-        </LinearLayout>
 
-    </LinearLayout>
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>
