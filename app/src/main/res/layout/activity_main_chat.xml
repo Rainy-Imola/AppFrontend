@@ -14,6 +14,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/char_titlebar" />
@@ -28,8 +31,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chat_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                 />
+                android:layout_height="match_parent" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <View
@@ -47,6 +49,7 @@
             android:orientation="horizontal"
 
             >
+
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -67,17 +70,16 @@
                     android:textSize="20sp" />
 
 
-
             </RelativeLayout>
 
             <Button
                 android:id="@+id/btn_send"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
+                android:background="@color/blue_1"
                 android:text="发送"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:background="@color/blue_1"/>
+                android:textSize="20sp" />
 
 
         </LinearLayout>

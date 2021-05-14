@@ -163,7 +163,7 @@ public class MainChatActivity extends AppCompatActivity {
         try{
             jsonObject.put("TO","test2");
             jsonObject.put("From","test2");
-            jsonObject.put("message", "hello");
+            jsonObject.put("message", content);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -219,7 +219,6 @@ public class MainChatActivity extends AppCompatActivity {
 //            }
 //        }).start();
 //    }
-//
 
 
     }
