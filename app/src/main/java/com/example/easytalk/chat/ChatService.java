@@ -1,23 +1,43 @@
 package com.example.easytalk.chat;
 
+import android.annotation.SuppressLint;
+import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
+import com.example.easytalk.R;
 import com.example.easytalk.model.chatMsg;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
+
 
 public class ChatService extends Service {
     //private URI uri;
     public ChatClient client;
     private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
+    private final static int GRAY_SERVICE_ID = 1001;
     public class JWebSocketClientBinder extends Binder {
         public ChatService getService() {
             return ChatService.this;
@@ -42,6 +62,7 @@ public class ChatService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         initSocket();
         mHandler.postDelayed(heartBeatRunnable,HEART_BEAT_RATE);
+        //startForeground(GRAY_SERVICE_ID, new Notification());
         return START_STICKY;
     }
 
@@ -56,22 +77,25 @@ public class ChatService extends Service {
     private void initSocket() {
         URI uri = null;
         try{
-            uri = new URI("ws://echo.websocket.org");
+            uri = new URI("ws://47.103.123.145/webSocket/test2");
+            //uri = new URI("ws://echo.websocket.org");
         }catch (Exception e){
             e.printStackTrace();
         }
 
         client = new ChatClient(uri){
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onMessage(String message) {
                 super.onMessage(message);
                 chatMsg msg = new chatMsg("test2","test2",1,message);
                 Log.d("receive message；", message);
+
                 Intent intent = new Intent();
                 intent.setAction("com.xch.servicecallback.content");
                 intent.putExtra("msg",msg.toString());
                 sendBroadcast(intent);
-
+                checkLockAndShowNotification(message);
             }
         };
         connect();
@@ -92,8 +116,17 @@ public class ChatService extends Service {
     }
 
     public void sendMsg(String msg) {
+        JSONObject msgbody = new JSONObject();
+        try{
+            msgbody.put("To","test2");
+            msgbody.put("From","test2");
+            msgbody.put("message",msg);
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
         if(null != client){
-            client.send(msg);
+            client.send(String.valueOf(msgbody));
         }
     }
 
@@ -108,7 +141,7 @@ public class ChatService extends Service {
             client = null;
         }
     }
-    private static final long HEART_BEAT_RATE = 10 * 1000;//每隔10秒进行一次对长连接的心跳检测
+    private static final long HEART_BEAT_RATE = 20 * 1000;//每隔10秒进行一次对长连接的心跳检测
     private Handler mHandler = new Handler();
     private Runnable heartBeatRunnable = new Runnable() {
         @Override
@@ -145,4 +178,93 @@ public class ChatService extends Service {
             }
         }.start();
     }
+
+    PowerManager.WakeLock wakeLock;//锁屏唤醒
+    //获取电源锁，保持该服务在屏幕熄灭时仍然获取CPU时，保持运行
+    @SuppressLint("InvalidWakeLockTag")
+    private void acquireWakeLock()
+    {
+        if (null == wakeLock)
+        {
+            PowerManager pm = (PowerManager)this.getSystemService(Context.POWER_SERVICE);
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK|PowerManager.ON_AFTER_RELEASE, "PostLocationService");
+            if (null != wakeLock)
+            {
+                wakeLock.acquire();
+            }
+        }
+    }
+
+    public static class GrayInnerService extends Service {
+
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            startForeground(GRAY_SERVICE_ID, new Notification());
+            stopForeground(true);
+            stopSelf();
+            return super.onStartCommand(intent, flags, startId);
+        }
+        @Override
+        public IBinder onBind(Intent intent) {
+            return null;
+        }
+    }
+    /**
+     * 检查锁屏状态，如果锁屏先点亮屏幕
+     *
+     * @param content
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void checkLockAndShowNotification(String content) {
+        sendNotification(content);
+        //管理锁屏的一个服务
+//        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+//        if (km.inKeyguardRestrictedInputMode()) {//锁屏
+//            //获取电源管理器对象
+//            PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+//            if (!pm.isScreenOn()) {
+//                @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
+//                        PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "bright");
+//                wl.acquire();  //点亮屏幕
+//                wl.release();  //任务结束后释放
+//            }
+//            sendNotification(content);
+//        } else {
+//            sendNotification(content);
+//        }
+    }
+
+    /**
+     * 发送通知
+     *
+     * @param content
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void sendNotification(String content) {
+        Intent intent = new Intent();
+        intent.setClass(this, MainChatActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationChannel notificationChannel =  new NotificationChannel("Chat","ChatMain", NotificationManager.IMPORTANCE_HIGH);
+        notificationChannel.enableLights(true);
+        notificationChannel.setLightColor(Color.BLUE);
+        notificationChannel.setShowBadge(true);
+        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+
+        NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notifyManager.createNotificationChannel(notificationChannel);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setAutoCancel(true)
+                .setTicker("Nature")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("这是一个测试标题")
+                .setContentIntent(pendingIntent)
+                .setContentText("这是一个测试内容")
+                .setWhen(System.currentTimeMillis())
+                .build();
+
+        notifyManager.notify(1, notification);//id要保证唯一
+
+    }
+
 }
