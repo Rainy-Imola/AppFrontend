@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.easytalk.R;
 import com.example.easytalk.model.comment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class commentAdapter extends RecyclerView.Adapter<commentViewHolder> {
-    private List<comment> comments;
+    private List<comment> comments=new ArrayList<>();
 
     @NonNull
     @Override
@@ -32,8 +33,11 @@ public class commentAdapter extends RecyclerView.Adapter<commentViewHolder> {
         return comments.size();
     }
 
+    public void setComments(List<comment> comments){
+        this.comments=comments;
+    }
     public commentAdapter(List<comment> inputs){
-        comments=inputs;
+        setComments(inputs);
     }
 
 }

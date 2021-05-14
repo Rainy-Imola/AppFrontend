@@ -37,6 +37,7 @@ public class BoardViewModel extends AndroidViewModel {
     private List<message> mMessage=new ArrayList<>();
     private SavedStateHandle handle;
     private SharedPreferences sharedPreferences;
+    private boolean isGetMsgSucc=true;
     private MutableLiveData<String> status = new MutableLiveData<>();
     public MutableLiveData<String> getStatus() {
         return status;
@@ -44,6 +45,7 @@ public class BoardViewModel extends AndroidViewModel {
     public void setStatus(String status) {
         this.status.postValue(status);
     }
+    public boolean isGetMsgSucc(){return this.isGetMsgSucc;}
     public BoardViewModel(@NonNull Application application, SavedStateHandle handle){
         super(application);
         this.handle=handle;
@@ -90,18 +92,20 @@ public class BoardViewModel extends AndroidViewModel {
                                 } catch (JSONException e) {
                                     picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
                                 }
-                                Log.d("MessageInfo_viewModel", "cur_msg_info:" + "id:" + " " + id + " author:" + author + " content:" + content);
+                                //Log.d("MessageInfo_viewModel", "cur_msg_info:" + "id:" + " " + id + " author:" + author + " content:" + content);
                                 //handle date
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
                                 Date FormattedDate = format.parse(date);
                                 message msg = new message(id, author, content, FormattedDate, picture);
                                 mMessage.add(msg);
-                                Log.d("MessageInfo_viewModel", "finished one circle");
+                                //Log.d("MessageInfo_viewModel", "finished one circle");
                             }
-                            setStatus("0");
+                            //setStatus("0");
                             setStatus("message");
                             Log.d("MessageInfo_viewModel", "msgs_Size: " + String.valueOf(mMessage.size()));
                         } catch (JSONException | ParseException e) {
+                            //TODO:处理token expire的异常，code:401
+                            isGetMsgSucc=false;
                             Log.d("MessageInfo_viewModel", "dateParse failed");
                             e.printStackTrace();
                         }

@@ -150,8 +150,7 @@ public class UserInfoFragment extends Fragment {
                 }
                 else if(status == "message") {
                     try {
-                        for (message imessage:mViewModel.getMessage()
-                        ) {
+                        for (message imessage:mViewModel.getMessage()) {
                             mItems.add(imessage);
                         }
                     } catch (IOException e) {
