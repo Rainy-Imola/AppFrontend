@@ -31,7 +31,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
     @Override
     public void onClick(View v) {
         Log.d("ClickEvent","onClick called");
-        Intent intent=new Intent(v.getContext(), MainChatActivity.class);
+        Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
         intent.putExtra("id",id);
         intent.putExtra("name",name);
         v.getContext().startActivity(intent);

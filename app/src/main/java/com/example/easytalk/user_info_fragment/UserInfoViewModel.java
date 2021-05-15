@@ -3,9 +3,11 @@ package com.example.easytalk.user_info_fragment;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
@@ -13,6 +15,7 @@ import androidx.lifecycle.SavedStateHandle;
 import com.example.easytalk.Constants;
 import com.example.easytalk.model.User;
 import com.example.easytalk.model.message;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -185,6 +188,7 @@ public class UserInfoViewModel extends AndroidViewModel {
 
     public void requestSave() {
         new Thread() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 // @Headers({"Content-Type:application/json","Accept: application/json"})//需要添加头
@@ -192,11 +196,13 @@ public class UserInfoViewModel extends AndroidViewModel {
                 JSONObject json = new JSONObject();
                 try {
                     json.put("username", mUser.getUser_name());
-                    json.put("hobby", mUser.getUser_hobby());
+                    json.put("hobby", new JSONArray(mUser.getUser_hobby()));
                     json.put("constellation", mUser.getUser_constellation());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Log.d("Hobby_type", mUser.getUser_hobby().getClass().getTypeName().toString());
+                Log.d("Hobby_type", mUser.getUser_hobby().toString());
                 //申明给服务端传递一个json串
                 //创建一个OkHttpClient对象
                 String token=sharedPreferences.getString("token","");

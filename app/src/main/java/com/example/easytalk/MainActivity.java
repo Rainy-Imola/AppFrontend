@@ -7,10 +7,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.example.easytalk.chat.ChatService;
+import com.example.easytalk.chat.MainChatActivity;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fresco.initialize(MainActivity.this);
+        startChatService();
         setContentView(R.layout.activity_main);
         this.getSupportActionBar().hide();//注意是在 setContentView(R.layout.activity_main)后
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -36,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
 
+    }
+    private void startChatService(){
+        Intent intent = new Intent(MainActivity.this, ChatService.class);
+        startService(intent);
     }
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

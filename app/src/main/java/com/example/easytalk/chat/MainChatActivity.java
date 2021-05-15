@@ -11,17 +11,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easytalk.R;
@@ -42,7 +46,9 @@ public class MainChatActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button send;
     private EditText editText;
+    private TextView chatName;
     private ChatClient chatClient ;
+    private InputMethodManager inputMethodManager;
     //Service things
     private ChatService.JWebSocketClientBinder binder;
     private ChatService chatService;
@@ -65,17 +71,22 @@ public class MainChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
         setContentView(R.layout.activity_main_chat);
-        initMsg();
-        startChatService();
+        String To = getIntent().getStringExtra("name");
+        SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+        String From = sharedPreferences.getString("username","");
+
+        //initMsg();
+        //startChatService();
         bindservice();
         doRegisterReceiver();
         recyclerView = findViewById(R.id.chat_list);
         swipeRefreshLayout = findViewById(R.id.swipe_chat);
         send = findViewById(R.id.btn_send);
         editText = findViewById(R.id.et_content);
+        chatName = findViewById(R.id.chat_name);
+        chatName.setText(To);
+        inputMethodManager = (InputMethodManager) getSystemService(MainChatActivity.this.INPUT_METHOD_SERVICE);
         initChatUi();
         //initChat();
         //upDateUI();
@@ -96,9 +107,17 @@ public class MainChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
+                sendMessage(To, From);
 
             }//pay attention
+        });
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                return false;
+            }
+
         });
     }
 
@@ -107,10 +126,7 @@ public class MainChatActivity extends AppCompatActivity {
         bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
     }
 
-    private void startChatService(){
-        Intent intent = new Intent(MainChatActivity.this, ChatService.class);
-        startService(intent);
-    }
+
 
     private void doRegisterReceiver() {
         chatMessageReceiver = new ChatMessageReceiver();
@@ -124,7 +140,19 @@ public class MainChatActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("msg");
             Log.d("updateUI:",message);
-            chatMsg item1 = new chatMsg("s","r", 1,message);
+            JSONObject jsonObject = null;
+            String From = null;
+            String To = null;
+            String content = null;
+            try{
+                jsonObject = new JSONObject(message);
+                To = (String)jsonObject.get("to");
+                From = (String)jsonObject.get("from");
+                content = (String)jsonObject.get("message");
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+            chatMsg item1 = new chatMsg(From,To, 1,content);
             msglist.add(item1);
             initChatUi();
         }
@@ -148,7 +176,7 @@ public class MainChatActivity extends AppCompatActivity {
 
 
 
-    private  void sendMessage(){
+    private  void sendMessage(String To, String From){
         String content = editText.getText().toString();
         if(TextUtils.isEmpty(content)){
             Toast.makeText(MainChatActivity.this,"发送内容不能为空",Toast.LENGTH_SHORT).show();
@@ -159,16 +187,8 @@ public class MainChatActivity extends AppCompatActivity {
         chatMsg msg = new chatMsg("test2","test2",0,content);
         msglist.add(msg);
         mAdapter.setmItems(msglist);
-        JSONObject jsonObject = new JSONObject();
-        try{
-            jsonObject.put("TO","test2");
-            jsonObject.put("From","test2");
-            jsonObject.put("message", "hello");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         if (chatClient != null && chatClient.isOpen()) {
-            chatClient.send(String.valueOf(jsonObject));
+            chatService.sendMsg(To, From, content);
         }
     }
 
@@ -219,7 +239,6 @@ public class MainChatActivity extends AppCompatActivity {
 //            }
 //        }).start();
 //    }
-//
 
 
     }
