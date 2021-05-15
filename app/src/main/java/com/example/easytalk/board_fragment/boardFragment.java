@@ -14,6 +14,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -136,8 +137,11 @@ public class boardFragment extends Fragment {
         });
         if(!boardViewModel.isGetMsgSucc()){
             Toast.makeText(getContext(),"用户状态异常，请重新登陆！",Toast.LENGTH_SHORT).show();
-            Intent intent=new Intent(getActivity(), LoginActivity.class);
-            startActivity(intent);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("status",2);
+            editor.commit();
+            NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_loginActivity);
         }
         getView().postDelayed(new Runnable() {
             @Override

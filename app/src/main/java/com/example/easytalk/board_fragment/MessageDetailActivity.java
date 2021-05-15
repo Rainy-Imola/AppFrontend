@@ -42,7 +42,6 @@ import okhttp3.Response;
 
 public class MessageDetailActivity extends AppCompatActivity {
     //TODO: post comment
-    //TODO: get comments: 估计是生命周期的问题，仍然存在activity中因为延时拿不到数据的情况
     //TODO: click author name to author information layout
     private TextView contentView,authorView,dateView;
     private EditText commentPostEditTextView;
@@ -53,6 +52,7 @@ public class MessageDetailActivity extends AppCompatActivity {
     private RecyclerView CommentRecyclerView;
     private List<comment> comments=new ArrayList<>();
     private commentViewModel mCommentViewModel;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                 }
             }
         });
-
+        mContext=this;
         CommentRecyclerView=findViewById(R.id.commentRecyclerView);
 
         //TODO:use commentViewModel
@@ -103,59 +103,15 @@ public class MessageDetailActivity extends AppCompatActivity {
                     for(comment icomment:mCommentViewModel.getmComments()){
                         comments.add(icomment);
                     }
+                    mCommentAdapter=new commentAdapter(comments);
+                    CommentRecyclerView.setAdapter(mCommentAdapter);
+                    CommentRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                 }
             }
         });
-        Log.d("comment_activity", String.valueOf(comments.size()));
-        mCommentAdapter=new commentAdapter(comments);
-        CommentRecyclerView.setAdapter(mCommentAdapter);
-        CommentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
-    /*
-    public List<comment> getComments(String msg_id){
-        List<comment> comments=new ArrayList<>();
-        OkHttpClient okHttpClient=new OkHttpClient();
-        SharedPreferences sharedPreferences=this.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        String token=sharedPreferences.getString("token","");
-        Request request=new Request.Builder().url(Constants.baseUrl+"/msgboard/"+msg_id)
-                .addHeader("Authorization",token)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("CommentInfo","request_handle_failed");
-                Toast.makeText(MessageDetailActivity.this,"请求留言数据失败！",Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String res=response.body().string();
-                Log.d("CommentInfo",res);
-                try {
-                    JSONObject mid=new JSONObject(res);
-                    JSONArray result= (JSONArray) mid.get("data");
-                    Log.d("CommentInfo", "resultLength:"+String.valueOf(result.length()));
-
-                } catch (JSONException | ParseException e) {
-                    Log.d("CommentInfo","Parse failed");
-                    e.printStackTrace();
-                }
-            }
-        });
-        return comments;
-    }*/
-    public List<comment> testGetComments(){
-        comment c1=new comment("author1","这个动态针不戳","1",null);
-        comment c2=new comment("author2","这个动态挺好的，就是有点坏","1",null);
-        String longContent="It is widely acknowledged that in academic study, paper writing is extremely crucial. During the development of academic papers, researchers and famous journals have formed a fixed module for research literature to help better state the main points of the research and make it easier and more time-saving for readers to understand. However, although the form of academic literature is seemingly clear and easy to follow, it is still quite confusing for new starters to actually write a specific academic paper, as there are obviously different studying modes across different research fields. It is apparently meaningless to apply the most efficient method in Computer Science, the Analysis of Large Data for instance, to a more humanistic and sense-based discipline like Ancient Chinese Literature. This is absolutely the same when it comes to academic paper writing. Researchers in different studying fields apply different basic frameworks to their research paper, thus it is a little bit confusing for new researchers to decide which framework they would like to use. In this paper, we analyzed the similarities and differences between academic papers across different fields, detailed all the single modules in each example paper, and then come to a conclusion on the overall differences of academic papers in different fields, together with offering new readers some useful tips in reading and writing academic literature in those specific fields.";
-
-        comment c3=new comment("author3",longContent,"1",null);
-        List<comment> res=new ArrayList<>();
-        res.add(c1);
-        res.add(c2);
-        res.add(c3);
-        return res;
-    }
     public boolean postComment(){
         return true;
     }
