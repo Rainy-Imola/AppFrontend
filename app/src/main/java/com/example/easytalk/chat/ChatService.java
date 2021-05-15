@@ -29,12 +29,15 @@ import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 
 public class ChatService extends Service {
     //private URI uri;
+    private List<chatMsg> msglist = new ArrayList<chatMsg>();
     public ChatClient client;
     private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
     private final static int GRAY_SERVICE_ID = 1001;
@@ -77,7 +80,9 @@ public class ChatService extends Service {
     private void initSocket() {
         URI uri = null;
         try{
-            uri = new URI("ws://47.103.123.145/webSocket/test2");
+            String name = getSharedPreferences("user_profile",Context.MODE_PRIVATE).getString("username","");
+            uri = new URI("ws://47.103.123.145/webSocket/"+name);
+
             //uri = new URI("ws://echo.websocket.org");
         }catch (Exception e){
             e.printStackTrace();
@@ -88,12 +93,18 @@ public class ChatService extends Service {
             @Override
             public void onMessage(String message) {
                 super.onMessage(message);
-                chatMsg msg = new chatMsg("test2","test2",1,message);
+//                JSONObject msg = null;
+//                try{
+//                    msg = new JSONObject(message);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                //chatMsg msg = new chatMsg("test2","test2",1,message);
                 Log.d("receive message；", message);
 
                 Intent intent = new Intent();
                 intent.setAction("com.xch.servicecallback.content");
-                intent.putExtra("msg",msg.toString());
+                intent.putExtra("msg",message);
                 sendBroadcast(intent);
                 checkLockAndShowNotification(message);
             }
@@ -115,11 +126,11 @@ public class ChatService extends Service {
         }.start();
     }
 
-    public void sendMsg(String msg) {
+    public void sendMsg(String To, String From, String msg) {
         JSONObject msgbody = new JSONObject();
         try{
-            msgbody.put("To","test2");
-            msgbody.put("From","test2");
+            msgbody.put("To",To);
+            msgbody.put("From",From);
             msgbody.put("message",msg);
         }
         catch (JSONException e){
