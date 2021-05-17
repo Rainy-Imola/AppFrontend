@@ -116,7 +116,7 @@ public class ChatService extends Service {
                 }
                 chatMsg item1 = new chatMsg(From,To, 1,content);
                 msglist.add(item1);
-                
+
                 Intent intent = new Intent();
                 intent.setAction("com.xch.servicecallback.content");
                 intent.putExtra("msg",message);
@@ -168,6 +168,9 @@ public class ChatService extends Service {
         } finally {
             client = null;
         }
+    }
+    public List<chatMsg> getMessageList(){
+        return msglist;
     }
     private static final long HEART_BEAT_RATE = 20 * 1000;//每隔10秒进行一次对长连接的心跳检测
     private Handler mHandler = new Handler();

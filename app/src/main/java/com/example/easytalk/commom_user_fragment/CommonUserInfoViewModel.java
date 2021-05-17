@@ -67,7 +67,7 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String res = response.body().string();
-                        Log.d("User_info", "接收成功");
+                        Log.d("User_info", res);
                         try {
                             JSONObject result = new JSONObject(res);
                             JSONArray data = (JSONArray) result.get("data");
