@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easytalk.Constants;
+import com.example.easytalk.HttpAPI;
 import com.example.easytalk.R;
 import com.example.easytalk.model.CommentModel;
 import com.example.easytalk.model.comment;
 import com.example.easytalk.model.message;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.JsonObject;
 import com.jidcoo.android.widget.commentview.CommentView;
 import com.jidcoo.android.widget.commentview.callback.CustomCommentItemCallback;
 import com.jidcoo.android.widget.commentview.callback.OnItemClickCallback;
@@ -94,8 +97,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         commentPostEditTextView=findViewById(R.id.postCommentText);
         commentPostButton=findViewById(R.id.postCommentButton);
 
-        constraintLayout=findViewById(R.id.constraintLayout);
-        mCommentView=new CommentView(context,constraintLayout);
+        mCommentView=findViewById(R.id.commentView);
         mCommentView.setViewStyleConfigurator(new DefaultViewStyleConfigurator(context));
         mCommentView.callbackBuilder()
                 .setOnItemClickCallback(new MyOnItemClickCallback())
@@ -109,30 +111,61 @@ public class MessageDetailActivity extends AppCompatActivity {
                 String content=commentPostEditTextView.getText().toString();
                 if(content.isEmpty()){
                     Toast.makeText(context,"评论不可以为空！",Toast.LENGTH_SHORT).show();
-                }else{
-                    SharedPreferences sp=getSharedPreferences("user_profile",MODE_PRIVATE);
-                    String author=sp.getString("username","defaultAuthor");
-                    Date date=new Date(System.currentTimeMillis());
-                    comment comment=new comment(author,content,msg.getId(),date);
-                    if(postComment(comment)){
-                        mCommentView.addComment(comment);
-                        Toast.makeText(context,"评论发布成功！",Toast.LENGTH_SHORT).show();
-                        mCommentView.addComment(comment);
-                    }else{
-                        Toast.makeText(context,"评论发布失败，请重试",Toast.LENGTH_SHORT).show();
-                    }
+                    return;
+                }
+                SharedPreferences sp=getSharedPreferences("user_profile",MODE_PRIVATE);
+                String author=sp.getString("username","defaultAuthor");
+                Date date=new Date(System.currentTimeMillis());
+                comment comment=new comment(author,content,msg.getId(),date);
+
+                //post comment
+                HttpAPI httpAPI=new HttpAPI();
+                JSONObject jsonObject=new JSONObject();
+                try{
+                    jsonObject.put("author",author);
+                    jsonObject.put("content",content);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    httpAPI.postApi_withToken(jsonObject, "/msgboard/" + msg.getId() + "/comments/release/", new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            Toast.makeText(context,"评论上传失败",Toast.LENGTH_SHORT).show();
+                            Log.d("commentPost","postFail");
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            //Toast.makeText(context,"接收到返回消息",Toast.LENGTH_SHORT).show();
+                            Log.d("commentPost","postOnResponse");
+                            String res=response.body().string();
+                            Log.d("commentPost","res:"+res);
+                            try {
+                                JSONObject result = new JSONObject(res);
+                                int status = result.getInt("status");
+                                Looper.prepare();
+                                if(status!=0){
+                                    Toast.makeText(context,"评论发布失败！",Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(context,"评论发布成功！",Toast.LENGTH_SHORT).show();
+                                    refreshCommentData();
+                                }
+                            }catch (JSONException e){
+                                e.printStackTrace();
+                            }
+
+                        }
+                    },sp.getString("token",null));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
         mCommentViewModel=new ViewModelProvider(this).get(commentViewModel.class);
         refreshCommentData();
-
     }
 
-    public boolean postComment(comment comment){
-        Toast.makeText(this,"调用postComment方法",Toast.LENGTH_SHORT).show();
-        return true;
-    }
     public void refreshCommentData(){
         mCommentViewModel.requestData(msg.getId());
         mCommentViewModel.getStatus().observe(this, new Observer<String>() {
@@ -146,8 +179,9 @@ public class MessageDetailActivity extends AppCompatActivity {
                         comments.add(icomment);
                     }
                     mCommentView.loadComplete(new CommentModel(comments));
-                    Log.d("commentView", String.valueOf(mCommentView.getCommentList()));
+                    Log.d("commentViewList", String.valueOf(mCommentView.getCommentList()));
                 }
+
             }
         });
     }

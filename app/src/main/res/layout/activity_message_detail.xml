@@ -110,6 +110,10 @@
                 android:layout_height="match_parent"
                 android:id="@+id/constraintLayout"
                 android:layout_below="@+id/icon_layout">
+                <com.jidcoo.android.widget.commentview.CommentView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/commentView"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
