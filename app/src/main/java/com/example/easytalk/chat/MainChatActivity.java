@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.L;
 import com.example.easytalk.R;
 import com.example.easytalk.model.chatMsg;
 
@@ -53,6 +54,9 @@ public class MainChatActivity extends AppCompatActivity {
     private ChatService.JWebSocketClientBinder binder;
     private ChatService chatService;
     private ChatMessageReceiver chatMessageReceiver;
+    //variable used
+    private String To;
+    private String From;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -72,9 +76,9 @@ public class MainChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_chat);
-        String To = getIntent().getStringExtra("name");
+        To = getIntent().getStringExtra("name");
         SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        String From = sharedPreferences.getString("username","");
+        From = sharedPreferences.getString("username","");
 
         //initMsg();
         //startChatService();
@@ -93,9 +97,11 @@ public class MainChatActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        //pullHistory();
                         swipeRefreshLayout.setRefreshing(false);
                         mAdapter.setmItems(msglist);
                         Toast.makeText(MainChatActivity.this,"刷新成功",Toast.LENGTH_SHORT).show();
@@ -191,7 +197,23 @@ public class MainChatActivity extends AppCompatActivity {
             chatService.sendMsg(To, From, content);
         }
     }
+    private void pullHistory(){
+        List<chatMsg> historyChatMessage = chatService.getMessageList();
+        List<chatMsg> tempList = new ArrayList<chatMsg>();
+        for(int i = 0;i < historyChatMessage.size(); i++){
+            chatMsg temp = historyChatMessage.get(i);
+            if(temp.getReceiveID() == From && temp.getSenderID() == To){
+                tempList.add(temp);
+            }else if(temp.getReceiveID() == To && temp.getSenderID() == From){
+                tempList.add(temp);
+            }
+        }
 
+        for(int i = 0;i <tempList.size();i++){
+            msglist.add(i,tempList.get(i));
+        }
+        initChatUi();
+    }
 //    private void initChat(){
 //        System.out.println("Begin to Connection");
 //        URI uri = null;
