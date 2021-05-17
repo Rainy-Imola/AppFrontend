@@ -162,8 +162,19 @@ public class friendsFragment extends Fragment {
                         //int id=cur_msg.getInt("id");
                         //String username=cur_msg.getString("username");
                         //String password=cur_msg.getString("password");
-
-                        friend msg=new friend(String.valueOf(cur_msg),0,0);
+                        JSONObject jsonObject = null;
+                        String name = null;
+                        int status = 0;
+                        try{
+                            jsonObject = new JSONObject(cur_msg);
+                            name = jsonObject.getString("name");
+                            status = jsonObject.getInt("status");
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+                        Log.d("name: ",name);
+                        Log.d("status", String.valueOf(status));
+                        friend msg=new friend(0,name,0,status);
                         msgs.add(msg);
                         Log.d("MessageInfo","finished one circle");
                     }
