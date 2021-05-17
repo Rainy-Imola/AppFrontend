@@ -83,6 +83,7 @@ public class CommonUserInfoFragment extends Fragment {
         if (bundle != null)
             mArgument = bundle.getString(ARGUMENT);
         mArgument = getActivity().getIntent().getStringExtra("name");
+        Log.d("Receive name:",mArgument);
         mnavController = NavHostFragment.findNavController(this);
         mContext = this.getContext();
     }

@@ -9,6 +9,16 @@ public class friend {
     private String name;
     @SerializedName("image")
     private int image;
+    @SerializedName("status")
+    private int status=0;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -32,9 +42,10 @@ public class friend {
         return image;
     }
 
-    public friend(String name,int id, int image){
-            this.id = id;
-            this.name = name;
-            this.image = image;
+    public friend(int id, String name, int image, int status) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.status = status;
     }
 }

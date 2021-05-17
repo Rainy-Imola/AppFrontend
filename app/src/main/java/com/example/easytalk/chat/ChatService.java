@@ -37,6 +37,7 @@ import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 public class ChatService extends Service {
     //private URI uri;
+
     private List<chatMsg> msglist = new ArrayList<chatMsg>();
     public ChatClient client;
     private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
@@ -101,7 +102,21 @@ public class ChatService extends Service {
 //                }
                 //chatMsg msg = new chatMsg("test2","test2",1,message);
                 Log.d("receive message；", message);
-
+                JSONObject jsonObject = null;
+                String From = null;
+                String To = null;
+                String content = null;
+                try{
+                    jsonObject = new JSONObject(message);
+                    To = (String)jsonObject.get("to");
+                    From = (String)jsonObject.get("from");
+                    content = (String)jsonObject.get("message");
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                chatMsg item1 = new chatMsg(From,To, 1,content);
+                msglist.add(item1);
+                
                 Intent intent = new Intent();
                 intent.setAction("com.xch.servicecallback.content");
                 intent.putExtra("msg",message);
@@ -136,6 +151,8 @@ public class ChatService extends Service {
         catch (JSONException e){
             e.printStackTrace();
         }
+        chatMsg item = new chatMsg(From, To, 0, msg);
+        msglist.add(item);
         if(null != client){
             client.send(String.valueOf(msgbody));
         }
