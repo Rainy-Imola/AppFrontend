@@ -1,3 +1,8 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
 plugins {
     id 'com.android.application'
 }
@@ -8,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.easytalk"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -28,6 +33,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
+
 
 dependencies {
 
@@ -62,4 +69,5 @@ dependencies {
     compile 'com.github.loperSeven:TitleBar:1.0.4'
 
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
+    implementation 'com.jidcoo.android.widget.commentview:CommentView:1.0.0'
 }

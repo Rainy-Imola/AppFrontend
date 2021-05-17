@@ -1,6 +1,7 @@
 package com.example.easytalk.board_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,17 +12,29 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easytalk.Constants;
 import com.example.easytalk.R;
+import com.example.easytalk.model.CommentModel;
 import com.example.easytalk.model.comment;
 import com.example.easytalk.model.message;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.jidcoo.android.widget.commentview.CommentView;
+import com.jidcoo.android.widget.commentview.callback.CustomCommentItemCallback;
+import com.jidcoo.android.widget.commentview.callback.OnItemClickCallback;
+import com.jidcoo.android.widget.commentview.callback.OnPullRefreshCallback;
+import com.jidcoo.android.widget.commentview.defaults.DefaultCommentModel;
+import com.jidcoo.android.widget.commentview.defaults.DefaultViewStyleConfigurator;
+import com.jidcoo.android.widget.commentview.model.CommentEnable;
+import com.jidcoo.android.widget.commentview.model.ReplyEnable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,16 +56,17 @@ import okhttp3.Response;
 public class MessageDetailActivity extends AppCompatActivity {
     //TODO: post comment
     //TODO: click author name to author information layout
+    //TODO: use commentView component
     private TextView contentView,authorView,dateView;
     private EditText commentPostEditTextView;
     private Button commentPostButton;
     private SimpleDraweeView coverView;
     private message msg;
-    private commentAdapter mCommentAdapter;
-    private RecyclerView CommentRecyclerView;
     private List<comment> comments=new ArrayList<>();
     private commentViewModel mCommentViewModel;
-    private Context mContext;
+    private CommentView mCommentView;
+    private Context context;
+    private ViewGroup constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,44 +89,99 @@ public class MessageDetailActivity extends AppCompatActivity {
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         String resDate=format.format(date);
         dateView.setText(resDate);
+        context=this;
+
         commentPostEditTextView=findViewById(R.id.postCommentText);
         commentPostButton=findViewById(R.id.postCommentButton);
+
+        constraintLayout=findViewById(R.id.constraintLayout);
+        mCommentView=new CommentView(context,constraintLayout);
+        mCommentView.setViewStyleConfigurator(new DefaultViewStyleConfigurator(context));
+        mCommentView.callbackBuilder()
+                .setOnItemClickCallback(new MyOnItemClickCallback())
+                .setOnPullRefreshCallback(new MyOnPullRefreshCallback())
+                .buildCallback();
+        Log.d("commentView","commentView build callback function called");
+
         commentPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(postComment()){
-                    Toast.makeText(MessageDetailActivity.this,"评论发布成功",Toast.LENGTH_SHORT).show();
+                String content=commentPostEditTextView.getText().toString();
+                if(content.isEmpty()){
+                    Toast.makeText(context,"评论不可以为空！",Toast.LENGTH_SHORT).show();
+                }else{
+                    SharedPreferences sp=getSharedPreferences("user_profile",MODE_PRIVATE);
+                    String author=sp.getString("username","defaultAuthor");
+                    Date date=new Date(System.currentTimeMillis());
+                    comment comment=new comment(author,content,msg.getId(),date);
+                    if(postComment(comment)){
+                        mCommentView.addComment(comment);
+                        Toast.makeText(context,"评论发布成功！",Toast.LENGTH_SHORT).show();
+                        mCommentView.addComment(comment);
+                    }else{
+                        Toast.makeText(context,"评论发布失败，请重试",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
-        mContext=this;
-        CommentRecyclerView=findViewById(R.id.commentRecyclerView);
-
-        //TODO:use commentViewModel
-
         mCommentViewModel=new ViewModelProvider(this).get(commentViewModel.class);
+        refreshCommentData();
 
+    }
+
+    public boolean postComment(comment comment){
+        Toast.makeText(this,"调用postComment方法",Toast.LENGTH_SHORT).show();
+        return true;
+    }
+    public void refreshCommentData(){
         mCommentViewModel.requestData(msg.getId());
         mCommentViewModel.getStatus().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String status) {
                 Log.d("comment_activity","onChanged called");
                 if(status=="comment"){
-                    Log.d("comment_activity","onChanged if called");
-                    Log.d("comment_activity", String.valueOf(mCommentViewModel.getmComments().size()));
+                    comments.clear();
                     for(comment icomment:mCommentViewModel.getmComments()){
+                        Log.d("commentView",icomment.getContent());
                         comments.add(icomment);
                     }
-                    mCommentAdapter=new commentAdapter(comments);
-                    CommentRecyclerView.setAdapter(mCommentAdapter);
-                    CommentRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+                    mCommentView.loadComplete(new CommentModel(comments));
+                    Log.d("commentView", String.valueOf(mCommentView.getCommentList()));
                 }
             }
         });
-
     }
 
-    public boolean postComment(){
-        return true;
+
+    class MyOnPullRefreshCallback implements OnPullRefreshCallback{
+
+        @Override
+        public void refreshing() {
+            refreshCommentData();
+        }
+
+        @Override
+        public void complete() {
+            Toast.makeText(context,"刷新成功！",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void failure(String msg) {
+            Toast.makeText(context,"刷新失败！",Toast.LENGTH_SHORT).show();
+        }
     }
+    class MyOnItemClickCallback implements OnItemClickCallback{
+
+        @Override
+        public void commentItemOnClick(int position, CommentEnable comment, View view) {
+            Intent intent=new Intent();
+
+        }
+
+        @Override
+        public void replyItemOnClick(int c_position, int r_position, ReplyEnable reply, View view) {
+            Toast.makeText(context,"回复功能暂不可用",Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

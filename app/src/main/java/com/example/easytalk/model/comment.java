@@ -1,10 +1,13 @@
 package com.example.easytalk.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.jidcoo.android.widget.commentview.model.CommentEnable;
+import com.jidcoo.android.widget.commentview.model.ReplyEnable;
 
 import java.util.Date;
+import java.util.List;
 
-public class comment {
+public class comment extends CommentEnable {
     @SerializedName("author")
     private String author;
     @SerializedName("content")
@@ -31,5 +34,10 @@ public class comment {
         setContent(content);
         setMsg_id(msg_id);
         setDate(date);
+    }
+
+    @Override
+    public <T extends ReplyEnable> List<T> getReplies() {
+        return null;
     }
 }
