@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.easytalk.Constants;
 import com.example.easytalk.HttpAPI;
 import com.example.easytalk.R;
+import com.example.easytalk.friends_fragment.FriendDetailActivity;
 import com.example.easytalk.model.CommentModel;
 import com.example.easytalk.model.comment;
 import com.example.easytalk.model.message;
@@ -70,6 +71,10 @@ public class MessageDetailActivity extends AppCompatActivity {
     private CommentView mCommentView;
     private Context context;
     private ViewGroup constraintLayout;
+    private SharedPreferences sp;
+    private int author_id;
+    private String token;
+    private String author;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +92,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         coverView.setImageURI(msg.getImageUrl());
         authorView=findViewById(R.id.author_textView);
         dateView=findViewById(R.id.date_textView);
-        authorView.setText(msg.getAuthor()+" ");
+        authorView.setText(msg.getAuthor());
         Date date=msg.getCreatedAt();
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         String resDate=format.format(date);
@@ -105,6 +110,53 @@ public class MessageDetailActivity extends AppCompatActivity {
                 .buildCallback();
         Log.d("commentView","commentView build callback function called");
 
+        sp=getSharedPreferences("user_profile",MODE_PRIVATE);
+        author_id=sp.getInt("id",-1);
+        author=sp.getString("username","defaultAuthor");
+        token=sp.getString("token",null);
+
+        authorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //请求，拿到作者id
+                new Thread(){
+                    @Override
+                    public void run(){
+                        OkHttpClient okHttpClient = new OkHttpClient();
+                        Request request = new Request.Builder().url(Constants.baseUrl + "/users/"+
+                                msg.getAuthor()+"/info/")
+                                .addHeader("Authorization", token)
+                                .build();
+                        okHttpClient.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.d("requestUsr","请求用户信息失败！");
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String res=response.body().string();
+                                Log.d("requestUsr",res);
+                                try {
+                                    JSONObject result=new JSONObject(res);
+                                    JSONArray data=result.getJSONArray("data");
+                                    JSONObject mid=data.getJSONObject(0);
+                                    int id=mid.getInt("id");
+                                    Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
+                                    intent.putExtra("id",id);
+                                    intent.putExtra("name",msg.getAuthor());
+                                    v.getContext().startActivity(intent);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+                    }
+                }.start();
+            }
+        });
+
         commentPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,9 +165,6 @@ public class MessageDetailActivity extends AppCompatActivity {
                     Toast.makeText(context,"评论不可以为空！",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SharedPreferences sp=getSharedPreferences("user_profile",MODE_PRIVATE);
-                String author=sp.getString("username","defaultAuthor");
-                int author_id=sp.getInt("id",-1);
                 Date date=new Date(System.currentTimeMillis());
                 comment comment=new comment(author,content,msg.getId(),date);
 
@@ -153,6 +202,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                                     //TODO:执行评论成功操作
                                     //commentPostEditTextView.setText(null);
                                     //refreshCommentData();
+                                    //mCommentView.addComment(comment);
                                     Log.d("commentPost","postSuccess");
                                 }
                                 //Log.d("commentPost", String.valueOf(status));
@@ -161,7 +211,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                             }
 
                         }
-                    },sp.getString("token",null));
+                    },token);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
