@@ -16,11 +16,21 @@ import okhttp3.Response;
 
 public class HttpAPI {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public void postApi_withToken(JSONObject jsonObject,String address,Callback callback,String token) throws IOException{
+        final String Response="";
+        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
+        Request request = new Request.Builder().url(Constants.baseUrl + address)
+                .addHeader("Authorization",token)
+                .post(requestBody).build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
     public void postApi(JSONObject jsonObject, String address,Callback callback) throws IOException {
         final String Response="";
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(JSON, String.valueOf(jsonObject));
-        Request request = new Request.Builder().url(Constants.baseUrl + address).post(requestBody).build();
+        Request request = new Request.Builder().url(Constants.baseUrl + address)
+                .post(requestBody).build();
         okHttpClient.newCall(request).enqueue(callback);
 //        okHttpClient.newCall(request).enqueue(new Callback() {
 //            @Override
