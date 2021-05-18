@@ -42,6 +42,7 @@ import java.util.List;
 
 public class MainChatActivity extends AppCompatActivity {
     private List<chatMsg> msglist = new ArrayList<chatMsg>();
+    private List<chatMsg> nowList = new ArrayList<chatMsg>();
     private ChatAdapter mAdapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -90,6 +91,7 @@ public class MainChatActivity extends AppCompatActivity {
         editText = findViewById(R.id.et_content);
         chatName = findViewById(R.id.chat_name);
         chatName.setText(To);
+
         inputMethodManager = (InputMethodManager) getSystemService(MainChatActivity.this.INPUT_METHOD_SERVICE);
         initChatUi();
         //initChat();
@@ -101,7 +103,7 @@ public class MainChatActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //pullHistory();
+                        pullHistory();
                         swipeRefreshLayout.setRefreshing(false);
                         mAdapter.setmItems(msglist);
                         Toast.makeText(MainChatActivity.this,"刷新成功",Toast.LENGTH_SHORT).show();
@@ -160,6 +162,7 @@ public class MainChatActivity extends AppCompatActivity {
             }
             chatMsg item1 = new chatMsg(From,To, 1,content);
             msglist.add(item1);
+            nowList.add(item1);
             initChatUi();
         }
     }
@@ -178,6 +181,7 @@ public class MainChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLinearManager);
         mAdapter = new ChatAdapter(msglist);
         recyclerView.setAdapter(mAdapter);
+        //pullHistory();
     }
 
 
@@ -191,6 +195,7 @@ public class MainChatActivity extends AppCompatActivity {
         editText.setText("");
         Log.d("send event:","content");
         chatMsg msg = new chatMsg("test2","test2",0,content);
+        nowList.add(msg);
         msglist.add(msg);
         mAdapter.setmItems(msglist);
         if (chatClient != null && chatClient.isOpen()) {
@@ -202,15 +207,25 @@ public class MainChatActivity extends AppCompatActivity {
         List<chatMsg> tempList = new ArrayList<chatMsg>();
         for(int i = 0;i < historyChatMessage.size(); i++){
             chatMsg temp = historyChatMessage.get(i);
-            if(temp.getReceiveID() == From && temp.getSenderID() == To){
+            Log.d("chatMsg:",historyChatMessage.get(i).toString());
+            Log.d("From",From);
+            Log.d("To",To);
+            Log.d("receiveid",temp.getReceiveID());
+            Log.d("senderid",temp.getSenderID());
+            if( From.equals(temp.getReceiveID())&& To.equals(temp.getSenderID())){
+                Log.d("test","asasas");
                 tempList.add(temp);
-            }else if(temp.getReceiveID() == To && temp.getSenderID() == From){
+            }else if(To.equals(temp.getReceiveID())&& From.equals(temp.getSenderID())){
                 tempList.add(temp);
             }
         }
-
+        msglist = new ArrayList<chatMsg>();
         for(int i = 0;i <tempList.size();i++){
-            msglist.add(i,tempList.get(i));
+            Log.d("messageList:", tempList.get(i).toString());
+            msglist.add(tempList.get(i));
+        }
+        for(int i = 0;i < nowList.size();i++){
+            msglist.add(nowList.get(i));
         }
         initChatUi();
     }
