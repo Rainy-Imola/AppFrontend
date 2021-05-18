@@ -104,7 +104,7 @@ public class boardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         try {
-            refreshMessages(2000);
+            refreshMessages(1500);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

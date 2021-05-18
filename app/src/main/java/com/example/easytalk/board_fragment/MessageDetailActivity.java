@@ -115,6 +115,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                 }
                 SharedPreferences sp=getSharedPreferences("user_profile",MODE_PRIVATE);
                 String author=sp.getString("username","defaultAuthor");
+                int author_id=sp.getInt("id",-1);
                 Date date=new Date(System.currentTimeMillis());
                 comment comment=new comment(author,content,msg.getId(),date);
 
@@ -122,7 +123,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                 HttpAPI httpAPI=new HttpAPI();
                 JSONObject jsonObject=new JSONObject();
                 try{
-                    jsonObject.put("author",author);
+                    jsonObject.put("author",author_id);
                     jsonObject.put("content",content);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -132,25 +133,29 @@ public class MessageDetailActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Toast.makeText(context,"评论上传失败",Toast.LENGTH_SHORT).show();
-                            Log.d("commentPost","postFail");
+                            Log.e("commentPost","postFail");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             //Toast.makeText(context,"接收到返回消息",Toast.LENGTH_SHORT).show();
-                            Log.d("commentPost","postOnResponse");
                             String res=response.body().string();
                             Log.d("commentPost","res:"+res);
+
                             try {
                                 JSONObject result = new JSONObject(res);
                                 int status = result.getInt("status");
-                                Looper.prepare();
                                 if(status!=0){
-                                    Toast.makeText(context,"评论发布失败！",Toast.LENGTH_SHORT).show();
+                                    Looper.prepare();
+                                    Toast.makeText(MessageDetailActivity.this,"评论发布失败！",Toast.LENGTH_SHORT).show();
+                                    Looper.loop();
                                 }else{
-                                    Toast.makeText(context,"评论发布成功！",Toast.LENGTH_SHORT).show();
-                                    refreshCommentData();
+                                    //TODO:执行评论成功操作
+                                    //commentPostEditTextView.setText(null);
+                                    //refreshCommentData();
+                                    Log.d("commentPost","postSuccess");
                                 }
+                                //Log.d("commentPost", String.valueOf(status));
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
