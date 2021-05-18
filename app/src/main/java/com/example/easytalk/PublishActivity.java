@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +50,8 @@ import static com.example.easytalk.Constants.pictureUrl;
 public class PublishActivity extends AppCompatActivity {
     private static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
     private EditText editAuthor;
-    private EditText editContent;
+    //private EditText editContent;
+    private TextInputLayout editContent;
     private static final long MAX_FILE_SIZE = 2 * 1024 * 1024;
     private static final int REQUEST_CODE_COVER_IMAGE = 101;
     private static final String COVER_IMAGE_TYPE = "image/*";
@@ -63,11 +66,19 @@ public class PublishActivity extends AppCompatActivity {
         Fresco.initialize(PublishActivity.this);
         setContentView(R.layout.activity_publish);
         //init
-        editContent = (EditText)findViewById(R.id.content);
+        //editContent = (EditText)findViewById(R.id.content);
+        editContent = (TextInputLayout) findViewById(R.id.textField);
         coverSD = (SimpleDraweeView) findViewById(R.id.sd_cover);
         publish = (Button)findViewById(R.id.publish_btn);
-        selectPicture = (Button)findViewById(R.id.btn_cover);
-        selectPicture.setOnClickListener(new View.OnClickListener() {
+//        selectPicture = (Button)findViewById(R.id.btn_cover);
+//        selectPicture.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getFile(REQUEST_CODE_COVER_IMAGE,COVER_IMAGE_TYPE,"选择图片");
+//            }
+//        });
+
+        coverSD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFile(REQUEST_CODE_COVER_IMAGE,COVER_IMAGE_TYPE,"选择图片");
@@ -85,14 +96,21 @@ public class PublishActivity extends AppCompatActivity {
     private void publishContent()  {
 
         byte[] coverImageData = readDataFromUri(coverImageUri);
+        if(coverImageData == null)
+        {
+            Publish_core("null");
+            return;
+        }
         Log.i("length", String.valueOf(coverImageData.length));
 
         if (coverImageData.length == 0) {
             Toast.makeText(this, "图片不存在", Toast.LENGTH_SHORT).show();
+            Publish_core("null");
             return;
         }
         if ( coverImageData.length >= MAX_FILE_SIZE) {
             Toast.makeText(this, "文件过大", Toast.LENGTH_SHORT).show();
+            Publish_core("null");
             return;
         }
         OkHttpClient pictureClient = new OkHttpClient();
@@ -180,7 +198,7 @@ public class PublishActivity extends AppCompatActivity {
         return data;
     }
     private void Publish_core(String picture){
-        String content = editContent.getText().toString();
+        String content = editContent.getEditText().getText().toString();
         if(TextUtils.isEmpty(content)){
 //            Toast.makeText(this,"信息不完整",Toast.LENGTH_SHORT).show();
             return;
@@ -192,8 +210,9 @@ public class PublishActivity extends AppCompatActivity {
         try{
             jsonObject.put("author",sharedPreferences.getInt("id",0));
             jsonObject.put("content",content);
-            jsonObject.put("picture", picture);
-
+            if(picture != "null") {
+                jsonObject.put("picture", picture);
+            }
         }catch (JSONException e){
             e.printStackTrace();
         }

@@ -7,52 +7,78 @@
     tools:context=".PublishActivity">
 
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:background="@drawable/bg1"
         android:orientation="vertical"
         android:padding="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
 
-        <EditText
-            android:id="@+id/content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:maxLines="3"
-            android:layout_marginTop="40dp"
-            android:padding="6dp"
-            android:layout_marginHorizontal="20dp"
-            android:hint="说几句话吧"
-            />
+            android:layout_height="wrap_content"
+
+            android:hint="说几句话吧">
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#C1F8F8"
+                tools:layout_conversion_absoluteHeight="100dp"
+                tools:layout_conversion_absoluteWidth="331dp"
+                tools:layout_editor_absoluteX="40dp"
+                tools:layout_editor_absoluteY="20dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sd_cover"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_margin="20dp"
+            android:background="#8AE6EA"
             app:actualImageScaleType="centerCrop"
-            app:placeholderImage="@drawable/bg_round_rect"
-            />
-        <Button
-            android:id="@+id/btn_cover"
-            android:layout_width="100dp"
-            android:layout_height="48dp"
-            android:text="选择封面"
-            android:layout_gravity="center"
-            />
+            app:placeholderImage="@drawable/ic_baseline_add_24" />
+
+        <!--        <Button-->
+        <!--            android:id="@+id/btn_cover"-->
+        <!--            android:layout_width="100dp"-->
+        <!--            android:layout_height="48dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:text="选择封面" />-->
         <!--        发布按钮-->
         <Button
             android:id="@+id/publish_btn"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="发布"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/publish" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击发送"
             android:layout_gravity="center"/>
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="141dp"
+        android:layout_height="126dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92"
+        app:srcCompat="@drawable/logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

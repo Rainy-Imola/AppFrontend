@@ -130,6 +130,7 @@ public class CommonUserInfoFragment extends Fragment {
                     }else {
                         user_constellation.setText(mUser.getUser_constellation());
                     }
+                    Log.d("setName：",mUser.getUser_name());
                     user_name.setText(mUser.getUser_name());
                     if(mViewModel.isFriend()){
                         addorchar.setText("发消息");
@@ -140,6 +141,27 @@ public class CommonUserInfoFragment extends Fragment {
                     }
                 }
                 else if(status == "message"){
+                    Log.d("setName：","message");
+                    User mUser = mViewModel.readUser();
+                    if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
+                        user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
+                    }else {
+                        user_hobby.setLabels(mUser.getUser_hobby());
+                    }
+                    if(mUser.getUser_constellation().length() == 0){
+                        user_constellation.setText("未添加星座");
+                    }else {
+                        user_constellation.setText(mUser.getUser_constellation());
+                    }
+                    Log.d("setName：",mUser.getUser_name());
+                    user_name.setText(mUser.getUser_name());
+                    if(mViewModel.isFriend()){
+                        addorchar.setText("发消息");
+                        addorchar.setTag(new Integer(1));
+                    }else if(!mViewModel.isFriend()){
+                        addorchar.setText("加好友");
+                        addorchar.setTag(new Integer(2));
+                    }
                     for (message imessage:mViewModel.getMessage()
                     ) {
                         mItems.add(imessage);

@@ -116,7 +116,7 @@ public class ChatService extends Service {
                 }
                 chatMsg item1 = new chatMsg(From,To, 1,content);
                 msglist.add(item1);
-                
+
                 Intent intent = new Intent();
                 intent.setAction("com.xch.servicecallback.content");
                 intent.putExtra("msg",message);
@@ -168,6 +168,9 @@ public class ChatService extends Service {
         } finally {
             client = null;
         }
+    }
+    public List<chatMsg> getMessageList(){
+        return msglist;
     }
     private static final long HEART_BEAT_RATE = 20 * 1000;//每隔10秒进行一次对长连接的心跳检测
     private Handler mHandler = new Handler();
@@ -240,11 +243,11 @@ public class ChatService extends Service {
     /**
      * 检查锁屏状态，如果锁屏先点亮屏幕
      *
-     * @param content
+     * @param message
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void checkLockAndShowNotification(String content) {
-        sendNotification(content);
+    private void checkLockAndShowNotification(String message) {
+        sendNotification(message);
         //管理锁屏的一个服务
 //        KeyguardManager km = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
 //        if (km.inKeyguardRestrictedInputMode()) {//锁屏
@@ -265,12 +268,27 @@ public class ChatService extends Service {
     /**
      * 发送通知
      *
-     * @param content
+     * @param message
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void sendNotification(String content) {
+    private void sendNotification(String message) {
+        JSONObject jsonObject = null;
+        String From = null;
+        String To = null;
+        String content = null;
+        try{
+            jsonObject = new JSONObject(message);
+            To = (String)jsonObject.get("to");
+            From = (String)jsonObject.get("from");
+            content = (String)jsonObject.get("message");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
         Intent intent = new Intent();
         intent.setClass(this, MainChatActivity.class);
+        intent.putExtra("id",0);
+        intent.putExtra("name",From);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationChannel notificationChannel =  new NotificationChannel("Chat","ChatMain", NotificationManager.IMPORTANCE_HIGH);
@@ -282,12 +300,13 @@ public class ChatService extends Service {
         NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notifyManager.createNotificationChannel(notificationChannel);
         Notification notification = new NotificationCompat.Builder(this)
+                .setChannelId("Chat")
                 .setAutoCancel(true)
                 .setTicker("Nature")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("这是一个测试标题")
+                .setSmallIcon(R.drawable.picture_icon_wechat_down)
+                .setContentTitle(From + " 向 "+ To + "发送了：")
                 .setContentIntent(pendingIntent)
-                .setContentText("这是一个测试内容")
+                .setContentText(content)
                 .setWhen(System.currentTimeMillis())
                 .build();
 
