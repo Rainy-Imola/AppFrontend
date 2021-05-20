@@ -195,14 +195,13 @@ public class UserInfoViewModel extends AndroidViewModel {
                 MediaType JSON = MediaType.parse("application/json;charset=utf-8");
                 JSONObject json = new JSONObject();
                 try {
-                    json.put("username", mUser.getUser_name());
+
                     json.put("hobby", new JSONArray(mUser.getUser_hobby()));
                     json.put("constellation", mUser.getUser_constellation());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.d("Hobby_type", mUser.getUser_hobby().getClass().getTypeName().toString());
-                Log.d("Hobby_type", mUser.getUser_hobby().toString());
+
                 //申明给服务端传递一个json串
                 //创建一个OkHttpClient对象
                 String token=sharedPreferences.getString("token","");

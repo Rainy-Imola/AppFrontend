@@ -85,13 +85,6 @@ public class ModifyFragment extends Fragment {
         nameIG.setContentEdt(mViewModel.readUser().getUser_name());
         idIG.setContentEdt(String.valueOf(mViewModel.readUser().getUser_id()));
         constellationIG.setContentEdt(mViewModel.readUser().getUser_constellation());
-        nameIG.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "点击了更改昵称", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(v).navigate(R.id.action_modifyFragment_to_modify_nameFragment);
-            }
-        });
         hobbyIG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,12 +142,14 @@ public class ModifyFragment extends Fragment {
                 if(finalPopupWindow != null && finalPopupWindow.isShowing()) {
                     PictureSelector.create((Activity) view.getContext())
                             .openCamera(PictureMimeType.ofImage())
+                            .loadImageEngine(GlideEngine.createGlideEngine())
                             .forResult(new OnResultCallbackListener<LocalMedia>() {
                         @Override
                         public void onResult(List<LocalMedia> result) {
                             String imagepath = result.get(0).getPath();
                             Glide.with(view.getContext()).load(imagepath).into(avatarView);
                             Log.d("select image of uri", String.valueOf(imagepath));
+
                             // onResult Callback
                         }
 
@@ -175,7 +170,7 @@ public class ModifyFragment extends Fragment {
             public void onClick(View view) {
                 PictureSelector.create((Activity) view.getContext())
                         .openGallery(PictureMimeType.ofImage())
-                        // 请参考Demo GlideEngine.java
+                        .loadImageEngine(GlideEngine.createGlideEngine())
                         .forResult(new OnResultCallbackListener<LocalMedia>() {
                             @Override
                             public void onResult(List<LocalMedia> result) {
