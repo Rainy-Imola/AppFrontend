@@ -36,6 +36,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
                     android:textColor="@color/black"
+                    android:clickable="true"
                     android:textSize="20sp"
                     tools:text="author_name:" />
                 <TextView
