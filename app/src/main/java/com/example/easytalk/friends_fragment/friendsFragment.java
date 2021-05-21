@@ -61,12 +61,14 @@ public class friendsFragment extends Fragment {
     private List<friend> messages;
     private FriendAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private TextView newFriendView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.friends_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.friends);
         TextView title = (TextView) root.findViewById(R.id.title_f);
+        newFriendView=root.findViewById(R.id.newFriendView);
         title.setText("Friends");
         title.setGravity(Gravity.CENTER);
         setHasOptionsMenu(true);
@@ -77,7 +79,7 @@ public class friendsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
-        // TODO: Use the ViewModel
+        // TODO: Get friend requests
 
 
     }

@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.GestureDetector;
@@ -72,6 +73,8 @@ public class boardFragment extends Fragment {
     private AnimatorSet animatorSet;
     private ObjectAnimator alphaAnimator_lottie,alphaAnimator_message;
     private BoardViewModel boardViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Context context;
 
 
     @Override
@@ -87,7 +90,7 @@ public class boardFragment extends Fragment {
         animationView.playAnimation();
         animatorSet=new AnimatorSet();
         mAdapter=new MessageAdapter(messages);
-
+        swipeRefreshLayout=root.findViewById(R.id.swipe_board);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +100,7 @@ public class boardFragment extends Fragment {
         });
         animationView.setAlpha(1f);
         mRecyclerView.setAlpha(0f);
+
         return root;
     }
 
@@ -104,12 +108,21 @@ public class boardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         try {
-            refreshMessages(1500);
+            loadMessages(1500);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        context=getContext();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshMessages();
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(context,"刷新成功",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
@@ -118,10 +131,8 @@ public class boardFragment extends Fragment {
         //boardViewModel.requestMessage();
         //his.messages=boardViewModel.getmMessage();
     }
-
-    public void refreshMessages(int sleepTime) throws IOException, InterruptedException {
+    public void refreshMessages(){
         boardViewModel.requestMessage();
-        Log.d("MessageInfo","fragment:msg_size:"+String.valueOf(messages.size()));
         boardViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
@@ -135,6 +146,25 @@ public class boardFragment extends Fragment {
                 }
             }
         });
+    }
+    public void loadMessages(int sleepTime) throws IOException, InterruptedException {
+        boardViewModel.requestMessage();
+        Log.d("MessageInfo","fragment:msg_size:"+String.valueOf(messages.size()));
+        boardViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String status) {
+                if(status=="message"){
+                    messages.clear();
+                    Log.d("MessageStatus",String.valueOf(boardViewModel.getmMessage().size()));
+                    for(message imessage:boardViewModel.getmMessage()){
+                        messages.add(imessage);
+                    }
+                    Log.d("MessageStatus", String.valueOf(messages.size()));
+                }
+                mAdapter.setmItems(messages);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
         if(!boardViewModel.isGetMsgSucc()){
             Toast.makeText(getContext(),"用户状态异常，请重新登陆！",Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
@@ -143,6 +173,7 @@ public class boardFragment extends Fragment {
             editor.commit();
             NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_loginActivity);
         }
+
         getView().postDelayed(new Runnable() {
             @Override
             public void run() {
