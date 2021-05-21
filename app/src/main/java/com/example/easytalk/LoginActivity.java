@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 //        tv_title.setGravity(Gravity.CENTER);
 
         this.getSupportActionBar().hide();//在 setContentView(R.layout.activity_main)后
-        //checkOut();
+        checkOut();
         login = (Button) findViewById(R.id.log_in);
         register = (Button) findViewById(R.id.register);
         forgetpw = (Button) findViewById(R.id.forget_pw);

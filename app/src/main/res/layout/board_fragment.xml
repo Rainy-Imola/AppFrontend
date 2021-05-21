@@ -19,15 +19,22 @@
         app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/material_wave_loading"
         android:layout_marginBottom="60dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/board"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="699dp"
         android:layout_marginTop="60dp"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="60dp"
+        android:id="@+id/swipe_board">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/board"
+            android:layout_width="match_parent"
+            android:layout_height="699dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="60dp">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

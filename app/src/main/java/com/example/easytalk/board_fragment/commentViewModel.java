@@ -95,8 +95,8 @@ public class commentViewModel extends AndroidViewModel {
                                 SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 Date formatted_date=format.parse(string_date);
 
-                                String msg_id=cur_comment.getString("message");
-                                comment mComment=new comment(author,content,msg_id,formatted_date);
+                                //String msg_id=cur_comment.getString("message");
+                                comment mComment=new comment(author,content,message_id,formatted_date);
                                 mComments.add(mComment);
                             }
                             Log.d("comment_viewModel", String.valueOf(mComments.size()));
