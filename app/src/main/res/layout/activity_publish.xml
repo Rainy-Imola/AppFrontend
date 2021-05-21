@@ -4,50 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PublishActivity">
+    tools:context=".PublishActivity"
+    tools:layout_editor_absoluteY="81dp">
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:background="@drawable/bg1"
         android:orientation="vertical"
         android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:hint="说几句话吧">
-
-            <EditText
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="#C1F8F8"
-                tools:layout_conversion_absoluteHeight="100dp"
-                tools:layout_conversion_absoluteWidth="331dp"
-                tools:layout_editor_absoluteX="40dp"
-                tools:layout_editor_absoluteY="20dp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/sd_cover"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="20dp"
-            android:background="#8AE6EA"
-            app:actualImageScaleType="centerCrop"
-            app:placeholderImage="@drawable/ic_baseline_add_24" />
 
         <!--        <Button-->
         <!--            android:id="@+id/btn_cover"-->
@@ -56,29 +28,87 @@
         <!--            android:layout_gravity="center"-->
         <!--            android:text="选择封面" />-->
         <!--        发布按钮-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textField"
+            android:layout_width="316dp"
+            android:layout_height="223dp"
+
+            android:hint="Say Anything..."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.563"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.044"
+            tools:layout_conversion_absoluteHeight="250dp"
+            tools:layout_conversion_absoluteWidth="371dp">
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/textstyle2"
+                tools:layout_conversion_absoluteHeight="120dp"
+                tools:layout_conversion_absoluteWidth="371dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sd_cover"
+            android:layout_width="87dp"
+            android:layout_height="90dp"
+            android:background="@drawable/textstyle3"
+            app:actualImageScaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.212"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.59"
+            app:placeholderImage="@drawable/ic_baseline_add_24"
+            tools:layout_conversion_absoluteHeight="150dp"
+            tools:layout_conversion_absoluteWidth="150dp" />
+
         <Button
             android:id="@+id/publish_btn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="25dp"
-            android:layout_gravity="center"
-            android:background="@drawable/publish" />
+            android:layout_width="61dp"
+            android:layout_height="58dp"
+            android:background="@drawable/publish"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.548"
+            tools:layout_conversion_absoluteHeight="60dp"
+            tools:layout_conversion_absoluteWidth="60dp" />
+
         <TextView
+            android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="点击发送"
-            android:layout_gravity="center"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.769"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.652"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="56dp" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="63dp"
+            android:layout_height="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.939"
+            app:srcCompat="@drawable/logo" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="141dp"
-        android:layout_height="126dp"
-        android:layout_marginEnd="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92"
-        app:srcCompat="@drawable/logo" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
