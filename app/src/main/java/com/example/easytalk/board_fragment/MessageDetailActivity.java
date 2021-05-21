@@ -3,6 +3,7 @@ package com.example.easytalk.board_fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,14 +69,17 @@ public class MessageDetailActivity extends AppCompatActivity {
     private SimpleDraweeView coverView;
     private message msg;
     private List<comment> comments=new ArrayList<>();
-    private commentViewModel mCommentViewModel;
-    private CommentView mCommentView;
     private Context context;
-    private ViewGroup constraintLayout;
     private SharedPreferences sp;
     private int author_id;
+    private commentAdapter mCommentAdapter;
+    private RecyclerView commentRecyclerView;
+    private commentViewModel mCommentViewModel;
     private String token;
     private String author;
+    private Handler mHandler=new Handler();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,22 +103,18 @@ public class MessageDetailActivity extends AppCompatActivity {
         String resDate=format.format(date);
         dateView.setText(resDate);
         context=this;
-
         commentPostEditTextView=findViewById(R.id.postCommentText);
         commentPostButton=findViewById(R.id.postCommentButton);
 
-        mCommentView=findViewById(R.id.commentView);
-        mCommentView.setViewStyleConfigurator(new DefaultViewStyleConfigurator(context));
-        mCommentView.callbackBuilder()
-                .setOnItemClickCallback(new MyOnItemClickCallback())
-                .setOnPullRefreshCallback(new MyOnPullRefreshCallback())
-                .buildCallback();
-        Log.d("commentView","commentView build callback function called");
+        commentRecyclerView=findViewById(R.id.commentRecyclerView);
+        mCommentAdapter=new commentAdapter(null);
+
 
         sp=getSharedPreferences("user_profile",MODE_PRIVATE);
         author_id=sp.getInt("id",-1);
         author=sp.getString("username","defaultAuthor");
         token=sp.getString("token",null);
+
 
         authorView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +157,6 @@ public class MessageDetailActivity extends AppCompatActivity {
                 }.start();
             }
         });
-
         commentPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,17 +195,23 @@ public class MessageDetailActivity extends AppCompatActivity {
                                 JSONObject result = new JSONObject(res);
                                 int status = result.getInt("status");
                                 if(status!=0){
-                                    Looper.prepare();
-                                    Toast.makeText(MessageDetailActivity.this,"评论发布失败！",Toast.LENGTH_SHORT).show();
-                                    Looper.loop();
+                                    Runnable postFailRunnable=new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(context,"评论发布失败",Toast.LENGTH_SHORT).show();
+                                        }
+                                    };
+                                    mHandler.post(postFailRunnable);
                                 }else{
-                                    //TODO:执行评论成功操作
-                                    //commentPostEditTextView.setText(null);
-                                    //refreshCommentData();
-                                    //mCommentView.addComment(comment);
-                                    Log.d("commentPost","postSuccess");
+                                    Runnable postRunnable=new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(context,"评论成功！",Toast.LENGTH_SHORT).show();
+                                            refreshCommentData();
+                                        }
+                                    };
+                                    mHandler.post(postRunnable);
                                 }
-                                //Log.d("commentPost", String.valueOf(status));
                             }catch (JSONException e){
                                 e.printStackTrace();
                             }
@@ -233,44 +239,13 @@ public class MessageDetailActivity extends AppCompatActivity {
                         Log.d("commentView",icomment.getContent());
                         comments.add(icomment);
                     }
-                    mCommentView.loadComplete(new CommentModel(comments));
-                    Log.d("commentViewList", String.valueOf(mCommentView.getCommentList()));
+                    mCommentAdapter.setComments(comments);
+                    commentRecyclerView.setAdapter(mCommentAdapter);
+                    commentRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                 }
 
             }
         });
-    }
-
-
-    class MyOnPullRefreshCallback implements OnPullRefreshCallback{
-
-        @Override
-        public void refreshing() {
-            refreshCommentData();
-        }
-
-        @Override
-        public void complete() {
-            Toast.makeText(context,"刷新成功！",Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void failure(String msg) {
-            Toast.makeText(context,"刷新失败！",Toast.LENGTH_SHORT).show();
-        }
-    }
-    class MyOnItemClickCallback implements OnItemClickCallback{
-
-        @Override
-        public void commentItemOnClick(int position, CommentEnable comment, View view) {
-            Intent intent=new Intent();
-
-        }
-
-        @Override
-        public void replyItemOnClick(int c_position, int r_position, ReplyEnable reply, View view) {
-            Toast.makeText(context,"回复功能暂不可用",Toast.LENGTH_SHORT).show();
-        }
     }
 
 }
