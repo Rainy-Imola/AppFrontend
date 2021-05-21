@@ -18,8 +18,8 @@
         app:tBackImage="@drawable/user_return"
         app:tBackgroundColor="@color/white"
         app:tCenterTitle="true"
-        app:tTitleText="hobby"
         app:tMenuText="保存"
+        app:tTitleText="hobby"
         app:tTitleTextColor="@android:color/primary_text_light"
         app:tTitleTextSize="16sp" />
 
