@@ -1,9 +1,13 @@
 package com.example.easytalk.user_info_fragment;
 
 import android.animation.Animator;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,8 +33,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.donkingliang.labels.LabelsView;
+import com.example.easytalk.MainActivity;
 import com.example.easytalk.R;
+import com.example.easytalk.baseActivity;
 import com.example.easytalk.board_fragment.MessageDetailActivity;
+import com.example.easytalk.chat.ChatService;
 import com.example.easytalk.model.User;
 import com.example.easytalk.model.message;
 import com.example.easytalk.widget.RoundImageView;
@@ -40,6 +47,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.security.auth.callback.Callback;
 
 public class UserInfoFragment extends Fragment {
 
@@ -181,6 +190,7 @@ public class UserInfoFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("status",2);
                 editor.commit();
+
                 NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_loginActivity);
                 return true;
             default:
@@ -231,6 +241,11 @@ public class UserInfoFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("status",2);
                 editor.commit();
+//                final Intent intent = new Intent();
+//                intent.setAction("com.xch.servicecallback.content");
+//                Intent eintent = new Intent(getExplicitIntent(mContext,intent));
+//                mContext.stopService(eintent);
+                sendFinishActivityBroadcast(mContext);
                 mnavController.navigate(R.id.action_navigation_myinfo_to_loginActivity);
 
             }
@@ -276,5 +291,16 @@ public class UserInfoFragment extends Fragment {
         // everything behind this window will be dimmed.
         // 此方法用来设置浮动层，防止部分手机变暗无效
         this.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+    }
+
+    public static void sendFinishActivityBroadcast(Context context) {
+        Intent intent = new Intent(baseActivity.RECEIVER_ACTION_FINISH);
+        context.sendBroadcast(intent);
+    }
+
+    @Override
+    public void onPause() {
+        mPopupWindow.dismiss();
+        super.onPause();
     }
 }

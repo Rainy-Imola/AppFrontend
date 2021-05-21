@@ -56,7 +56,8 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
-        <service android:name=".chat.ChatService"/>
+        <service android:name=".chat.ChatService">
+        </service>
     </application>
 
 </manifest>

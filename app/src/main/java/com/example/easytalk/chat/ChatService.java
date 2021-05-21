@@ -42,6 +42,7 @@ public class ChatService extends Service {
     public ChatClient client;
     private JWebSocketClientBinder mBinder = new JWebSocketClientBinder();
     private final static int GRAY_SERVICE_ID = 1001;
+    private boolean exit = false;
     public class JWebSocketClientBinder extends Binder {
         public ChatService getService() {
             return ChatService.this;
@@ -73,6 +74,7 @@ public class ChatService extends Service {
     @Override
     public void onDestroy() {
         closeConnect();
+        exit = true;
         super.onDestroy();
     }
     public ChatService(){
@@ -177,18 +179,25 @@ public class ChatService extends Service {
     private Runnable heartBeatRunnable = new Runnable() {
         @Override
         public void run() {
-            Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");
-            if (client != null) {
-                if (client.isClosed()) {
-                    reconnectWs();
+
+            if(exit == false){
+                Log.e("JWebSocketClientService", "心跳包检测websocket连接状态");
+                if (client != null) {
+                    if (client.isClosed()) {
+                        reconnectWs();
+                    }
+                } else {
+                    //如果client已为空，重新初始化连接
+                    client = null;
+                    initSocket();
                 }
-            } else {
-                //如果client已为空，重新初始化连接
-                client = null;
-                initSocket();
+                //每隔一定的时间，对长连接进行一次心跳检测
+                mHandler.postDelayed(this, HEART_BEAT_RATE);
+            }else{
+                Log.d("ChatService","连接已主动关闭");
+                closeConnect();
             }
-            //每隔一定的时间，对长连接进行一次心跳检测
-            mHandler.postDelayed(this, HEART_BEAT_RATE);
+
         }
     };
 
