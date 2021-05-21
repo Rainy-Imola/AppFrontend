@@ -49,6 +49,7 @@ public class UserInfoFragment extends Fragment {
     private TextView user_constellation;
     private RoundImageView user_avatar;
     private List<message> mItems= new ArrayList<>();
+    private User mUser = new User();
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -104,7 +105,7 @@ public class UserInfoFragment extends Fragment {
             @Override
             public void onChanged(String status) {
                 if(status == "user") {
-                    User mUser = mViewModel.readUser();
+                    mUser = mViewModel.readUser();
                     if (mUser.getUser_hobby() != null && mUser.getUser_hobby().isEmpty()) {
                         user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
                     } else {
@@ -115,10 +116,10 @@ public class UserInfoFragment extends Fragment {
                     } else {
                         user_constellation.setText(mUser.getUser_constellation());
                     }
+                    user_name.setText(mUser.getUser_name());
                     if (mUser.getUser_avatar().length() != 0){
                         Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
                     }
-                    user_name.setText(mUser.getUser_name());
                 }
                 else if(status == "message") {
                     try {

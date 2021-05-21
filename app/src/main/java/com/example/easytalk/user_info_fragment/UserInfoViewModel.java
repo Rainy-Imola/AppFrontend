@@ -93,7 +93,8 @@ public class UserInfoViewModel extends AndroidViewModel {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
                 Integer user_id = sharedPreferences.getInt("id", 2);
-                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/")
+                String user_name = sharedPreferences.getString("username", "");
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard"+"?author="+user_name)
                         .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
@@ -115,7 +116,17 @@ public class UserInfoViewModel extends AndroidViewModel {
                                 String id = cur_msg.getString("id");
                                 String author = cur_msg.getString("author");
                                 String content = cur_msg.getString("content");
-                                String date = cur_msg.getString("date");
+                                //process date
+                                JSONObject json_date=cur_msg.getJSONObject("date");
+                                String yyyy=String.valueOf(json_date.getInt("year")+1900);
+                                String MM=String.valueOf(json_date.getInt("month")+1);
+                                String dd=String.valueOf(json_date.getInt("date"));
+                                String hh=String.valueOf(json_date.getInt("hours"));
+                                String mm=String.valueOf(json_date.getInt("minutes"));
+                                String ss=String.valueOf(json_date.getInt("seconds"));
+                                String string_date=yyyy+"-"+MM+"-"+dd+" "+hh+":"+mm+":"+ss;
+                                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Date formatted_date=format.parse(string_date);
                                 String picture;
                                 try {
                                     picture = cur_msg.getString("picture");
@@ -123,10 +134,8 @@ public class UserInfoViewModel extends AndroidViewModel {
                                     picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
                                 }
                                 Log.d("MessageInfo", "cur_msg_info:" + "id:" + " " + id + " author:" + author + " content:" + content);
-                                //handle date
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS'Z'");
-                                Date FormattedDate = format.parse(date);
-                                message msg = new message(id, author, content, FormattedDate, picture);
+
+                                message msg = new message(id, author, content, formatted_date, picture);
                                 mMessage.add(msg);
                                 Log.d("user_info MessageInfo", "finished one circle");
                             }
