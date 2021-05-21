@@ -29,7 +29,9 @@ import android.widget.Toast;
 import com.example.easytalk.Constants;
 import com.example.easytalk.HttpAPI;
 import com.example.easytalk.R;
-import com.example.easytalk.chat.MainChatActivity;
+
+import com.example.easytalk.baseActivity;
+
 import com.example.easytalk.friends_fragment.FriendDetailActivity;
 import com.example.easytalk.model.CommentModel;
 import com.example.easytalk.model.comment;
@@ -62,7 +64,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MessageDetailActivity extends AppCompatActivity {
+public class MessageDetailActivity extends baseActivity {
     //TODO: post comment
     //TODO: click author name to author information layout
     //TODO: use commentView component

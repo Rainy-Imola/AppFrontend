@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.easytalk.Constants;
 import com.example.easytalk.R;
+import com.example.easytalk.baseActivity;
 import com.example.easytalk.commom_user_fragment.CommonUserInfoFragment;
 import com.example.easytalk.model.friend;
 import com.example.easytalk.model.message;
@@ -35,7 +36,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class FriendDetailActivity extends AppCompatActivity {
+public class FriendDetailActivity extends baseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

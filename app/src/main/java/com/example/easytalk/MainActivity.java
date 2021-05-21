@@ -8,16 +8,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 
 import com.example.easytalk.chat.ChatService;
 import com.example.easytalk.chat.MainChatActivity;
+import com.example.easytalk.user_info_fragment.UserInfoFragment;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends baseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
     }
     @Override
     public boolean onSupportNavigateUp() {
@@ -44,6 +47,13 @@ public class MainActivity extends AppCompatActivity {
     private void startChatService(){
         Intent intent = new Intent(MainActivity.this, ChatService.class);
         startService(intent);
+    }
+
+    @Override
+    public void finish() {
+        Intent intent = new Intent(MainActivity.this, ChatService.class);
+        stopService(intent);
+        super.finish();
     }
     //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

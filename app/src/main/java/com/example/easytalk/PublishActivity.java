@@ -47,7 +47,7 @@ import retrofit2.http.FormUrlEncoded;
 import static com.example.easytalk.Constants.baseUrl;
 import static com.example.easytalk.Constants.pictureUrl;
 
-public class PublishActivity extends AppCompatActivity {
+public class PublishActivity extends baseActivity {
     private static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
     private EditText editAuthor;
     //private EditText editContent;

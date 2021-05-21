@@ -24,12 +24,16 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.L;
+import com.example.easytalk.MainActivity;
 import com.example.easytalk.R;
+import com.example.easytalk.baseActivity;
+import com.example.easytalk.friends_fragment.FriendDetailActivity;
 import com.example.easytalk.model.chatMsg;
 
 import org.json.JSONException;
@@ -40,13 +44,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainChatActivity extends AppCompatActivity {
+public class MainChatActivity extends baseActivity {
     private List<chatMsg> msglist = new ArrayList<chatMsg>();
     private List<chatMsg> nowList = new ArrayList<chatMsg>();
     private ChatAdapter mAdapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button send;
+    private ImageView back;
     private EditText editText;
     private TextView chatName;
     private ChatClient chatClient ;
@@ -88,6 +93,7 @@ public class MainChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.chat_list);
         swipeRefreshLayout = findViewById(R.id.swipe_chat);
         send = findViewById(R.id.btn_send);
+        back = findViewById(R.id.back_to_friend);
         editText = findViewById(R.id.et_content);
         chatName = findViewById(R.id.chat_name);
         chatName.setText(To);
@@ -128,6 +134,17 @@ public class MainChatActivity extends AppCompatActivity {
             }
 
         });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  finish();
+                  Intent intent=new Intent(v.getContext(), MainActivity.class);
+//                  intent.putExtra("id",0);
+//                  intent.putExtra("name",From);
+                  v.getContext().startActivity(intent);
+
+            }
+        });
     }
 
     private void bindservice(){
@@ -162,6 +179,7 @@ public class MainChatActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             chatMsg item1 = new chatMsg(From,To, 1,content);
+            Log.d("receive"," receive add");
             msglist.add(item1);
             nowList.add(item1);
             initChatUi();
@@ -196,14 +214,17 @@ public class MainChatActivity extends AppCompatActivity {
         editText.setText("");
         Log.d("send event:","content");
         chatMsg msg = new chatMsg("test2","test2",0,content);
-        nowList.add(msg);
+        //nowList.add(msg);
+        Log.d("send"," send add");
         msglist.add(msg);
         mAdapter.setmItems(msglist);
         if (chatClient != null && chatClient.isOpen()) {
             chatService.sendMsg(To, From, content);
         }
+        initChatUi();
     }
     private void pullHistory(){
+        Log.d("PullHistory","add");
         List<chatMsg> historyChatMessage = chatService.getMessageList();
         List<chatMsg> tempList = new ArrayList<chatMsg>();
         for(int i = 0;i < historyChatMessage.size(); i++){
@@ -220,14 +241,12 @@ public class MainChatActivity extends AppCompatActivity {
                 tempList.add(temp);
             }
         }
-        msglist = new ArrayList<chatMsg>();
-        for(int i = 0;i <tempList.size();i++){
-            Log.d("messageList:", tempList.get(i).toString());
-            msglist.add(tempList.get(i));
-        }
-        for(int i = 0;i < nowList.size();i++){
-            msglist.add(nowList.get(i));
-        }
+        msglist = tempList;
+//        for(int i = 0;i <tempList.size();i++){
+//            Log.d("messageList:", tempList.get(i).toString());
+//            msglist.add(tempList.get(i));
+//        }
+        //nowList = msglist;
         initChatUi();
     }
 //    private void initChat(){
