@@ -22,10 +22,10 @@
             android:background="#09000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"
             tools:layout_conversion_absoluteHeight="603dp"
             tools:layout_conversion_absoluteWidth="411dp">
 
@@ -59,8 +59,8 @@
 
             <EditText
                 android:id="@+id/username"
-                android:layout_width="260dp"
-                android:layout_height="45dp"
+                android:layout_width="266dp"
+                android:layout_height="51dp"
                 android:background="@drawable/textstyle"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
                 android:hint="  Username"
@@ -76,8 +76,8 @@
 
             <EditText
                 android:id="@+id/password1"
-                android:layout_width="259dp"
-                android:layout_height="49dp"
+                android:layout_width="265dp"
+                android:layout_height="51dp"
                 android:background="@drawable/textstyle"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:hint="  Password"
@@ -85,15 +85,15 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.474"
+                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.391" />
+                app:layout_constraintVertical_bias="0.394" />
 
             <EditText
                 android:id="@+id/password2"
-                android:layout_width="258dp"
-                android:layout_height="52dp"
+                android:layout_width="265dp"
+                android:layout_height="51dp"
                 android:background="@drawable/textstyle"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:hint="  Comfirm "
@@ -101,23 +101,26 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.475"
+                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.52" />
+                app:layout_constraintVertical_bias="0.518" />
 
             <EditText
                 android:id="@+id/email"
-                android:layout_width="258dp"
-                android:layout_height="51dp"
+                android:layout_width="263dp"
+                android:layout_height="52dp"
                 android:background="@drawable/textstyle"
                 android:drawableLeft="@drawable/ic_baseline_email_24"
                 android:hint="  Email"
                 android:inputType="textEmailAddress"
                 android:textSize="20sp"
-                tools:layout_editor_absoluteX="75dp"
-                tools:layout_editor_absoluteY="364dp" />
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.646" />
 
             <EditText
                 android:id="@+id/codeEdit"
@@ -128,8 +131,12 @@
                 android:hint="  CAPTCHA"
                 android:inputType="number"
                 android:textSize="20sp"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="434dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.271"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.788" />
 
             <Button
                 android:id="@+id/sendBtn"
@@ -138,8 +145,12 @@
                 android:gravity="center"
                 android:text="@string/send"
                 android:textSize="16sp"
-                tools:layout_editor_absoluteX="233dp"
-                tools:layout_editor_absoluteY="434dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.757"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.793" />
 
             <TextView
                 android:id="@+id/text_register"
@@ -150,8 +161,12 @@
                 android:textColor="@color/blue_1"
                 android:textSize="26sp"
                 android:textStyle="bold"
-                tools:layout_editor_absoluteX="75dp"
-                tools:layout_editor_absoluteY="503dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.26"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.954" />
 
             <Button
                 android:id="@+id/registerBtn"
@@ -159,8 +174,12 @@
                 android:layout_height="68dp"
 
                 android:background="@drawable/forward"
-                tools:layout_editor_absoluteX="236dp"
-                tools:layout_editor_absoluteY="503dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.734"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.953" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
