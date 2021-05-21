@@ -16,8 +16,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -27,7 +29,9 @@ import android.widget.Toast;
 import com.example.easytalk.Constants;
 import com.example.easytalk.HttpAPI;
 import com.example.easytalk.R;
+
 import com.example.easytalk.baseActivity;
+
 import com.example.easytalk.friends_fragment.FriendDetailActivity;
 import com.example.easytalk.model.CommentModel;
 import com.example.easytalk.model.comment;
@@ -79,8 +83,7 @@ public class MessageDetailActivity extends baseActivity {
     private String token;
     private String author;
     private Handler mHandler=new Handler();
-
-
+    private InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,6 +161,24 @@ public class MessageDetailActivity extends baseActivity {
                 }.start();
             }
         });
+        inputMethodManager = (InputMethodManager) getSystemService(MessageDetailActivity.this.INPUT_METHOD_SERVICE);
+        coverView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+                commentPostEditTextView.setText("");
+                return false;
+            }
+        });
+        contentView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+                commentPostEditTextView.setText("");
+                return false;
+            }
+
+        });
         commentPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +224,7 @@ public class MessageDetailActivity extends baseActivity {
                                         }
                                     };
                                     mHandler.post(postFailRunnable);
-                                }else{
+                                } else {
                                     Runnable postRunnable=new Runnable() {
                                         @Override
                                         public void run() {
