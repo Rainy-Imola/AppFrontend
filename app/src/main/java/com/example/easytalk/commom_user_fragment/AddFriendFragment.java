@@ -35,6 +35,7 @@ public class AddFriendFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private String username2;
     private EditText userverifyEdit;
     private TitleBar mTitleBar;
     private Button mAdd;
@@ -71,6 +72,8 @@ public class AddFriendFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            username2 = getArguments().getString("name");
+            Log.d("adding username",username2);
         }
     }
 
@@ -91,13 +94,6 @@ public class AddFriendFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(CommonUserInfoViewModel.class);
         mLifecycleOwner = getViewLifecycleOwner();
         Context mContext = this.getContext();
-        mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
-            @Override
-            public void onMenuClick() {
-
-                Toast.makeText(mContext,"TODO：setting",Toast.LENGTH_SHORT).show();
-            }
-        });
         mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {
             @Override
             public void onBackClick() {
@@ -110,15 +106,14 @@ public class AddFriendFragment extends Fragment {
                 String newname = userverifyEdit.getText().toString();
                 if(TextUtils.isEmpty(newname)){
                     Toast.makeText(mContext,"不能为空",Toast.LENGTH_SHORT).show();
-                    Log.d("Login_info","空");
                     return;
                 }
-                mViewModel.requestAddFriend(mViewModel.readUser().getUser_name(),newname);
+                mViewModel.requestAddFriend(username2,newname);
                 mViewModel.getStatus().observe(mLifecycleOwner, new Observer<String>() {
                     @Override
                     public void onChanged(String satus) {
                         if(satus=="addsuccess"){
-                            Toast.makeText(mContext,"发送成功",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"请求成功",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

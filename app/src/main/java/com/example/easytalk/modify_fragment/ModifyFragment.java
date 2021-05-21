@@ -110,6 +110,8 @@ public class ModifyFragment extends Fragment {
             @Override
             public void onMenuClick() {
                 mViewModel.requestSave();
+                mViewModel.requestAvatarPost();
+
             }
         });
         mtitleLayout.setOnBackListener(new TitleBar.OnBackListener() {
@@ -146,16 +148,14 @@ public class ModifyFragment extends Fragment {
                             .forResult(new OnResultCallbackListener<LocalMedia>() {
                         @Override
                         public void onResult(List<LocalMedia> result) {
-                            String imagepath = result.get(0).getPath();
+                            String imagepath = result.get(0).getRealPath();
                             Glide.with(view.getContext()).load(imagepath).into(avatarView);
                             Log.d("select image of uri", String.valueOf(imagepath));
-
-                            // onResult Callback
+                            mViewModel.setPath_avatar(imagepath);
                         }
 
                         @Override
                         public void onCancel() {
-                            // onCancel Callback
                             Log.d("select image", String.valueOf("exit"));
                         }
                     });
@@ -174,9 +174,10 @@ public class ModifyFragment extends Fragment {
                         .forResult(new OnResultCallbackListener<LocalMedia>() {
                             @Override
                             public void onResult(List<LocalMedia> result) {
-                                String imagepath = result.get(0).getPath();
+                                String imagepath = result.get(0).getRealPath();
                                 Glide.with(view.getContext()).load(imagepath).into(avatarView);
-                                Log.d("select image of uri", String.valueOf(imagepath));
+                                Log.d("select image", String.valueOf(imagepath));
+                                mViewModel.setPath_avatar(imagepath);
                                 // onResult Callback
                             }
 

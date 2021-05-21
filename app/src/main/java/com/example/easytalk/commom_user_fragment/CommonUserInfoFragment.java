@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,11 +23,11 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.labels.LabelsView;
 import com.example.easytalk.R;
 import com.example.easytalk.board_fragment.MessageDetailActivity;
 import com.example.easytalk.chat.MainChatActivity;
-import com.example.easytalk.friends_fragment.FriendDetailActivity;
 import com.example.easytalk.model.User;
 import com.example.easytalk.model.message;
 import com.example.easytalk.user_info_fragment.AnimUtil;
@@ -38,7 +37,6 @@ import com.loper7.layout.TitleBar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,6 +97,7 @@ public class CommonUserInfoFragment extends Fragment {
         user_hobby = (LabelsView) root.findViewById(R.id.labels);
         mTitleBar = root.findViewById(R.id.main_titleBar);
         addorchar = root.findViewById(R.id.button);
+        user_avatar = root.findViewById(R.id.common_user_info_imageView);
         return root;
     }
 
@@ -112,56 +111,48 @@ public class CommonUserInfoFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(CommonUserInfoViewModel.class);
-
         mViewModel.requestUser(mArgument);
         mViewModel.requestMessage(mArgument);
+        mViewModel.isFriend(mArgument);
+        mViewModel.getFriendStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d("observe friend check",s);
+                if(s=="friendyes"){
+                    addorchar.setText("发消息");
+                    addorchar.setTag(new Integer(1));
+                }else if (s=="friendno"){
+                    addorchar.setText("加好友");
+                    addorchar.setTag(new Integer(2));
+                }
+            }
+        });
+        mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User mUser) {
+                if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
+                    user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
+                }else {
+                    user_hobby.setLabels(mUser.getUser_hobby());
+                }
+                if(mUser.getUser_constellation().length() == 0){
+                    user_constellation.setText("未添加星座");
+                }else {
+                    user_constellation.setText(mUser.getUser_constellation());
+                }
+                user_name.setText(mUser.getUser_name());
+                if (mUser.getUser_avatar().length() != 0){
+                    Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
+                    Log.d("avatar_uri：",mUser.getUser_avatar());
+                }
+                Log.d("setName：",mUser.getUser_name());
+            }
+        });
         mViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
-                if(status == "user"){
-                    User mUser = mViewModel.readUser();
-                    if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
-                        user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
-                    }else {
-                        user_hobby.setLabels(mUser.getUser_hobby());
-                    }
-                    if(mUser.getUser_constellation().length() == 0){
-                        user_constellation.setText("未添加星座");
-                    }else {
-                        user_constellation.setText(mUser.getUser_constellation());
-                    }
-                    Log.d("setName：",mUser.getUser_name());
-                    user_name.setText(mUser.getUser_name());
-                    if(mViewModel.isFriend()){
-                        addorchar.setText("发消息");
-                        addorchar.setTag(new Integer(1));
-                    }else if(!mViewModel.isFriend()){
-                        addorchar.setText("加好友");
-                        addorchar.setTag(new Integer(2));
-                    }
-                }
-                else if(status == "message"){
-                    Log.d("setName：","message");
-                    User mUser = mViewModel.readUser();
-                    if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
-                        user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
-                    }else {
-                        user_hobby.setLabels(mUser.getUser_hobby());
-                    }
-                    if(mUser.getUser_constellation().length() == 0){
-                        user_constellation.setText("未添加星座");
-                    }else {
-                        user_constellation.setText(mUser.getUser_constellation());
-                    }
-                    Log.d("setName：",mUser.getUser_name());
-                    user_name.setText(mUser.getUser_name());
-                    if(mViewModel.isFriend()){
-                        addorchar.setText("发消息");
-                        addorchar.setTag(new Integer(1));
-                    }else if(!mViewModel.isFriend()){
-                        addorchar.setText("加好友");
-                        addorchar.setTag(new Integer(2));
-                    }
+                    if(status == "message"){
+                    Log.d("set","message");
                     for (message imessage:mViewModel.getMessage()
                     ) {
                         mItems.add(imessage);
@@ -197,7 +188,9 @@ public class CommonUserInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if((Integer)addorchar.getTag()==2){
-                    mnavController.navigate(R.id.action_commonUserInfoFragment_to_addFriendFragment);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name",mArgument);
+                    mnavController.navigate(R.id.action_commonUserInfoFragment_to_addFriendFragment,bundle);
                 }
                 else if((Integer)addorchar.getTag()==1){
                     Intent intent=new Intent(v.getContext(), MainChatActivity.class);

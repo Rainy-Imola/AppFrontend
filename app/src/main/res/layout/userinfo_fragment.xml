@@ -20,32 +20,20 @@
             android:layout_height="244dp"
             app:contentScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="info"
             app:toolbarId="@+id/toolbar">
 
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.loper7.layout.TitleBar
+                android:id="@+id/main_titleBar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_gravity="top"
-                android:background="@color/white"
 
-                app:layout_collapseMode="pin"
-                app:titleTextColor="@color/blue">
-
-                <com.loper7.layout.TitleBar
-                    android:id="@+id/main_titleBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_collapseMode="pin"
-                    app:tBackgroundColor="@color/white"
-                    app:tCenterTitle="true"
-                    app:tMenuImage="@drawable/menu"
-                    app:tTitleText="个人信息"
-                    app:tTitleTextColor="@android:color/primary_text_light"
-                    app:tTitleTextSize="16sp" />
-            </androidx.appcompat.widget.Toolbar>
+                app:tBackgroundColor="@color/white"
+                app:tCenterTitle="true"
+                app:tMenuImage="@drawable/menu"
+                app:tTitleText="个人信息"
+                app:tTitleTextColor="@android:color/primary_text_light"
+                app:tTitleTextSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -120,18 +108,21 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-
-        app:layout_constraintHorizontal_bias="1.0" />
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+
+                    app:layout_constraintHorizontal_bias="1.0" />
+
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
