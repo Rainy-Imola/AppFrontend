@@ -83,6 +83,7 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                                 mUser.setUser_id((Integer) data.getJSONObject(0).get("id"));
                                 mUser.setUser_hobby(hobbyList);
                                 mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
+                                mUser.setUser_avatar((String) data.getJSONObject(0).get("avatar"));
                                 Log.d("User_info", "设置成功");
                             }
 

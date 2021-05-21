@@ -15,6 +15,17 @@ public class User {
     @SerializedName("user_id")
     private int user_id;
 
+    @SerializedName("user_avatar")
+    private String user_avatar;
+
+    public String getUser_avatar() {
+        return user_avatar;
+    }
+
+    public void setUser_avatar(String user_avatar) {
+        this.user_avatar = user_avatar;
+    }
+
     public int getUser_id() {
         return user_id;
     }
@@ -27,12 +38,14 @@ public class User {
         this.user_name = user_name;
         this.user_hobby = new ArrayList<>();
         this.user_constellation = "";
+        this.user_avatar = "";
     }
     public User(){
         this.user_name = "";
         this.user_hobby = new ArrayList<>();
         this.user_constellation = "";
         this.user_id=0;
+        this.user_avatar = "";
     }
     public String getUser_name() {
         return user_name;

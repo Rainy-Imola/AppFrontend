@@ -66,8 +66,8 @@ android:layout_height="wrap_content">
                 app:labelTextSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
-                app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
+                app:layout_constraintStart_toStartOf="@+id/common_user_info_imageView"
+                app:layout_constraintTop_toBottomOf="@+id/common_user_info_imageView"
                 app:lineMargin="10dp"
                 app:maxColumns="5"
                 app:maxLines="3"
@@ -85,8 +85,8 @@ android:layout_height="wrap_content">
                 android:layout_marginTop="8dp"
                 android:text="TextView"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
-                app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
+                app:layout_constraintStart_toEndOf="@+id/common_user_info_imageView"
+                app:layout_constraintTop_toTopOf="@+id/common_user_info_imageView" />
 
             <TextView
                 android:id="@+id/user_info_constellation"
@@ -95,11 +95,11 @@ android:layout_height="wrap_content">
                 android:layout_marginBottom="8dp"
                 android:text="TextView"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
+                app:layout_constraintBottom_toBottomOf="@+id/common_user_info_imageView"
                 app:layout_constraintStart_toStartOf="@+id/user_info_name" />
 
             <com.example.easytalk.widget.RoundImageView
-                android:id="@+id/user_info_imageView"
+                android:id="@+id/common_user_info_imageView"
                 android:layout_width="70dp"
                 android:layout_height="77dp"
                 android:layout_marginStart="30dp"
