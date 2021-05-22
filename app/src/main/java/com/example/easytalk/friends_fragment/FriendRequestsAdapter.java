@@ -1,4 +1,4 @@
-package com.example.easytalk.friends_fragment;
+package com.example.JTrace.friends_fragment;
 
 import android.util.Log;
 import android.view.View;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.easytalk.R;
-import com.example.easytalk.model.NewFriendMsg;
-import com.example.easytalk.model.NewFriendMsgs;
+import com.example.JTrace.R;
+import com.example.JTrace.model.NewFriendMsg;
+import com.example.JTrace.model.NewFriendMsgs;
 
 import org.jetbrains.annotations.NotNull;
 
