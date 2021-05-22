@@ -1,4 +1,4 @@
-package com.example.easytalk.friends_fragment;
+package com.example.JTrace.friends_fragment;
 //TODO:用board fragment+viewModel写法把 friends fragment重构了
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
@@ -33,15 +33,15 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.easytalk.Constants;
-import com.example.easytalk.MainActivity;
-import com.example.easytalk.R;
-import com.example.easytalk.board_fragment.MessageAdapter;
-import com.example.easytalk.board_fragment.boardFragment;
-import com.example.easytalk.model.NewFriendMsg;
-import com.example.easytalk.model.NewFriendMsgs;
-import com.example.easytalk.model.friend;
-import com.example.easytalk.model.message;
+import com.example.JTrace.Constants;
+import com.example.JTrace.MainActivity;
+import com.example.JTrace.R;
+import com.example.JTrace.board_fragment.MessageAdapter;
+import com.example.JTrace.board_fragment.boardFragment;
+import com.example.JTrace.model.NewFriendMsg;
+import com.example.JTrace.model.NewFriendMsgs;
+import com.example.JTrace.model.friend;
+import com.example.JTrace.model.message;
 
 import org.json.JSONArray;
 import org.json.JSONException;
