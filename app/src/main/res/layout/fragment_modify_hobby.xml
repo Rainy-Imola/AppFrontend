@@ -10,17 +10,17 @@
     <com.loper7.layout.TitleBar
         android:id="@+id/commmon_return"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_collapseMode="pin"
+        android:layout_height="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tBackImage="@drawable/nav_return_icon_24"
-        app:tBackgroundColor="@color/white"
+        app:tBackImage="@drawable/nav_return_white"
+        app:tBackgroundColor="@color/blue_1"
         app:tCenterTitle="true"
         app:tMenuText="保存"
+        app:tMenuTextColor="@color/white"
         app:tTitleText="hobby"
-        app:tTitleTextColor="@android:color/primary_text_light"
+        app:tTitleTextColor="@android:color/white"
         app:tTitleTextSize="16sp" />
 
     <com.donkingliang.labels.LabelsView

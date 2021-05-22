@@ -10,6 +10,7 @@ import android.app.Activity;
 
 import android.content.Context;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -42,11 +43,17 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
 
+import cn.addapp.pickers.common.LineConfig;
+import cn.addapp.pickers.listeners.OnItemPickListener;
+import cn.addapp.pickers.picker.NumberPicker;
+import cn.addapp.pickers.picker.SinglePicker;
+import cn.addapp.pickers.util.ConvertUtils;
+import cn.addapp.pickers.widget.WheelView;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
+import java.util.Locale;
 
 
 public class ModifyFragment extends Fragment {
@@ -104,7 +111,49 @@ public class ModifyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了更改星座", Toast.LENGTH_SHORT).show();
-                Navigation.findNavController(v).navigate(R.id.action_modifyFragment_to_modify_constellationFragment);
+                boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
+                SinglePicker picker = new SinglePicker((Activity)mContext,
+                        isChinese ? new String[]{
+                                "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹",
+                                "狮子", "处女", "天秤", "天蝎", "射手", "摩羯"
+                        } : new String[]{
+                                "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer",
+                                "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"
+                        });
+                picker.setLabel(isChinese ? "座" : "");
+                picker.setCanLoop(false);//禁用循环
+                LineConfig config = new LineConfig();
+                config.setColor(Color.parseColor("#26A1B0"));//线颜色
+                config.setAlpha(100);//线透明度
+                config.setThick(ConvertUtils.toPx(mContext, 2));//线粗
+                picker.setLineConfig(config);
+                picker.setTopHeight(50);//顶部标题栏高度
+                picker.setTopLineColor(0xFF33B5E5);//顶部标题栏下划线颜色
+                picker.setTopLineHeight(1);//顶部标题栏下划线高度
+                picker.setTitleText(isChinese ? "请选择" : "Please pick");
+                picker.setTitleTextColor(0xFF999999);//顶部标题颜色
+                picker.setTitleTextSize(14);//顶部标题文字大小
+                picker.setCancelTextColor(0xFF33B5E5);//顶部取消按钮文字颜色
+                picker.setCancelTextSize(14);
+                picker.setSubmitTextColor(0xFF33B5E5);//顶部确定按钮文字颜色
+                picker.setSubmitTextSize(14);
+                picker.setSelectedTextColor(0xFFEE0000);
+                picker.setUnSelectedTextColor(0xFF999999);
+                //中间滚动项文字颜色
+                picker.setSize(800,800);
+                picker.setBackgroundColor(0xFFF5F5F5);
+                //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
+                picker.setSelectedIndex(10);//默认选中项
+                picker.setOnItemPickListener(new OnItemPickListener() {
+                    @Override
+                    public void onItemPicked(int index, Object item) {
+                        mViewModel.setUserConstellation(item.toString());
+                        Toast.makeText(mContext,"选择星座:"+item.toString(),Toast.LENGTH_SHORT).show();
+                    }
+            });
+
+                picker.show();
+                //Navigation.findNavController(v).navigate(R.id.action_modifyFragment_to_modify_constellationFragment);
             }
         });
         avatarView.setOnClickListener(new View.OnClickListener() {
@@ -211,8 +260,6 @@ public class ModifyFragment extends Fragment {
             }
         });
     }
-
-
 
 
 }

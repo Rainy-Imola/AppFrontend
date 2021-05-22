@@ -70,6 +70,7 @@ public class MessageDetailActivity extends baseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
         setContentView(R.layout.activity_message_detail);
         Intent intent=getIntent();
         msg= (message) intent.getSerializableExtra("message");

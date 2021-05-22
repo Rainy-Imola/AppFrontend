@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     app:tCenterTitle="true"
-                    app:tMenuImage="@drawable/menu_24_black"
+                    app:tMenuImage="@drawable/menu_white_24"
                     app:tTitleText="个人信息"
                     app:tTitleTextColor="@android:color/white"
                     app:tTitleTextSize="22sp" />
