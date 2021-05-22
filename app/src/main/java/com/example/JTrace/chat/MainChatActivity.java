@@ -120,7 +120,7 @@ public class MainChatActivity extends baseActivity {
 
             }//pay attention
         });
-        //TODO:控制软键盘
+
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
