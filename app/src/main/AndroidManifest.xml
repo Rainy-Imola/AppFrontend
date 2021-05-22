@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.easytalk">
+    package="com.example.JTrace">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,20 +13,22 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyTalk">
+
         <activity android:name=".friends_fragment.FriendRequestsActivity"></activity>
         <activity
             android:name=".chat.MainChatActivity"
             android:theme="@style/NoTitle"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".friends_fragment.FriendDetailActivity" />
+
         <activity
-            android:name=".SearchReaultsActivity"
+            android:name="com.example.JTrace.SearchReaultsActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -39,10 +41,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".board_fragment.MessageDetailActivity" />
-        <activity android:name=".PublishActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".WelcomeAcitivity">
+        <activity android:name="com.example.JTrace.board_fragment.MessageDetailActivity" />
+        <activity android:name="com.example.JTrace.PublishActivity" />
+        <activity android:name="com.example.JTrace.RegisterActivity" />
+        <activity android:name="com.example.JTrace.WelcomeAcitivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,6 +55,7 @@
         <activity android:name=".MainActivity" />
 
         <service android:name=".chat.ChatService" />
+
     </application>
 
 </manifest>

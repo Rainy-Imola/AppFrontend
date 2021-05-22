@@ -7,7 +7,15 @@
     android:id="@+id/boardFrameLayout"
     tools:context=".board_fragment.boardFragment">
 
-    <include layout = "@layout/title_board"></include>
+    <com.loper7.layout.TitleBar
+        android:id="@+id/title_b"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:tBackgroundColor="@color/blue_1"
+        app:tCenterTitle="true"
+        app:tTitleText="board"
+        app:tTitleTextColor="@color/white"
+        app:tTitleTextSize="22sp" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="match_parent"

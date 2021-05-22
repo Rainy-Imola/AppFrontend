@@ -3,47 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    tools:context=".user_info_fragment.UserInfoFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:theme="@style/Theme.EasyTalk.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing"
             android:layout_width="match_parent"
-            android:layout_height="244dp"
+            android:layout_height="match_parent"
             app:contentScrim="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/toolbar2">
 
-
-            <com.loper7.layout.TitleBar
-                android:id="@+id/main_titleBar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-
-                app:tBackgroundColor="@color/white"
-                app:tCenterTitle="true"
-                app:tMenuImage="@drawable/menu"
-                app:tTitleText="个人信息"
-                app:tTitleTextColor="@android:color/primary_text_light"
-                app:tTitleTextSize="16sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/visiablecon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_collapseMode="none">
+
+                <ImageView
+                    android:id="@+id/imageView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/backgroud_user"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.donkingliang.labels.LabelsView
                     android:id="@+id/labels"
                     android:layout_width="297dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     app:isIndicator="true"
                     app:labelBackground="@drawable/ic_userinfo_lable"
                     app:labelTextColor="@drawable/ic_userinfo_lable_text"
@@ -86,7 +87,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
                     app:layout_constraintStart_toStartOf="@+id/user_info_name" />
 
-                <com.example.easytalk.widget.RoundImageView
+                <com.example.JTrace.widget.RoundImageView
                     android:id="@+id/user_info_imageView"
                     android:layout_width="70dp"
                     android:layout_height="77dp"
@@ -95,34 +96,52 @@
                     android:maxHeight="155dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/defaultavatar"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline4" />
+                    app:layout_constraintTop_toBottomOf="@+id/guideline4" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="59dp" />
+                    app:layout_constraintGuide_begin="136dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar2"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/blue_1"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@color/blue_1">
 
-
-
-
-                    </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                </com.google.android.material.appbar.AppBarLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <com.loper7.layout.TitleBar
+                    android:id="@+id/main_titleBar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                    android:layout_height="56dp"
+                    app:tCenterTitle="true"
+                    app:tMenuImage="@drawable/menu_24_black"
+                    app:tTitleText="个人信息"
+                    app:tTitleTextColor="@android:color/white"
+                    app:tTitleTextSize="22sp" />
+            </androidx.appcompat.widget.Toolbar>
 
-                    app:layout_constraintHorizontal_bias="1.0" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:minHeight="350dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

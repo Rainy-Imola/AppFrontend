@@ -49,9 +49,9 @@
 
             <ImageView
                 android:id="@+id/imageView_setting"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/setting"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/settings_black_24"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_3"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/tv_3" />
@@ -73,7 +73,7 @@
                 android:id="@+id/imageView_exit"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/exit"
+                android:src="@drawable/exit_24"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_2"
                 app:layout_constraintStart_toStartOf="@+id/imageView_setting"
                 app:layout_constraintTop_toTopOf="@+id/tv_2" />

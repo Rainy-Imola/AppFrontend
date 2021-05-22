@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tBackImage="@drawable/user_return"
+        app:tBackImage="@drawable/nav_return_icon_24"
         app:tBackgroundColor="@color/white"
         app:tCenterTitle="true"
         app:tTitleText="name"

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EasyTalk</string>
+    <string name="app_name">JTrace</string>
     <string name="title_activity_login">LoginActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

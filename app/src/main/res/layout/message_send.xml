@@ -23,7 +23,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp">
 
-        <com.example.easytalk.widget.RoundImageView
+        <com.example.JTrace.widget.RoundImageView
             android:id="@+id/chat_send_header"
             android:layout_width="40dp"
             android:layout_height="40dp"
