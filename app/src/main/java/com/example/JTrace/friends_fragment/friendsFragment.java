@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.SearchManager;
 import android.content.Context;
+
 import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -25,15 +27,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.JTrace.R;
+
 import com.example.JTrace.model.NewFriendMsg;
 import com.example.JTrace.model.NewFriendMsgs;
+
 import com.example.JTrace.model.friend;
 
 import java.io.IOException;
@@ -50,6 +56,7 @@ public class friendsFragment extends Fragment {
     private List<friend> messages;
     private FriendAdapter mAdapter;
     private RecyclerView mRecyclerView;
+
     private RelativeLayout NewFriendLayout;
     private ImageView newFriendReminderView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -57,14 +64,17 @@ public class friendsFragment extends Fragment {
     private NewFriendMsgs friendRequests=new NewFriendMsgs();
     private NewFriendMessagesViewModel mFriendRequestsViewModel;
     private boolean isNew=false;//标记是否有新的待处理消息
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.friends_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.friends);
         TextView title = (TextView) root.findViewById(R.id.title_f);
+
         NewFriendLayout=root.findViewById(R.id.newFriendLayout);
         newFriendReminderView=root.findViewById(R.id.newFriend_reminder);
+
         swipeRefreshLayout = root.findViewById(R.id.friends_list_refresh);
         title.setText("Friends");
         title.setGravity(Gravity.CENTER);
@@ -97,6 +107,7 @@ public class friendsFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         mFriendRequestsViewModel=new ViewModelProvider(getActivity()).get(NewFriendMessagesViewModel.class);
         getFriendRequests();
         NewFriendLayout.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +143,7 @@ public class friendsFragment extends Fragment {
                 }
             }
         });
+
     }
 
     @Override

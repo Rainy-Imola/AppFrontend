@@ -20,12 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyTalk">
 
+
         <activity android:name=".friends_fragment.FriendRequestsActivity"></activity>
         <activity
             android:name=".chat.MainChatActivity"
             android:theme="@style/NoTitle"
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".friends_fragment.FriendDetailActivity" />
+
 
         <activity
             android:name="com.example.JTrace.SearchReaultsActivity"
@@ -51,10 +53,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
 
         <service android:name=".chat.ChatService" />
+
 
     </application>
 

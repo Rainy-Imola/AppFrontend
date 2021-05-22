@@ -117,6 +117,7 @@ public class MainChatActivity extends baseActivity {
 
             }//pay attention
         });
+
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
