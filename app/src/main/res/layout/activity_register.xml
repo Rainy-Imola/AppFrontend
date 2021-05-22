@@ -128,7 +128,7 @@
                 android:layout_width="135dp"
                 android:layout_height="46dp"
                 android:background="@drawable/textstyle"
-                android:hint="  CAPTCHA"
+                android:hint="  Code"
                 android:inputType="number"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
