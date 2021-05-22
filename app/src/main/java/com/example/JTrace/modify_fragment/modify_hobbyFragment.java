@@ -10,6 +10,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +23,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.donkingliang.labels.LabelsView;
 import com.example.JTrace.R;
+import com.example.JTrace.model.Hobby;
 import com.example.JTrace.user_info_fragment.UserInfoViewModel;
 import com.loper7.layout.TitleBar;
 
@@ -49,6 +57,10 @@ public class modify_hobbyFragment extends Fragment {
     private TitleBar mTitleBar;
     private LabelsView mLablesView;
     private List<String> hobbylist = new ArrayList<>();
+    private Button addTag;
+    private Button searchTag;
+    private RecyclerView recyclerView;
+    SectionMultipleItemAdapter sectionMultipleItemAdapter;
     public modify_hobbyFragment() {
         // Required empty public constructor
     }
@@ -87,6 +99,9 @@ public class modify_hobbyFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_modify_hobby, container, false);
         mTitleBar = root.findViewById(R.id.commmon_return);
         mLablesView = root.findViewById(R.id.labels_hobby);
+        addTag = root.findViewById(R.id.button2);
+        searchTag = root.findViewById(R.id.button3);
+        recyclerView =root.findViewById(R.id.recycle_hobby);
         return root;
     }
 
@@ -189,5 +204,33 @@ public class modify_hobbyFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
+        List<MultiItemEntity> list_data = new ArrayList<>();
+        int lvCount =6;
+        int lv1Count =5;
+        for (int i = 0; i < lvCount; i++) {
+            TagBean item0 = new TagBean("一级列表标题" + i);
+            list_data.add(item0);
+            for (int j = 0; j < lv1Count; j++) {
+                HobbyBean item1 = new HobbyBean("二级列表标题" + j);
+                list_data.add(item1);
+            }
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        sectionMultipleItemAdapter = new SectionMultipleItemAdapter(list_data);
+        sectionMultipleItemAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull @NotNull BaseQuickAdapter<?, ?> adapter, @NonNull @NotNull View view, int position) {
+                Log.d("dianji", String.valueOf(list_data.get(position).getItemType()));
+            }
+        });
+        sectionMultipleItemAdapter.addChildClickViewIds(R.id.textView8);
+        sectionMultipleItemAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
+
+            }
+        });
+
     }
 }
