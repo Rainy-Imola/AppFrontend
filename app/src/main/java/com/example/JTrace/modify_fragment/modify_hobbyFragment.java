@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +32,6 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.donkingliang.labels.LabelsView;
 import com.example.JTrace.R;
-import com.example.JTrace.model.Hobby;
 import com.example.JTrace.user_info_fragment.UserInfoViewModel;
 import com.loper7.layout.TitleBar;
 
@@ -60,7 +62,9 @@ public class modify_hobbyFragment extends Fragment {
     private Button addTag;
     private Button searchTag;
     private RecyclerView recyclerView;
-    SectionMultipleItemAdapter sectionMultipleItemAdapter;
+    private SectionMultipleItemAdapter sectionMultipleItemAdapter;
+    private EditText editText;
+    private List<MultiItemEntity> list_data;
     public modify_hobbyFragment() {
         // Required empty public constructor
     }
@@ -99,9 +103,10 @@ public class modify_hobbyFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_modify_hobby, container, false);
         mTitleBar = root.findViewById(R.id.commmon_return);
         mLablesView = root.findViewById(R.id.labels_hobby);
-        addTag = root.findViewById(R.id.button2);
-        searchTag = root.findViewById(R.id.button3);
+        addTag = root.findViewById(R.id.button3);
+        //searchTag = root.findViewById(R.id.button3);
         recyclerView =root.findViewById(R.id.recycle_hobby);
+        editText = root.findViewById(R.id.editTextTextPersonName);
         return root;
     }
 
@@ -109,6 +114,17 @@ public class modify_hobbyFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
+        list_data = new ArrayList<>();
+        int lvCount =6;
+        int lv1Count =5;
+        for (int i = 0; i < lvCount; i++) {
+            TagBean item0 = new TagBean("一级列表标题" + i);
+            list_data.add(item0);
+            for (int j = 0; j < lv1Count; j++) {
+                HobbyBean item1 = new HobbyBean("二级列表标题" + j);
+                list_data.add(item1);
+            }
+        }
         List<String> mhobbylist = mViewModel.readUser().getUser_hobby();
         for (String mdata:mhobbylist) {
             hobbylist.add(mdata);
@@ -187,6 +203,39 @@ public class modify_hobbyFragment extends Fragment {
                 return false;
             }
         });
+        addTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newhobby = editText.getText().toString();
+                if(TextUtils.isEmpty(newhobby)){
+                    Toast.makeText(mContext,"不能为空",Toast.LENGTH_SHORT).show();
+                    Log.d("hobby","空");
+                    return;
+                }
+                hobbylist.add(hobbylist.size()-1,newhobby);
+                mLablesView.setLabels(hobbylist);
+                Log.d("now:", String.valueOf(hobbylist));
+            }
+        });
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String newkeystr = s.toString();
+
+                sectionMultipleItemAdapter.setNewInstance(filter(list_data,newkeystr));
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         mTitleBar.setOnMenuListener(new TitleBar.OnMenuListener() {
             @Override
             public void onMenuClick() {
@@ -196,6 +245,7 @@ public class modify_hobbyFragment extends Fragment {
                 }
                 Log.d("save", String.valueOf(hobbylist));
                 mViewModel.setUserHobby(hobbylist);
+                Toast.makeText(mContext,"已经记录",Toast.LENGTH_SHORT).show();
             }
         });
         mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {
@@ -204,33 +254,42 @@ public class modify_hobbyFragment extends Fragment {
                 Navigation.findNavController(view).navigateUp();
             }
         });
-        List<MultiItemEntity> list_data = new ArrayList<>();
-        int lvCount =6;
-        int lv1Count =5;
-        for (int i = 0; i < lvCount; i++) {
-            TagBean item0 = new TagBean("一级列表标题" + i);
-            list_data.add(item0);
-            for (int j = 0; j < lv1Count; j++) {
-                HobbyBean item1 = new HobbyBean("二级列表标题" + j);
-                list_data.add(item1);
-            }
-        }
+
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         sectionMultipleItemAdapter = new SectionMultipleItemAdapter(list_data);
+
         sectionMultipleItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull @NotNull BaseQuickAdapter<?, ?> adapter, @NonNull @NotNull View view, int position) {
-                Log.d("dianji", String.valueOf(list_data.get(position).getItemType()));
+                Log.d("level 1", String.valueOf(list_data.get(position).getItemType()));
             }
         });
-        sectionMultipleItemAdapter.addChildClickViewIds(R.id.textView8);
+        sectionMultipleItemAdapter.addChildClickViewIds(R.id.textView9);
         sectionMultipleItemAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
-
+                HobbyBean mmhobby = (HobbyBean) adapter.getItem(position);
+                hobbylist.add(hobbylist.size()-1,mmhobby.getStyle_tag());
+                mLablesView.setLabels(hobbylist);
+                Log.d("from list now:", String.valueOf(hobbylist)+mmhobby.getStyle_tag());
             }
         });
-
+        recyclerView.setAdapter(sectionMultipleItemAdapter);
+    }
+    public List<MultiItemEntity> filter(List<MultiItemEntity> models, String query){
+        List<MultiItemEntity> filter_data = new ArrayList<>();
+        for (MultiItemEntity oj: models
+             ) {
+            if(oj.getItemType()==1){
+                filter_data.add(oj);
+                continue;
+            }
+            HobbyBean hobby = (HobbyBean) oj;
+            if(hobby.getStyle_tag().contains(query)){
+                filter_data.add(oj);
+            }
+        }
+        return  filter_data;
     }
 }
