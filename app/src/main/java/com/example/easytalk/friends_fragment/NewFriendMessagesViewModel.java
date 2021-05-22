@@ -1,4 +1,4 @@
-package com.example.easytalk.friends_fragment;
+package com.example.JTrace.friends_fragment;
 
 import android.app.Application;
 import android.content.Context;
@@ -10,8 +10,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
-import com.example.easytalk.Constants;
-import com.example.easytalk.model.NewFriendMsg;
+import com.example.JTrace.Constants;
+import com.example.JTrace.model.NewFriendMsg;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
