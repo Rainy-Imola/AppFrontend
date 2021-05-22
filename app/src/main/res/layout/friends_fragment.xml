@@ -59,9 +59,17 @@
         android:background="@drawable/divider"
         android:layout_marginTop="100dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friends"
-        android:layout_width="match_parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/friends_list_refresh"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="110dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp">
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </FrameLayout>

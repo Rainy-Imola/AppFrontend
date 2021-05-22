@@ -86,7 +86,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
                     app:layout_constraintStart_toStartOf="@+id/user_info_name" />
 
-                <com.example.easytalk.widget.RoundImageView
+                <com.example.JTrace.widget.RoundImageView
                     android:id="@+id/user_info_imageView"
                     android:layout_width="70dp"
                     android:layout_height="77dp"

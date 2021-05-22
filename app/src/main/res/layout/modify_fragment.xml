@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.example.easytalk.widget.RoundImageView
+                <com.example.JTrace.widget.RoundImageView
                     android:id="@+id/ri_portrait"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -86,7 +86,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ig_id" />
 
-        <com.example.easytalk.widget.ItemGroup
+        <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,9 +97,9 @@
             app:paddingLeft="@dimen/padding_left_and_right"
             app:title="ID号">
 
-        </com.example.easytalk.widget.ItemGroup>
+        </com.example.JTrace.widget.ItemGroup>
 
-        <com.example.easytalk.widget.ItemGroup
+        <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,9 +107,9 @@
             app:paddingLeft="@dimen/padding_left_and_right"
             app:title="昵称">
 
-        </com.example.easytalk.widget.ItemGroup>
+        </com.example.JTrace.widget.ItemGroup>
 
-        <com.example.easytalk.widget.ItemGroup
+        <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_hobby"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
             app:paddingLeft="@dimen/padding_left_and_right"
             app:title="爱好" />
 
-        <com.example.easytalk.widget.ItemGroup
+        <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_constellation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
