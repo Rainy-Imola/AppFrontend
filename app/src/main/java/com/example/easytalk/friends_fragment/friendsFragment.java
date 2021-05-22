@@ -1,10 +1,12 @@
 package com.example.easytalk.friends_fragment;
-
+//TODO:用board fragment+viewModel写法把 friends fragment重构了
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +27,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +38,8 @@ import com.example.easytalk.MainActivity;
 import com.example.easytalk.R;
 import com.example.easytalk.board_fragment.MessageAdapter;
 import com.example.easytalk.board_fragment.boardFragment;
+import com.example.easytalk.model.NewFriendMsg;
+import com.example.easytalk.model.NewFriendMsgs;
 import com.example.easytalk.model.friend;
 import com.example.easytalk.model.message;
 
@@ -61,14 +69,22 @@ public class friendsFragment extends Fragment {
     private List<friend> messages;
     private FriendAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private TextView newFriendView;
+    private RelativeLayout NewFriendLayout;
+    private ImageView newFriendReminderView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private SharedPreferences sp;
+    private NewFriendMsgs friendRequests=new NewFriendMsgs();
+    private NewFriendMessagesViewModel mFriendRequestsViewModel;
+    private boolean isNew=false;//标记是否有新的待处理消息
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.friends_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.friends);
         TextView title = (TextView) root.findViewById(R.id.title_f);
-        newFriendView=root.findViewById(R.id.newFriendView);
+        NewFriendLayout=root.findViewById(R.id.newFriendLayout);
+        newFriendReminderView=root.findViewById(R.id.newFriend_reminder);
+        swipeRefreshLayout=root.findViewById(R.id.friendsSwipeLayout);
         title.setText("Friends");
         title.setGravity(Gravity.CENTER);
         setHasOptionsMenu(true);
@@ -79,9 +95,47 @@ public class friendsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
         // TODO: Get friend requests
+        mFriendRequestsViewModel=new ViewModelProvider(getActivity()).get(NewFriendMessagesViewModel.class);
+        getFriendRequests();
+        NewFriendLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getActivity(),FriendRequestsActivity.class);
+                intent.putExtra("requests", friendRequests);
+                startActivity(intent);
+            }
+        });
 
+    }
+    public void getFriendRequests(){
+        mFriendRequestsViewModel.requestData();
+        mFriendRequestsViewModel.getStatus().observe(getActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(String status) {
+                Log.d("friendRequests","onchanged called");
 
+                if(status=="request"){
+                    friendRequests.clearMsgs();
+                    isNew=false;
+                    for(NewFriendMsg request:mFriendRequestsViewModel.getNewFriendMsgs()){
+                        friendRequests.addMsg(request);
+                        if(request.getStatus()==0){
+                            isNew=true;
+                        }
+                    }
+                    if(isNew){
+                        newFriendReminderView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -128,7 +182,9 @@ public class friendsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
+    public void refreshFriends(){
 
+    }
     public List<friend> getMessages() throws IOException {
         List<friend> msgs=new ArrayList<>();
         OkHttpClient okHttpClient=new OkHttpClient();

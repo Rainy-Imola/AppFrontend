@@ -63,9 +63,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class MessageDetailActivity extends AppCompatActivity {
-    //TODO: post comment
     //TODO: click author name to author information layout
-    //TODO: use commentView component
     private TextView contentView,authorView,dateView;
     private EditText commentPostEditTextView;
     private Button commentPostButton;

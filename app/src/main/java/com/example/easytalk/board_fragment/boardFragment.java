@@ -58,7 +58,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-//TODO: 加入上拉刷新机制 or 在标题上加个按钮刷新
+
 public class boardFragment extends Fragment {
 
     //private BoardViewModel mViewModel;

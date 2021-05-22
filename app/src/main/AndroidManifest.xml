@@ -5,12 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 解锁屏幕需要的权限 -->
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <!-- 申请电源锁需要的权限 -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--震动权限-->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 解锁屏幕需要的权限 -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" /> <!-- 申请电源锁需要的权限 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 震动权限 -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -22,13 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EasyTalk">
-
-
-        <activity android:name=".chat.MainChatActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:theme="@style/NoTitle">
-        </activity>
-
+        <activity android:name=".friends_fragment.FriendRequestsActivity"></activity>
+        <activity
+            android:name=".chat.MainChatActivity"
+            android:theme="@style/NoTitle"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity android:name=".friends_fragment.FriendDetailActivity" />
         <activity
             android:name=".SearchReaultsActivity"
@@ -56,7 +51,8 @@
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity" />
-        <service android:name=".chat.ChatService"/>
+
+        <service android:name=".chat.ChatService" />
     </application>
 
 </manifest>
