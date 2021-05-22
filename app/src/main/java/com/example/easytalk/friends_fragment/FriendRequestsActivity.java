@@ -1,4 +1,4 @@
-package com.example.easytalk.friends_fragment;
+package com.example.JTrace.friends_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.easytalk.R;
-import com.example.easytalk.model.NewFriendMsgs;
+import com.example.JTrace.R;
+import com.example.JTrace.model.NewFriendMsgs;
 
 //TODO: item_friendRequest样式待调
 //TODO: 待定义点击加好友按钮通过好友请求方法
