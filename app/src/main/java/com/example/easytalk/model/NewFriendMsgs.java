@@ -1,4 +1,4 @@
-package com.example.easytalk.model;
+package com.example.JTrace.model;
 
 import androidx.annotation.Nullable;
 
