@@ -19,4 +19,11 @@ public class NewFriendMsgs implements Serializable {
     }
     public void clearMsgs(){msgs.clear();}
     public void addMsg(NewFriendMsg msg){msgs.add(msg);}
+    public NewFriendMsg getMsgByIndex(int i){
+        if(i<0 || i>=msgs.size()){
+            return null;
+        }else{
+            return msgs.get(i);
+        }
+    }
 }

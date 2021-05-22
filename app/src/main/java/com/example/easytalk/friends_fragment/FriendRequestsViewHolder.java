@@ -26,8 +26,9 @@ public class FriendRequestsViewHolder extends RecyclerView.ViewHolder {
         msgView=itemView.findViewById(R.id.request_msgView);
         addView=itemView.findViewById(R.id.request_addImageView);
     }
-    public void bind(Uri avatarURI, String author, String msg){
-        avatarView.setImageURI(avatarURI);
+    //TODO: get avatar and set avatarURI
+    public void bind(String author, String msg){
+        //avatarView.setImageURI(avatarURI);
         authorView.setText(author);
         msgView.setText(msg);
     }

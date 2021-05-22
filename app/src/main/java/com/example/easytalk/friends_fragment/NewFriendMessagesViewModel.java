@@ -80,6 +80,7 @@ public class NewFriendMessagesViewModel extends AndroidViewModel {
                                 int status=cur_msg.getInt("status");
                                 NewFriendMsg cur=new NewFriendMsg(username1,username2,reqMsg,status);
                                 NewFriendMsgs.add(cur);
+                                Log.d("friendRequests",reqMsg);
                             }
                             Log.d("friendRequests", String.valueOf(NewFriendMsgs.size()));
                             setStatus("request");

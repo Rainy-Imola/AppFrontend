@@ -1,5 +1,6 @@
 package com.example.easytalk.friends_fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -7,12 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easytalk.R;
+import com.example.easytalk.model.NewFriendMsg;
 import com.example.easytalk.model.NewFriendMsgs;
 
 import org.jetbrains.annotations.NotNull;
 
 public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsViewHolder> {
-    private NewFriendMsgs msg=new NewFriendMsgs();
+    private NewFriendMsgs msgs=new NewFriendMsgs();
     @NonNull
     @NotNull
     @Override
@@ -24,11 +26,18 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull FriendRequestsViewHolder holder, int position) {
-
+        holder.bind(msgs.getMsgByIndex(position).getFrom_author_name(),msgs.getMsgByIndex(position).getReqMsg());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return msgs.getMsgs().size();
+    }
+
+    public void setMsgs(NewFriendMsgs msgs){
+        this.msgs=msgs;
+    }
+    public FriendRequestsAdapter(NewFriendMsgs msgs){
+        setMsgs(msgs);
     }
 }

@@ -2,7 +2,7 @@ package com.example.easytalk.model;
 
 import java.io.Serializable;
 
-public class NewFriendMsg {
+public class NewFriendMsg implements Serializable{
     private String from_author_name;
     private String to_author_name;
     private String reqMsg;
@@ -37,7 +37,7 @@ public class NewFriendMsg {
     public NewFriendMsg(String from_name,String to_name,String msg,int s){
         setFrom_author_name(from_name);
         setTo_author_name(to_name);
-        setReqMsg(reqMsg);
+        setReqMsg(msg);
         setStatus(s);
     }
 }

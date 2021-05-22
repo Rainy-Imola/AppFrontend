@@ -107,8 +107,10 @@ public class friendsFragment extends Fragment {
         NewFriendLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("friendRequests","onClick called");
                 Intent intent=new Intent(getActivity(),FriendRequestsActivity.class);
                 intent.putExtra("requests", friendRequests);
+                Log.d("friendRequests","intent put");
                 startActivity(intent);
             }
         });
