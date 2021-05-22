@@ -107,6 +107,7 @@ public class ModifyFragment extends Fragment {
             @Override
             public void onMenuClick() {
                 mViewModel.requestSave();
+
                 mViewModel.requestAvatarPost();
 
             }

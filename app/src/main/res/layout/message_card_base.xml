@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,66 +20,70 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sd_cover1"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="6dp"
                 app:actualImageScaleType="centerCrop"
                 app:overlayImage="@drawable/bg_round_rect"
                 app:roundedCornerRadius="8dp"
+
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintHorizontal_bias="0.512"
+                card_view:layout_constraintHorizontal_bias="0.4"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <TextView
-                android:id="@+id/message_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="4dp"
-                android:text="author"
-                card_view:layout_constraintBottom_toTopOf="@+id/usr_msg_date"
-                card_view:layout_constraintEnd_toEndOf="@+id/sd_cover1" />
-
-            <TextView
                 android:id="@+id/message_content"
                 android:layout_width="0dp"
-                android:layout_height="53dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="content"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                card_view:layout_constraintBottom_toTopOf="@+id/message_author"
+                card_view:layout_constraintBottom_toTopOf="@+id/imageView5"
                 card_view:layout_constraintEnd_toEndOf="@+id/sd_cover1"
-                card_view:layout_constraintStart_toStartOf="@+id/sd_cover1"
-                card_view:layout_constraintTop_toTopOf="parent"
-                card_view:layout_constraintVertical_bias="0.512" />
+                card_view:layout_constraintStart_toStartOf="@+id/usr_msg_date"
+                card_view:layout_constraintTop_toBottomOf="@+id/usr_msg_date" />
 
             <TextView
                 android:id="@+id/usr_msg_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-
-                android:layout_marginBottom="4dp"
-                android:textColor="#808080"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
                 android:textSize="14sp"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintEnd_toEndOf="@+id/sd_cover1"
+                card_view:layout_constraintStart_toStartOf="@+id/sd_cover1"
+                card_view:layout_constraintTop_toTopOf="@+id/sd_cover1"
                 tools:text="2019-01-29" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginBottom="8dp"
+                card_view:layout_constraintBottom_toBottomOf="@+id/sd_cover1"
+                card_view:layout_constraintStart_toStartOf="@+id/message_content"
+                android:src="@drawable/comment_16" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="5"
+                android:textSize="12sp"
+                card_view:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                card_view:layout_constraintStart_toEndOf="@+id/imageView5" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

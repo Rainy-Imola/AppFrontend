@@ -1,10 +1,13 @@
 package com.example.JTrace.user_info_fragment;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +22,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -35,6 +42,8 @@ import com.example.JTrace.board_fragment.MessageDetailActivity;
 import com.example.JTrace.model.User;
 import com.example.JTrace.model.message;
 import com.example.JTrace.widget.RoundImageView;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.loper7.layout.TitleBar;
 
 import java.io.IOException;
@@ -50,7 +59,6 @@ public class UserInfoFragment extends Fragment {
     private TextView user_constellation;
     private RoundImageView user_avatar;
     private List<message> mItems= new ArrayList<>();
-    private User mUser = new User();
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -62,7 +70,21 @@ public class UserInfoFragment extends Fragment {
     private NavController mnavController;
     private TextView tv_1, tv_2, tv_3;
     private Context mContext;
+    private AppBarLayout app_bar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Toolbar toolbar;
 
+
+
+    private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
+    public MutableLiveData<Integer> getStatus_bar() {
+        return status_bar;
+    }
+
+    public void setStatus_bar(int status_bar) {
+        this.status_bar.postValue(status_bar);
+    }
+    private ConstraintLayout constraintLayout;
     private static final long DURATION = 500;
     private static final float START_ALPHA = 0.7f;
     private static final float END_ALPHA = 1f;
@@ -80,14 +102,30 @@ public class UserInfoFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root=  inflater.inflate(R.layout.userinfo_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
-        //TextView title = (TextView) root.findViewById(R.id.title_i);
-        //title.setText("MyInfo");
-        //title.setGravity(Gravity.CENTER);
         user_name = (TextView)root.findViewById(R.id.user_info_name);
         user_constellation = (TextView) root.findViewById(R.id.user_info_constellation);
         user_hobby = (LabelsView) root.findViewById(R.id.labels);
         mTitleBar = root.findViewById(R.id.main_titleBar);
         user_avatar = root.findViewById(R.id.user_info_imageView);
+        app_bar = root.findViewById(R.id.appbar);
+        collapsingToolbarLayout = root.findViewById(R.id.collapsing);
+        toolbar = root.findViewById(R.id.toolbar2);
+        constraintLayout = root.findViewById(R.id.visiablecon);
+        app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(verticalOffset == 0){
+                    //collapsingToolbarLayout.setTitleEnabled(false);
+
+                    toolbar.setBackgroundColor(Color.TRANSPARENT);
+                    setStatus_bar(0);
+
+                }else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()/2){
+                    toolbar.setBackgroundColor(Color.parseColor("#EE6699FF"));
+                    setStatus_bar(1);
+                }
+            }
+        });
         return root;
     }
     @Override
@@ -102,27 +140,42 @@ public class UserInfoFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        getStatus_bar().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer==0){
+                    mTitleBar.setTitleText("");
+                }
+                else if (integer==1){
+                    mTitleBar.setTitleText("info");
+                }
+            }
+        });
+        mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User mUser) {
+                if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
+                    user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
+                }else {
+                    user_hobby.setLabels(mUser.getUser_hobby());
+                }
+                if(mUser.getUser_constellation().length() == 0){
+                    user_constellation.setText("未添加星座");
+                }else {
+                    user_constellation.setText("星座:" + mUser.getUser_constellation());
+                }
+                user_name.setText("昵称："+ mUser.getUser_name());
+                if (mUser.getUser_avatar().length() != 0){
+                    Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
+                    Log.d("avatar_uri：",mUser.getUser_avatar());
+                }
+                Log.d("setName：",mUser.getUser_name());
+            }
+        });
         mViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
-                if(status == "user") {
-                    mUser = mViewModel.readUser();
-                    if (mUser.getUser_hobby() != null && mUser.getUser_hobby().isEmpty()) {
-                        user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
-                    } else {
-                        user_hobby.setLabels(mUser.getUser_hobby());
-                    }
-                    if (mUser.getUser_constellation().length() == 0) {
-                        user_constellation.setText("未添加星座");
-                    } else {
-                        user_constellation.setText(mUser.getUser_constellation());
-                    }
-                    user_name.setText(mUser.getUser_name());
-                    if (mUser.getUser_avatar().length() != 0){
-                        Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
-                    }
-                }
-                else if(status == "message") {
+                if(status == "message") {
                     try {
                         for (message imessage:mViewModel.getMessage()) {
                             mItems.add(imessage);
@@ -161,6 +214,7 @@ public class UserInfoFragment extends Fragment {
                 toggleBright();
             }
         });
+
     }
 
 

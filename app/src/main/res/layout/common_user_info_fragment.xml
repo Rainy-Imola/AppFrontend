@@ -1,147 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".commom_user_fragment.CommonUserInfoFragment"
-android:layout_width="match_parent"
-android:layout_height="wrap_content">
-
-<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appbar"
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
-    android:theme="@style/Theme.EasyTalk.AppBarOverlay">
+    tools:context=".commom_user_fragment.CommonUserInfoFragment">
 
-    <com.google.android.material.appbar.CollapsingToolbarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="244dp"
-        app:contentScrim="@android:color/transparent"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-        app:title="info"
-        app:toolbarId="@+id/toolbar">
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:theme="@style/Theme.EasyTalk.AppBarOverlay">
 
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_com"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="top"
-            android:background="@color/white"
+            android:layout_height="match_parent"
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
 
-            app:layout_collapseMode="pin"
-            app:titleTextColor="@color/blue">
+            app:toolbarId="@+id/toolbar">
 
-            <com.loper7.layout.TitleBar
-                android:id="@+id/main_titleBar"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/visiablecom"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/backgroud_user"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.donkingliang.labels.LabelsView
+                    android:id="@+id/labels"
+                    android:layout_width="297dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:isIndicator="true"
+                    app:labelBackground="@drawable/ic_userinfo_lable"
+                    app:labelTextColor="@drawable/ic_userinfo_lable_text"
+                    app:labelTextPaddingBottom="5dp"
+                    app:labelTextPaddingLeft="10dp"
+                    app:labelTextPaddingRight="10dp"
+                    app:labelTextPaddingTop="5dp"
+                    app:labelTextSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/common_user_info_imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/common_user_info_imageView"
+                    app:lineMargin="10dp"
+                    app:maxColumns="5"
+                    app:maxLines="3"
+                    app:maxSelect="5"
+                    app:minSelect="1"
+                    app:selectType="SINGLE"
+                    app:wordMargin="10dp" />
+
+                <TextView
+                    android:id="@+id/user_info_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/common_user_info_imageView"
+                    app:layout_constraintTop_toTopOf="@+id/common_user_info_imageView" />
+
+                <TextView
+                    android:id="@+id/user_info_constellation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/common_user_info_imageView"
+                    app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+
+                <com.example.JTrace.widget.RoundImageView
+                    android:id="@+id/common_user_info_imageView"
+                    android:layout_width="70dp"
+                    android:layout_height="77dp"
+                    android:layout_marginStart="30dp"
+                    android:maxWidth="155dp"
+                    android:maxHeight="155dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/defaultavatar"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline4" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="136dp" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="37dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="Button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline4" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/blue_1"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
                 app:layout_collapseMode="pin"
-                app:tBackgroundColor="@color/white"
-                app:tCenterTitle="true"
-                app:tMenuImage="@drawable/menu"
-                app:tBackImage="@drawable/user_return"
-                app:tTitleText="个人信息"
-                app:tTitleTextColor="@android:color/primary_text_light"
-                app:tTitleTextSize="16sp" />
-        </androidx.appcompat.widget.Toolbar>
+                app:popupTheme="@color/blue_1">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <com.loper7.layout.TitleBar
+                    android:id="@+id/main_titleBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:layout_collapseMode="pin"
+                    app:tBackImage="@drawable/nav_return_icon_24"
+                    app:tCenterTitle="true"
+                    app:tMenuImage="@drawable/menu_24_black"
+                    app:tTitleText="user info"
+                    app:tTitleTextColor="@android:color/white"
+                    app:tTitleTextSize="22sp" />
+            </androidx.appcompat.widget.Toolbar>
 
-            <com.donkingliang.labels.LabelsView
-                android:id="@+id/labels"
-                android:layout_width="297dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:isIndicator="true"
-                app:labelBackground="@drawable/ic_userinfo_lable"
-                app:labelTextColor="@drawable/ic_userinfo_lable_text"
-                app:labelTextPaddingBottom="5dp"
-                app:labelTextPaddingLeft="10dp"
-                app:labelTextPaddingRight="10dp"
-                app:labelTextPaddingTop="5dp"
-                app:labelTextSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/common_user_info_imageView"
-                app:layout_constraintTop_toBottomOf="@+id/common_user_info_imageView"
-                app:lineMargin="10dp"
-                app:maxColumns="5"
-                app:maxLines="3"
-                app:maxSelect="5"
-                app:minSelect="1"
-                app:selectType="SINGLE"
-                app:wordMargin="10dp" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <TextView
-                android:id="@+id/user_info_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="8dp"
-                android:text="TextView"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/common_user_info_imageView"
-                app:layout_constraintTop_toTopOf="@+id/common_user_info_imageView" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <TextView
-                android:id="@+id/user_info_constellation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="TextView"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="@+id/common_user_info_imageView"
-                app:layout_constraintStart_toStartOf="@+id/user_info_name" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="350dp"
 
-            <com.example.JTrace.widget.RoundImageView
-                android:id="@+id/common_user_info_imageView"
-                android:layout_width="70dp"
-                android:layout_height="77dp"
-                android:layout_marginStart="30dp"
-                android:maxWidth="155dp"
-                android:maxHeight="155dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/defaultavatar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline4" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="59dp" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:text="Button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline4" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-</com.google.android.material.appbar.AppBarLayout>
-
-<androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/recyclerView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="32dp"
-    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-
-    app:layout_constraintHorizontal_bias="1.0" />
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

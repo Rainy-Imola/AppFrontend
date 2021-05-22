@@ -1,10 +1,17 @@
 package com.example.JTrace.commom_user_fragment;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,6 +40,8 @@ import com.example.JTrace.model.message;
 import com.example.JTrace.user_info_fragment.AnimUtil;
 import com.example.JTrace.user_info_fragment.MessageAdapter;
 import com.example.JTrace.widget.RoundImageView;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.loper7.layout.TitleBar;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +72,17 @@ public class CommonUserInfoFragment extends Fragment {
     private TextView tv_1, tv_2, tv_3;
     private Button addorchar;
     private Context mContext;
+    private AppBarLayout app_bar;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private Toolbar toolbar;
+    private ConstraintLayout constraintLayout;
+    private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
+    public MutableLiveData<Integer> getStatus_bar() {
+        return status_bar;
+    }
+    public void setStatus_bar(int status_bar) {
+        this.status_bar.postValue(status_bar);
+    }
     private static final long DURATION = 500;
     private static final float START_ALPHA = 0.7f;
     private static final float END_ALPHA = 1f;
@@ -98,6 +118,10 @@ public class CommonUserInfoFragment extends Fragment {
         mTitleBar = root.findViewById(R.id.main_titleBar);
         addorchar = root.findViewById(R.id.button);
         user_avatar = root.findViewById(R.id.common_user_info_imageView);
+        app_bar = root.findViewById(R.id.appbar);
+        collapsingToolbarLayout = root.findViewById(R.id.collapsing_com);
+        toolbar = root.findViewById(R.id.toolbar);
+        constraintLayout = root.findViewById(R.id.visiablecom);
         return root;
     }
 
@@ -138,9 +162,9 @@ public class CommonUserInfoFragment extends Fragment {
                 if(mUser.getUser_constellation().length() == 0){
                     user_constellation.setText("未添加星座");
                 }else {
-                    user_constellation.setText(mUser.getUser_constellation());
+                    user_constellation.setText("星座:" + mUser.getUser_constellation());
                 }
-                user_name.setText(mUser.getUser_name());
+                user_name.setText("昵称："+ mUser.getUser_name());
                 if (mUser.getUser_avatar().length() != 0){
                     Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
                     Log.d("avatar_uri：",mUser.getUser_avatar());
@@ -197,6 +221,40 @@ public class CommonUserInfoFragment extends Fragment {
                     intent.putExtra("id",mViewModel.readUser().getUser_id());
                     intent.putExtra("name",mViewModel.readUser().getUser_name());
                     v.getContext().startActivity(intent);
+                }
+            }
+        });
+        app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if(verticalOffset == 0){
+                    //collapsingToolbarLayout.setTitleEnabled(false);
+
+                    toolbar.setBackgroundColor(Color.TRANSPARENT);
+setStatus_bar(0);
+                }else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()/2){
+
+                    toolbar.setBackgroundColor(Color.parseColor("#EE6699FF"));
+                    setStatus_bar(1);
+                    /*
+                    if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()){
+                        constraintLayout.setVisibility(View.GONE);
+                    }if(Math.abs(verticalOffset) < appBarLayout.getTotalScrollRange()){
+                        constraintLayout.setVisibility(View.VISIBLE);
+                    }
+
+                     */
+                }
+            }
+        });
+        getStatus_bar().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer==0){
+                    mTitleBar.setTitleText("");
+                }
+                else if (integer==1){
+                    mTitleBar.setTitleText("info");
                 }
             }
         });

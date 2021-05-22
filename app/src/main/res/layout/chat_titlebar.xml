@@ -34,7 +34,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
-                android:src="@drawable/user_return" />
+                android:src="@drawable/nav_return_icon_24" />
 
         </RelativeLayout>
 

@@ -13,15 +13,17 @@
     <com.loper7.layout.TitleBar
         android:id="@+id/tl_title"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="56dp"
 
-        app:tBackImage="@drawable/user_return"
-        app:tBackgroundColor="@android:color/primary_text_dark_nodisable"
+        app:tBackImage="@drawable/nav_return_icon_24"
+        app:tBackgroundColor="@color/blue_1"
         app:tCenterTitle="true"
         app:tMenuText="保存"
+        app:tMenuTextColor="@color/white"
+        app:tMenuTextSize="18sp"
         app:tTitleText="个人信息修改"
-        app:tTitleTextColor="@android:color/primary_text_light"
-        app:tTitleTextSize="16sp">
+        app:tTitleTextColor="@android:color/white"
+        app:tTitleTextSize="22sp">
 
     </com.loper7.layout.TitleBar>
 

@@ -31,6 +31,7 @@ import com.example.JTrace.PublishActivity;
 import com.example.JTrace.R;
 import com.example.JTrace.model.message;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.loper7.layout.TitleBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,9 +61,8 @@ public class boardFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.board_fragment, container, false);
         mRecyclerView=root.findViewById(R.id.board);
-        TextView title = (TextView) root.findViewById(R.id.title_b);
-        title.setText("主干道");
-        title.setGravity(Gravity.CENTER);
+        TitleBar title = root.findViewById(R.id.title_b);
+        title.setTitleText("主干道");
         fabAdd = root.findViewById(R.id.fab);
         animationView=root.findViewById(R.id.animationView);
         animationView.playAnimation();

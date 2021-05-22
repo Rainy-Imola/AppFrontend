@@ -56,6 +56,15 @@ public class UserInfoViewModel extends AndroidViewModel {
     public void setStatus(String status) {
         this.status.postValue(status);
     }
+    private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return userMutableLiveData;
+    }
+
+    public void setUserMutableLiveData(User userMutableLiveData) {
+        this.userMutableLiveData.postValue(userMutableLiveData);
+    }
     public UserInfoViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
         this.handle =handle;
@@ -270,8 +279,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                                 mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
                                 mUser.setUser_avatar((String) data.getJSONObject(0).get("avatar"));
                                 Log.d("User_info", "设置成功");
-                                setStatus("0");
-                                setStatus("user");
+                                setUserMutableLiveData(mUser);
                             }
 
                         } catch (JSONException e) {
