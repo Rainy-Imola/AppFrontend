@@ -2,6 +2,7 @@ package com.example.JTrace.modify_fragment;
 
 import androidx.appcompat.app.ActionBar;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.JTrace.R;
+import com.example.JTrace.model.User;
 import com.example.JTrace.user_info_fragment.UserInfoViewModel;
 import com.example.JTrace.widget.ItemGroup;
 import com.example.JTrace.widget.RoundImageView;
@@ -79,9 +81,18 @@ public class ModifyFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         mnavController = Navigation.findNavController(view);
         Context mContext = this.getContext();
-        nameIG.setContentEdt(mViewModel.readUser().getUser_name());
-        idIG.setContentEdt(String.valueOf(mViewModel.readUser().getUser_id()));
-        constellationIG.setContentEdt(mViewModel.readUser().getUser_constellation());
+
+
+
+        mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                nameIG.setContentEdt(user.getUser_name());
+                idIG.setContentEdt(String.valueOf(user.getUser_id()));
+                constellationIG.setContentEdt(user.getUser_constellation());
+                Glide.with(mContext).load(user.getUser_avatar()).into(avatarView);
+            }
+        });
         hobbyIG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

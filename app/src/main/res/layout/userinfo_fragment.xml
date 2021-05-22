@@ -89,7 +89,7 @@
 
                 <com.example.JTrace.widget.RoundImageView
                     android:id="@+id/user_info_imageView"
-                    android:layout_width="70dp"
+                    android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:layout_marginStart="30dp"
                     android:maxWidth="155dp"
