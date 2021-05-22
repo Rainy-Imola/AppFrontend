@@ -1,4 +1,4 @@
-package com.example.easytalk.friends_fragment;
+package com.example.JTrace.friends_fragment;
 
 import android.net.Uri;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.easytalk.R;
+import com.example.JTrace.R;
 
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Text;
