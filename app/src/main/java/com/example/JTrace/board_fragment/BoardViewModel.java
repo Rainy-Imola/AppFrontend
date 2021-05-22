@@ -91,7 +91,7 @@ public class BoardViewModel extends AndroidViewModel {
                                 }
                                 //Log.d("MessageInfo_viewModel", "cur_msg_info:" + "id:" + " " + id + " author:" + author + " content:" + content);
                                 //handle date
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS+08:00");
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
                                 Date FormattedDate = format.parse(date);
                                 message msg = new message(id, author, content, FormattedDate, picture);
                                 mMessage.add(msg);

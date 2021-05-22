@@ -75,6 +75,23 @@ public class  RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String res = response.body().string();
+                            JSONObject result = null;
+                            Integer status = -100;
+                            try {
+                                result = new JSONObject(res);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                status = (Integer) result.get("status");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (status != 0) {
+                                Looper.prepare();
+                                Toast.makeText(RegisterActivity.this, "You should register with a SJTU email", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                            }
                             Log.d("Login_info","连接成功");
                         }
                     });
