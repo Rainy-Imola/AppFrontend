@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -18,6 +19,7 @@ public class FriendRequestsActivity extends Activity {
     private NewFriendMsgs msgs;
     private RecyclerView mRecyclerView;
     private FriendRequestsAdapter mAdapter;
+    private SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +27,10 @@ public class FriendRequestsActivity extends Activity {
 
         Intent intent=getIntent();
         msgs= (NewFriendMsgs) intent.getSerializableExtra("requests");
+
+        sp=getSharedPreferences("user_profile",MODE_PRIVATE);
         mRecyclerView=findViewById(R.id.FriendRequestsRecyclerView);
-        mAdapter=new FriendRequestsAdapter(msgs);
+        mAdapter=new FriendRequestsAdapter(msgs,sp);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

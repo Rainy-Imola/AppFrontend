@@ -72,6 +72,7 @@ public class NewFriendMessagesViewModel extends AndroidViewModel {
                         try{
                             JSONObject results = new JSONObject(res);
                             JSONArray data = results.getJSONArray("data");
+                            NewFriendMsgs.clear();
                             for(int i=data.length()-1;i>=0;i--){
                                 JSONObject cur_msg=data.getJSONObject(i);
                                 String reqMsg=cur_msg.getString("reqMsg");
