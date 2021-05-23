@@ -73,6 +73,7 @@ public class UserInfoFragment extends Fragment {
     private AppBarLayout app_bar;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
+    private String title = "user info";
 
 
 
@@ -120,6 +121,7 @@ public class UserInfoFragment extends Fragment {
                     toolbar.setBackgroundColor(Color.TRANSPARENT);
                     setStatus_bar(0);
 
+
                 }else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()/2){
                     toolbar.setBackgroundColor(Color.parseColor("#EE6699FF"));
                     setStatus_bar(1);
@@ -145,9 +147,11 @@ public class UserInfoFragment extends Fragment {
             public void onChanged(Integer integer) {
                 if(integer==0){
                     mTitleBar.setTitleText("");
+                    mTitleBar.setMenuImageResource(R.drawable.menu_24_black);
                 }
                 else if (integer==1){
-                    mTitleBar.setTitleText("info");
+                    mTitleBar.setTitleText(title);
+                    mTitleBar.setMenuImageResource(R.drawable.menu_white_24);
                 }
             }
         });
@@ -162,9 +166,10 @@ public class UserInfoFragment extends Fragment {
                 if(mUser.getUser_constellation().length() == 0){
                     user_constellation.setText("未添加星座");
                 }else {
-                    user_constellation.setText("星座:" + mUser.getUser_constellation());
+                    user_constellation.setText("星座：" + mUser.getUser_constellation());
                 }
                 user_name.setText("昵称："+ mUser.getUser_name());
+                title = mUser.getUser_name();
                 if (mUser.getUser_avatar().length() != 0){
                     Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
                     Log.d("avatar_uri：",mUser.getUser_avatar());

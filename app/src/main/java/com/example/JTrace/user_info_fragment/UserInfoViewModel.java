@@ -163,6 +163,7 @@ public class UserInfoViewModel extends AndroidViewModel {
     }
     public void setUserConstellation(String newconstellation) {
         mUser.setUser_constellation(newconstellation);
+        setUserMutableLiveData(mUser);
     }
     /**
      * 根据图片路径，把图片转为byte数组

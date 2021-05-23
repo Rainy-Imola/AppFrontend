@@ -86,6 +86,7 @@ public class CommonUserInfoFragment extends Fragment {
     private static final long DURATION = 500;
     private static final float START_ALPHA = 0.7f;
     private static final float END_ALPHA = 1f;
+    private String title = "user info";
     public static CommonUserInfoFragment newInstance(String argument) {
         Bundle bundle = new Bundle();
         bundle.putString(ARGUMENT, argument);
@@ -162,9 +163,10 @@ public class CommonUserInfoFragment extends Fragment {
                 if(mUser.getUser_constellation().length() == 0){
                     user_constellation.setText("未添加星座");
                 }else {
-                    user_constellation.setText("星座:" + mUser.getUser_constellation());
+                    user_constellation.setText("星座：" + mUser.getUser_constellation());
                 }
                 user_name.setText("昵称："+ mUser.getUser_name());
+                title = mUser.getUser_name();
                 if (mUser.getUser_avatar().length() != 0){
                     Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
                     Log.d("avatar_uri：",mUser.getUser_avatar());
@@ -252,9 +254,13 @@ setStatus_bar(0);
             public void onChanged(Integer integer) {
                 if(integer==0){
                     mTitleBar.setTitleText("");
+                    mTitleBar.setMenuImageResource(R.drawable.menu_24_black);
+                    mTitleBar.setBackImageResource(R.drawable.nav_return_black);
                 }
                 else if (integer==1){
-                    mTitleBar.setTitleText("info");
+                    mTitleBar.setTitleText(title);
+                    mTitleBar.setMenuImageResource(R.drawable.menu_white_24);
+                    mTitleBar.setBackImageResource(R.drawable.nav_return_white);
                 }
             }
         });

@@ -132,9 +132,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     app:layout_collapseMode="pin"
-                    app:tBackImage="@drawable/nav_return_icon_24"
+                    app:tBackImage="@drawable/nav_return_white"
                     app:tCenterTitle="true"
-                    app:tMenuImage="@drawable/menu_24_black"
+                    app:tMenuImage="@drawable/menu_white_24"
                     app:tTitleText="user info"
                     app:tTitleTextColor="@android:color/white"
                     app:tTitleTextSize="22sp" />
