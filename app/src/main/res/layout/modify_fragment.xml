@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout6"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:background="#F5F5F5"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    tools:context=".MainActivity">
 
     <!--    标题栏-->
 
     <com.loper7.layout.TitleBar
         android:id="@+id/tl_title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
 
-        app:tBackImage="@drawable/nav_return_icon_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tBackImage="@drawable/nav_return_white"
         app:tBackgroundColor="@color/blue_1"
         app:tCenterTitle="true"
         app:tMenuText="保存"
@@ -28,18 +32,25 @@
     </com.loper7.layout.TitleBar>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="157dp">
+        android:id="@+id/constraintLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tl_title">
 
-        <LinearLayout
-            android:id="@+id/ll_portrait"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingTop="30dp"
-            android:paddingBottom="10dp"
+            android:layout_marginStart="33dp"
+            android:paddingLeft="@dimen/padding_left_and_right"
+            android:text="头像"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -70,68 +81,80 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+        </TextView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <!--    头像-->
     <!--    编辑界面，此处可以写成一个ItemGroup上传至com上-->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Space
-            android:id="@+id/space"
-            android:layout_width="389dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ig_id" />
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
         <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_id"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:jt_visible="false"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:paddingLeft="@dimen/padding_left_and_right"
+
             app:title="ID号">
 
         </com.example.JTrace.widget.ItemGroup>
 
         <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/space"
-            app:paddingLeft="@dimen/padding_left_and_right"
+            android:layout_marginTop="8dp"
+            app:jt_visible="false"
+            app:layout_constraintEnd_toEndOf="@+id/ig_id"
+            app:layout_constraintStart_toStartOf="@+id/ig_id"
+            app:layout_constraintTop_toBottomOf="@+id/ig_id"
+
             app:title="昵称">
 
         </com.example.JTrace.widget.ItemGroup>
 
         <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_hobby"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:edt_hint_content="tags"
+            android:layout_marginTop="8dp"
+            app:edt_content="tags"
+            app:layout_constraintEnd_toEndOf="@+id/ig_name"
+            app:layout_constraintStart_toStartOf="@+id/ig_name"
             app:layout_constraintTop_toBottomOf="@+id/ig_name"
-            app:paddingLeft="@dimen/padding_left_and_right"
             app:title="爱好" />
 
         <com.example.JTrace.widget.ItemGroup
             android:id="@+id/ig_constellation"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             app:edt_hint_content="星座"
+            app:jt_visible="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/ig_id"
+            app:layout_constraintStart_toStartOf="@+id/ig_hobby"
             app:layout_constraintTop_toBottomOf="@+id/ig_hobby"
-            app:paddingLeft="@dimen/padding_left_and_right"
             app:title="星座" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

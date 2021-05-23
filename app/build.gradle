@@ -13,7 +13,7 @@ android {
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     defaultConfig {
-        applicationId "com.example.easytalk"
+        applicationId "com.example.JTrace"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -68,9 +68,11 @@ dependencies {
     }
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.airbnb.android:lottie:2.7.0'
-    compile 'com.github.loperSeven:TitleBar:1.0.4'
+    implementation 'com.github.loperSeven:TitleBar:1.0.4'
 
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
     implementation 'com.jidcoo.android.widget.commentview:CommentView:1.0.0'
     implementation "com.android.support:support-compat:28.0.0"
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    implementation  'com.github.addappcn:android-pickers:2.0.0'
 }

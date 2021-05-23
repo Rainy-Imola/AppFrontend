@@ -90,11 +90,11 @@ public class ItemGroup extends FrameLayout {
         //设置item的内边距
         itemGroupLayout.setPadding((int) paddingLeft, (int) paddingTop, (int) paddingRight, (int) paddingBottom);
         titleTv.setText(title);
-        titleTv.setTextSize(titleSize);
+        //titleTv.setTextSize(titleSize);
         titleTv.setTextColor(titleColor);
 
         contentEdt.setText(content);
-        contentEdt.setTextSize(contentSize);
+        //contentEdt.setTextSize(contentSize);
 
         contentEdt.setTextColor(contentColor);
         contentEdt.setHint(hintContent);

@@ -19,7 +19,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/chat_titlebar" />
+        <com.loper7.layout.TitleBar
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:tBackImage="@drawable/nav_return_white"
+            app:tBackgroundColor="@color/blue_1"
+            app:tCenterTitle="true"
+            app:tTitleText="board"
+            app:tTitleTextColor="@color/white"
+            app:tTitleTextSize="22sp" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_chat"

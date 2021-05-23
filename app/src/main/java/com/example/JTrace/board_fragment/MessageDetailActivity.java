@@ -46,10 +46,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+
+
 public class MessageDetailActivity extends baseActivity {
     //TODO: post comment
     //TODO: click author name to author information layout
-    //TODO: use commentView component
+
     private TextView contentView,authorView,dateView;
     private EditText commentPostEditTextView;
     private Button commentPostButton;
@@ -70,6 +72,7 @@ public class MessageDetailActivity extends baseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
         setContentView(R.layout.activity_message_detail);
         Intent intent=getIntent();
         msg= (message) intent.getSerializableExtra("message");

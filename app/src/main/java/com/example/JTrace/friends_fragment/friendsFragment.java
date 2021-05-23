@@ -5,6 +5,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.SearchManager;
 import android.content.Context;
+
+import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -24,11 +27,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.JTrace.R;
+
+import com.example.JTrace.model.NewFriendMsg;
+import com.example.JTrace.model.NewFriendMsgs;
+
 import com.example.JTrace.model.friend;
 
 import java.io.IOException;
@@ -45,15 +56,25 @@ public class friendsFragment extends Fragment {
     private List<friend> messages;
     private FriendAdapter mAdapter;
     private RecyclerView mRecyclerView;
-    private TextView newFriendView;
+
+    private RelativeLayout NewFriendLayout;
+    private ImageView newFriendReminderView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SharedPreferences sp;
+    private NewFriendMsgs friendRequests=new NewFriendMsgs();
+    private NewFriendMessagesViewModel mFriendRequestsViewModel;
+    private boolean isNew=false;//标记是否有新的待处理消息
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.friends_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.friends);
         TextView title = (TextView) root.findViewById(R.id.title_f);
-        newFriendView=root.findViewById(R.id.newFriendView);
+
+        NewFriendLayout=root.findViewById(R.id.newFriendLayout);
+        newFriendReminderView=root.findViewById(R.id.newFriend_reminder);
+
         swipeRefreshLayout = root.findViewById(R.id.friends_list_refresh);
         title.setText("Friends");
         title.setGravity(Gravity.CENTER);
@@ -86,6 +107,43 @@ public class friendsFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        mFriendRequestsViewModel=new ViewModelProvider(getActivity()).get(NewFriendMessagesViewModel.class);
+        getFriendRequests();
+        NewFriendLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("friendRequests","onClick called");
+                Intent intent=new Intent(getActivity(),FriendRequestsActivity.class);
+                intent.putExtra("requests", friendRequests);
+                Log.d("friendRequests","intent put");
+                startActivity(intent);
+            }
+        });
+    }
+    public void getFriendRequests(){
+        mFriendRequestsViewModel.requestData();
+        mFriendRequestsViewModel.getStatus().observe(getActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(String status) {
+                Log.d("friendRequests","onchanged called");
+
+                if(status=="request"){
+                    friendRequests.clearMsgs();
+                    isNew=false;
+                    for(NewFriendMsg request:mFriendRequestsViewModel.getNewFriendMsgs()){
+                        friendRequests.addMsg(request);
+                        if(request.getStatus()==0){
+                            isNew=true;
+                        }
+                    }
+                    if(isNew){
+                        newFriendReminderView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
     }
 
     @Override

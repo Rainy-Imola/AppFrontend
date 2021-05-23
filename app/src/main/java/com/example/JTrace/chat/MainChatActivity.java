@@ -29,6 +29,7 @@ import com.example.JTrace.MainActivity;
 import com.example.JTrace.R;
 import com.example.JTrace.baseActivity;
 import com.example.JTrace.model.chatMsg;
+import com.loper7.layout.TitleBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +46,8 @@ public class MainChatActivity extends baseActivity {
     private Button send;
     private ImageView back;
     private EditText editText;
-    private TextView chatName;
+    private TitleBar titleBar;
+    private Context mContext;
     private ChatClient chatClient ;
     private InputMethodManager inputMethodManager;
     //Service things
@@ -87,8 +89,9 @@ public class MainChatActivity extends baseActivity {
         send = findViewById(R.id.btn_send);
         back = findViewById(R.id.back_to_friend);
         editText = findViewById(R.id.et_content);
-        chatName = findViewById(R.id.chat_name);
-        chatName.setText(To);
+        titleBar = findViewById(R.id.title_bar);
+        titleBar.setTitleText(To);
+        mContext = titleBar.getContext();
 
         inputMethodManager = (InputMethodManager) getSystemService(MainChatActivity.this.INPUT_METHOD_SERVICE);
         initChatUi();
@@ -117,7 +120,7 @@ public class MainChatActivity extends baseActivity {
 
             }//pay attention
         });
-        //TODO:控制软键盘
+
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -126,15 +129,14 @@ public class MainChatActivity extends baseActivity {
             }
 
         });
-        back.setOnClickListener(new View.OnClickListener() {
+        titleBar.setOnBackListener(new TitleBar.OnBackListener() {
             @Override
-            public void onClick(View v) {
-                  finish();
-                  Intent intent=new Intent(v.getContext(), MainActivity.class);
+            public void onBackClick() {
+                finish();
+                Intent intent=new Intent(mContext, MainActivity.class);
 //                  intent.putExtra("id",0);
 //                  intent.putExtra("name",From);
-                  v.getContext().startActivity(intent);
-
+                mContext.startActivity(intent);
             }
         });
     }
