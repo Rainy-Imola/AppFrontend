@@ -53,7 +53,14 @@
             android:layout_marginTop="10dp"
             android:id="@+id/request_declineImageView"
             android:clickable="true" />
-
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="-50dp"
+            android:src="@drawable/responsed"
+            android:layout_marginTop="10dp"
+            android:id="@+id/request_respondedImageView"
+            android:visibility="invisible"/>
 
     </LinearLayout>
 
