@@ -64,7 +64,7 @@
                     android:layout_marginStart="32dp"
                     android:paddingLeft="@dimen/padding_left_and_right"
                     android:text="修改头像"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ri_portrait"
                     app:layout_constraintTop_toTopOf="parent" />
