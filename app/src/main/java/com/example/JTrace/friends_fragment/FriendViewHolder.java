@@ -39,7 +39,8 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
         this.image = image;
         this.status = status;
         nameEditor.setText(name);
-        if(image != null){
+        Log.d("friend list",image);
+        if(image != null&&image.length()>0){
             Glide.with(mContext).load(image).into(avatar);
         }
         if(status == 0){
