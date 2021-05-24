@@ -5,7 +5,6 @@ public class chatMsg {
     private String receiveID;
     private boolean status;
     private int type;
-
     public int getType() {
         return type;
     }
@@ -27,6 +26,15 @@ public class chatMsg {
     }
 
     private String content;
+    private String avatar;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     @Override
     public String toString() {
@@ -59,11 +67,12 @@ public class chatMsg {
         this.content = content;
     }
 
-    public chatMsg(String senderID, String receiveID, int type, String content) {
+    public chatMsg(String senderID, String receiveID, int type, String content,String avatar) {
         this.senderID = senderID;
         this.receiveID = receiveID;
         this.type = type;
         this.status = false;
         this.content = content;
+        this.avatar = avatar;
     }
 }

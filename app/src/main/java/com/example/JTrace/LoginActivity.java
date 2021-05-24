@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.JTrace.model.friend;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +25,8 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
@@ -90,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                         String username = null;
                         String password = null;
                         String token = null;
+                        String avatar = null;
                         try{
                             result = new JSONObject(res);
                             Log.e("Login_in",result.toString());
@@ -115,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
                            System.out.println(username);
                            password = (String)data.getJSONObject(0).get("password");
                            System.out.println(password);
+                           avatar = (String)data.getJSONObject(0).get("avatar");
+                           System.out.println(avatar);
                            token = (String)data.getJSONObject(1).get("token");
                            System.out.println(token);
                             Log.d("Login_info",msg);
@@ -131,10 +138,12 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("username",username);
                             editor.putString("password",password);
                             editor.putString("token",token);
+                            editor.putString("avatar",avatar);
                             editor.commit();
                             //Toast.makeText(LoginActivity.this,"success",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+
                             
                         }else{
                             Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
@@ -166,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     //通过保存信息检查是否自动登录
-    void checkOut(){
+    private void checkOut(){
         int status;
         SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
         status = sharedPreferences.getInt("status",-1);
@@ -176,4 +185,5 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
 }
