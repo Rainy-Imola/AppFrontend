@@ -38,6 +38,7 @@ import com.loper7.layout.TitleBar;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -116,16 +117,69 @@ public class modify_hobbyFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         list_data = new ArrayList<>();
 
-        int lvCount =6;
-        int lv1Count =5;
-        for (int i = 0; i < lvCount; i++) {
-            TagBean item0 = new TagBean("一级列表标题" + i);
+
+            TagBean item0 = new TagBean("音乐/歌手");
             list_data.add(item0);
-            for (int j = 0; j < lv1Count; j++) {
-                HobbyBean item1 = new HobbyBean("二级列表标题" + j);
-                list_data.add(item1);
-            }
-        }
+            HobbyBean item0_1 = new HobbyBean("古典");
+            HobbyBean item0_2 = new HobbyBean("民谣" );
+            HobbyBean item0_3 = new HobbyBean("摇滚" );
+            HobbyBean item0_4 = new HobbyBean("爵士乐" );
+            HobbyBean item0_5 = new HobbyBean("乡村" );
+            HobbyBean item0_6 = new HobbyBean("陈奕迅" );
+            HobbyBean item0_7 = new HobbyBean("张国荣" );
+            HobbyBean item0_8 = new HobbyBean("五月天" );
+            List list0 = Arrays.asList(item0_1,item0_2,item0_3,item0_4,item0_5,item0_6,item0_7,item0_8);
+            list_data.addAll(list0);
+
+            TagBean item1 = new TagBean("性格标签");
+            list_data.add(item1);
+            HobbyBean item1_1 = new HobbyBean("随性");
+            HobbyBean item1_2 = new HobbyBean("活泼开朗" );
+            HobbyBean item1_3 = new HobbyBean("极品吃货" );
+            HobbyBean item1_4 = new HobbyBean("文艺青年" );
+            HobbyBean item1_5 = new HobbyBean("热血少年" );
+            HobbyBean item1_6 = new HobbyBean("双重人格" );
+            List list1 = Arrays.asList(item1_1,item1_2,item1_3,item1_4,item1_5,item1_6);
+            list_data.addAll(list1);
+
+            TagBean item2 = new TagBean("书籍/作家");
+            list_data.add(item1);
+            HobbyBean item2_1 = new HobbyBean("麦田的守望者");
+            HobbyBean item2_2 = new HobbyBean("百年孤独" );
+            HobbyBean item2_3 = new HobbyBean("小王子" );
+            HobbyBean item2_4 = new HobbyBean("月亮与六便士" );
+            HobbyBean item2_5 = new HobbyBean("东野圭吾" );
+            HobbyBean item2_6 = new HobbyBean("海子" );
+            HobbyBean item2_7 = new HobbyBean("韩寒" );
+            List list2 = Arrays.asList(item2_1,item2_2,item2_3,item2_4,item2_5,item2_6,item2_7);
+            list_data.addAll(list2);
+
+            TagBean item3 = new TagBean("运动");
+            list_data.add(item1);
+            HobbyBean item3_1 = new HobbyBean("游泳");
+            HobbyBean item3_2 = new HobbyBean("足球" );
+            HobbyBean item3_3 = new HobbyBean("篮球" );
+            HobbyBean item3_4 = new HobbyBean("台球" );
+            HobbyBean item3_5 = new HobbyBean("攀岩" );
+            HobbyBean item3_6 = new HobbyBean("乒乓球" );
+            HobbyBean item3_7 = new HobbyBean("马拉松" );
+            HobbyBean item3_8 = new HobbyBean("滑雪" );
+            HobbyBean item3_9 = new HobbyBean("自行车" );
+            List list3 = Arrays.asList(item3_1,item3_2,item3_3,item3_4,item3_5,item3_6,item3_7,item3_8,item3_9);
+            list_data.addAll(list3);
+
+            TagBean item4 = new TagBean("出没地点");
+            list_data.add(item1);
+            HobbyBean item4_1 = new HobbyBean("自习室");
+            HobbyBean item4_2 = new HobbyBean("学校食堂" );
+            HobbyBean item4_3 = new HobbyBean("健身房" );
+            HobbyBean item4_4 = new HobbyBean("包图" );
+            HobbyBean item4_5 = new HobbyBean("新图" );
+            HobbyBean item4_6 = new HobbyBean("李图" );
+            HobbyBean item4_7 = new HobbyBean("致远游泳馆" );
+            HobbyBean item4_8 = new HobbyBean("南体" );
+            List list4 = Arrays.asList(item4_1,item4_2,item4_3,item4_4,item4_5,item4_6,item4_7,item4_8);
+            list_data.addAll(list4);
 
 
         List<String> mhobbylist = mViewModel.readUser().getUser_hobby();
