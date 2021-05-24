@@ -370,7 +370,7 @@ public class ChatService extends Service {
             }
         });
         Thread.sleep(200);
-        Log.d("notifition avatar", avatar[0]);
+        Log.d("notifytion avatar", avatar[0]);
         return avatar[0];
     }
 }
