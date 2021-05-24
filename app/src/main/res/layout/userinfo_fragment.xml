@@ -19,7 +19,7 @@
             android:id="@+id/collapsing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@android:color/transparent"
+            app:contentScrim="@color/blue_1"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar2">
 
@@ -28,7 +28,7 @@
                 android:id="@+id/visiablecon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_collapseMode="none">
+                app:layout_collapseMode="parallax">
 
                 <ImageView
                     android:id="@+id/imageView7"

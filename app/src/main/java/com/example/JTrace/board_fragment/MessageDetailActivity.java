@@ -29,6 +29,7 @@ import com.example.JTrace.R;
 
 import com.example.JTrace.custom_comment.CustomCommentViewHolder;
 import com.example.JTrace.custom_comment.CustomReplyViewHolder;
+import com.example.JTrace.friends_fragment.FriendDetailActivity;
 import com.example.JTrace.model.message;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.appbar.AppBarLayout;
@@ -234,41 +235,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                 //设置完成后必须调用CallbackBuilder的buildCallback()方法，否则设置的回调无效
                 .buildCallback();
         load(1, 1);
-        /*
-        app_bar = findViewById(R.id.appbar);
-        collapsingToolbarLayout = findViewById(R.id.collapsing);
-        toolbar = findViewById(R.id.toolbar3);
-        app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(Math.abs(verticalOffset) < appBarLayout.getTotalScrollRange()){
-                    //collapsingToolbarLayout.setTitleEnabled(false);
 
-                    toolbar.setBackgroundColor(Color.TRANSPARENT);
-                    setStatus_bar(0);
-
-
-                }else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()){
-                    toolbar.setBackgroundColor(Color.parseColor("#EE6699FF"));
-                    setStatus_bar(1);
-                }
-            }
-        });
-        getStatus_bar().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                if(integer==0){
-                    mTitleBar.setTitleText("");
-                    mTitleBar.setMenuImageResource(R.drawable.menu_24_black);
-                }
-                else if (integer==1){
-                    mTitleBar.setTitleText("deta");
-                    mTitleBar.setMenuImageResource(R.drawable.menu_white_24);
-                }
-            }
-        });
-
-         */
 
         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
@@ -345,6 +312,14 @@ public class MessageDetailActivity extends AppCompatActivity {
             @Override
             public void onBackClick() {
                 finish();
+            }
+        });
+        authorView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
+                intent.putExtra("name",msg.getAuthor());
+                v.getContext().startActivity(intent);
             }
         });
     }
