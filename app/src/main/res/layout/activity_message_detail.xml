@@ -1,131 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".board_fragment.MessageDetailActivity">
+    android:background="#ffffff"
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <com.loper7.layout.TitleBar
+        android:id="@+id/title_b"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/background_light"
-        android:theme="@style/Theme.EasyTalk.AppBarOverlay">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="@android:color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar3">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar3"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@color/blue_1"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@color/blue_1">
-                <com.loper7.layout.TitleBar
-                    android:id="@+id/title_b"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    app:tCenterTitle="true"
-                    app:tMenuImage="@drawable/menu_white_24"
-                    app:tTitleText="details"
-                    app:tTitleTextColor="@android:color/white"
-                    app:tTitleTextSize="22sp" />
-            </androidx.appcompat.widget.Toolbar>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="评论:"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/cover" />
-
-            <TextView
-                android:id="@+id/contentDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="24dp"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/author_textView"
-                app:layout_constraintTop_toBottomOf="@+id/author_textView"
-                tools:text="这是内容。。。。。。" />
-
-            <TextView
-                android:id="@+id/date_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="2021-5-8 10:48:37"
-                android:textColor="#808080"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/author_textView"
-                app:layout_constraintStart_toEndOf="@+id/author_textView" />
-
-            <TextView
-                android:id="@+id/author_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:clickable="true"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="author_name:" />
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/cover"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="56dp"
-                app:actualImageScaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/contentDetail"
-                app:overlayImage="@drawable/bg_round_rect"
-                app:roundedCornerRadius="8dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
+        android:layout_height="56dp"
+        app:tBackImage="@drawable/nav_return_white"
+        app:tBackgroundColor="@color/blue_1"
+        app:tCenterTitle="true"
+        app:tMenuImage="@drawable/menu_white_24"
+        app:tTitleText="details"
+        app:tTitleTextColor="@android:color/white"
+        app:tTitleTextSize="22sp" />
     <com.jidcoo.android.widget.commentview.CommentView
-        android:id="@+id/commentView"
+        android:id="@+id/myCommentView"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cover" />
+        android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <include
+            layout="@layout/editor"
+            android:visibility="visible" />
+    </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

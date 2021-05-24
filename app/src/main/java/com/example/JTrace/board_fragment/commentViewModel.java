@@ -12,7 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.example.JTrace.Constants;
-import com.example.JTrace.model.comment;
+//import com.example.JTrace.model.comment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,12 +27,14 @@ import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class commentViewModel extends AndroidViewModel {
-    private List<comment> mComments=new ArrayList<>();
+//    private List<comment> mComments=new ArrayList<>();
     private MutableLiveData<String> status = new MutableLiveData<>();
     private SharedPreferences sharedPreferences;
     private SavedStateHandle handle;
@@ -70,9 +72,9 @@ public class commentViewModel extends AndroidViewModel {
         this.handle=handle;
         sharedPreferences=application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
     }
-    public List<comment> getmComments(){
-        return this.mComments;
-    }
+//    public List<comment> getmComments(){
+//        return this.mComments;
+//    }
     public void setStatus(String status){
         this.status.postValue(status);
     }
@@ -120,10 +122,10 @@ public class commentViewModel extends AndroidViewModel {
                                 Date formatted_date=format.parse(string_date);
 
                                 //String msg_id=cur_comment.getString("message");
-                                comment mComment=new comment(author,content,message_id,formatted_date);
-                                mComments.add(mComment);
+//                                comment mComment=new comment(author,content,message_id,formatted_date);
+//                                mComments.add(mComment);
                             }
-                            Log.d("comment_viewModel", String.valueOf(mComments.size()));
+//                            Log.d("comment_viewModel", String.valueOf(mComments.size()));
                             setStatus("comment");
                         } catch (JSONException | ParseException e) {
                             Log.d("comment_viewModel","parse failed");
@@ -206,6 +208,61 @@ public class commentViewModel extends AndroidViewModel {
                         }
                     }
                 });
+            }
+        }.start();
+    }
+
+    public void postMessageComment(CustomCommentModel.CustomComment post_comment) {
+        new Thread() {
+            @Override
+            public void run() {
+                // @Headers({"Content-Type:application/json","Accept: application/json"})//需要添加头
+                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                JSONObject json = new JSONObject();
+                try {
+
+                    json.put("author",sharedPreferences.getInt("id",3));
+                    json.put("content",post_comment.getData());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String token=sharedPreferences.getString("token","");
+                OkHttpClient okHttpClient = new OkHttpClient();
+                //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
+                //json为String类型的json数据
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                //创建一个请求对象
+//                        String format = String.format(KeyPath.Path.head + KeyPath.Path.waybillinfosensor, username, key, current_timestamp);
+                Request request = new Request.Builder()
+                        .url(Constants.baseUrl+"/msgboard/"+message_id+"/comments/release/")
+                        .addHeader("Authorization",token)
+                        .post(requestBody)
+                        .build();
+
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("failure","comment");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String string = response.body().string();
+                        Log.d("info",string+"");
+                        try {
+                            JSONObject json = new JSONObject(string);
+                            int status = (int) json.get("status");
+                            String msg = (String) json.get("msg");
+                            if (status==0) {
+                                Log.d("save comment","success");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
             }
         }.start();
     }
