@@ -222,6 +222,8 @@ public class CommonUserInfoFragment extends Fragment {
                     Intent intent=new Intent(v.getContext(), MainChatActivity.class);
                     intent.putExtra("id",mViewModel.readUser().getUser_id());
                     intent.putExtra("name",mViewModel.readUser().getUser_name());
+                    intent.putExtra("avatar",mViewModel.readUser().getUser_avatar());
+
                     v.getContext().startActivity(intent);
                 }
             }

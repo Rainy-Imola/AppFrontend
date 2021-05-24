@@ -88,21 +88,59 @@ public class FriendsViewModel extends AndroidViewModel {
                                 //String password=cur_msg.getString("password");
                                 JSONObject jsonObject = null;
                                 String name = null;
-                                int status = 0;
+                                int onoffstatus = 0;
                                 try{
                                     jsonObject = new JSONObject(cur_msg);
                                     name = jsonObject.getString("name");
-                                    status = jsonObject.getInt("status");
+                                    onoffstatus = jsonObject.getInt("status");
                                 }catch(JSONException e){
                                     e.printStackTrace();
                                 }
                                 Log.d("name: ",name);
                                 Log.d("status", String.valueOf(status));
-                                friend msg=new friend(0,name,0,status);
-                                mMessage.add(msg);
-                                Log.d("MessageInfo","finished one circle");
+
+                                OkHttpClient okHttpClient = new OkHttpClient();
+                                String token = sharedPreferences.getString("token", "");
+                                Log.d("MessageInfo_token", token);
+                                Request request = new Request.Builder().url(Constants.baseUrl + "/users/" +name + "/info")
+                                        .addHeader("Authorization", token)
+                                        .build();
+                                int finalOnoffstatus = onoffstatus;
+                                okHttpClient.newCall(request).enqueue(new Callback() {
+                                    @Override
+                                    public void onFailure(Call call, IOException e) {
+                                        Log.d("UserInfo", "request_handle_failed");
+                                    }
+
+                                    @Override
+                                    public void onResponse(Call call, Response response) throws IOException {
+                                        String res = response.body().string();
+                                        Log.d("User_info", "接收成功");
+                                        Log.d("userinfo user", res);
+
+                                        try {
+                                            JSONObject result = new JSONObject(res);
+                                            JSONArray data = (JSONArray) result.get("data");
+                                            int status = (int) result.get("status");
+                                            String msg = (String) result.get("msg");
+                                            if (status == 0) {
+                                                String image = (String) data.getJSONObject(0).get("avatar");
+                                                String name = (String) data.getJSONObject(0).get("username");
+                                                Log.d("username:",name);
+                                                Log.d("avatar",image);
+                                                friend eachFriend=new friend(0,name,image, finalOnoffstatus);
+                                                mMessage.add(eachFriend);
+                                                Log.d("MessageInfo","finished one circle");
+                                                setStatus("message");
+                                            }
+                                        } catch (JSONException e) {
+                                            Log.d("userinfo", "userinfo dateParse failed");
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
                             }
-                            setStatus("message");
+
                         } catch (JSONException e) {
                             isGetMsgSucc=false;
                             Log.d("MessageInfo_viewModel", "dateParse failed");
@@ -114,7 +152,6 @@ public class FriendsViewModel extends AndroidViewModel {
             }
         }.start();
     }
-
     public boolean isGetMsgSucc() {
         return isGetMsgSucc;
     }

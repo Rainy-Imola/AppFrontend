@@ -7,14 +7,16 @@
     android:layout_height="wrap_content"
     tools:layout_editor_absoluteY="81dp">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="46dp"
-        android:layout_height="43dp"
+    <com.example.JTrace.widget.RoundImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="61dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="26dp"
-        android:src="@drawable/girlimage"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_baseline_account_circle_24"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,22 +26,24 @@
         android:layout_width="191dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="119dp"
-        app:layout_constraintBottom_toBottomOf="@+id/image"
+        app:layout_constraintBottom_toBottomOf="@+id/image_avatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toTopOf="@+id/image"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintStart_toEndOf="@+id/image_avatar"
+        app:layout_constraintTop_toTopOf="@+id/image_avatar"
+        app:layout_constraintVertical_bias="0.513" />
 
     <TextView
         android:id="@+id/status"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="86dp"
+        android:layout_height="58dp"
         android:layout_marginEnd="25dp"
+        android:gravity="center"
+        android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="@+id/name"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/image_avatar"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/name"
         app:layout_constraintTop_toTopOf="@+id/name"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.307" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
