@@ -32,4 +32,9 @@
         <attr name="line_color" format="color" />
         <attr name="line_height" format="integer" />
     </declare-styleable>
+    <declare-styleable name="SampleCircleImageView">
+        <attr name="src" format="reference"/>
+        <attr name="radius" format="dimension"/>
+    </declare-styleable>
+
 </resources>

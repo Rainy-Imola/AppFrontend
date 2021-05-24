@@ -1,128 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <com.loper7.layout.TitleBar
-        android:id="@+id/title_b"
+    tools:context=".board_fragment.MessageDetailActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        app:tBackgroundColor="@color/blue_1"
-        app:tCenterTitle="true"
-        app:tTitleText="details"
-        app:tTitleTextColor="@color/white"
-        app:tTitleTextSize="22sp" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp" >
-        <RelativeLayout
+        android:layout_height="wrap_content"
+        android:background="@android:color/background_light"
+        android:theme="@style/Theme.EasyTalk.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            app:contentScrim="@android:color/transparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar3">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar3"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/blue_1"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@color/blue_1">
+                <com.loper7.layout.TitleBar
+                    android:id="@+id/title_b"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:tCenterTitle="true"
+                    app:tMenuImage="@drawable/menu_white_24"
+                    app:tTitleText="details"
+                    app:tTitleTextColor="@android:color/white"
+                    app:tTitleTextSize="22sp" />
+            </androidx.appcompat.widget.Toolbar>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="评论:"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/cover" />
+
+            <TextView
+                android:id="@+id/contentDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="24dp"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/author_textView"
+                app:layout_constraintTop_toBottomOf="@+id/author_textView"
+                tools:text="这是内容。。。。。。" />
+
+            <TextView
+                android:id="@+id/date_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="2021-5-8 10:48:37"
+                android:textColor="#808080"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/author_textView"
+                app:layout_constraintStart_toEndOf="@+id/author_textView" />
+
+            <TextView
+                android:id="@+id/author_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:clickable="true"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="author_name:" />
+
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/cover"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="56dp"
                 app:actualImageScaleType="centerCrop"
-                app:roundedCornerRadius="8dp"
-                android:layout_marginVertical="6dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginHorizontal="20dp"
-                app:overlayImage="@drawable/bg_round_rect"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/cover"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:id="@+id/author_date_layout">
-
-                <TextView
-                    android:id="@+id/author_textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/black"
-                    android:clickable="true"
-                    android:textSize="20sp"
-                    tools:text="author_name:" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/date_textView"
-                    android:layout_gravity="right"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:textColor="#808080"
-                    android:textSize="14sp"
-                    android:layout_marginTop="5dp"
-                    android:text="2021-5-8 10:48:37"
-                    />
-
-            </RelativeLayout>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_below="@+id/author_date_layout"
-                android:id="@+id/textScollView">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/contentDetail"
-                    android:textSize="15sp"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginVertical="4dp"
-                    android:ellipsize="end"
-                    tools:text="这是内容。。。。。。"/>
-            </ScrollView>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:id="@+id/icon_layout"
-                android:layout_below="@+id/textScollView">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/round_shape"
-                    android:paddingLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:focusableInTouchMode="true"
-                    android:layout_marginBottom="5dp">
-                    <EditText
-                        android:layout_width="300dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/postCommentText"
-                        android:singleLine="true"
-                        android:hint="快来发表你的评论吧"/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:id="@+id/postCommentButton"
-                        android:text="发送"
-                        android:textSize="12sp"
-                        android:layout_toRightOf="@id/postCommentText"
-                        android:paddingRight="2dp"
-                        android:gravity="center_horizontal"/>
-                </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/contentDetail"
+                app:overlayImage="@drawable/bg_round_rect"
+                app:roundedCornerRadius="8dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
-            </RelativeLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/icon_layout"
-                android:id="@+id/commentRecyclerView"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        </RelativeLayout>
-    </ScrollView>
+    <com.jidcoo.android.widget.commentview.CommentView
+        android:id="@+id/commentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cover" />
 
-</RelativeLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

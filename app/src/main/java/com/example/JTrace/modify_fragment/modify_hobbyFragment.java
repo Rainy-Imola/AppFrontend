@@ -115,6 +115,7 @@ public class modify_hobbyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         list_data = new ArrayList<>();
+
         int lvCount =6;
         int lv1Count =5;
         for (int i = 0; i < lvCount; i++) {
@@ -125,6 +126,8 @@ public class modify_hobbyFragment extends Fragment {
                 list_data.add(item1);
             }
         }
+
+
         List<String> mhobbylist = mViewModel.readUser().getUser_hobby();
         for (String mdata:mhobbylist) {
             hobbylist.add(mdata);
