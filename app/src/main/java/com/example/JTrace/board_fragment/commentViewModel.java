@@ -58,7 +58,7 @@ public class commentViewModel extends AndroidViewModel {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
                 Integer user_id = sharedPreferences.getInt("id", 2);
-                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/"+message_id)
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/"+message_id+"/"+sharedPreferences.getInt("id",-1))
                         .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
