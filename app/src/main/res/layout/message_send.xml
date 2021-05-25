@@ -30,7 +30,7 @@
             android:layout_alignParentRight="true"
             android:scaleType="centerInside"
 
-            android:src="@drawable/boyimage" />
+            android:src="@drawable/ic_baseline_account_circle_24" />
 
 
         <LinearLayout

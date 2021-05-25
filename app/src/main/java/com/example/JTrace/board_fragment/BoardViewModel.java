@@ -59,7 +59,7 @@ public class BoardViewModel extends AndroidViewModel {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
                 Integer user_id = sharedPreferences.getInt("id", 2);
-                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/")
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/"+sharedPreferences.getInt("id",-1))
                         .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {

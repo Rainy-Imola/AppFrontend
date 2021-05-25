@@ -11,9 +11,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -57,6 +59,9 @@ public class MainChatActivity extends baseActivity {
     //variable used
     private String To;
     private String From;
+    private String senderImage;
+    private String friendImage;
+    private int status;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -77,9 +82,13 @@ public class MainChatActivity extends baseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_chat);
         To = getIntent().getStringExtra("name");
+        friendImage = getIntent().getStringExtra("avatar");
+        Log.d("friendImage",friendImage);
+        status = getIntent().getIntExtra("status",0);
         SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        From = sharedPreferences.getString("username","");
-
+        From = sharedPreferences.getString("username",null);
+        senderImage = sharedPreferences.getString("avatar",null);
+        Log.d("senderImage",senderImage);
         //initMsg();
         //startChatService();
         bindservice();
@@ -90,7 +99,13 @@ public class MainChatActivity extends baseActivity {
         back = findViewById(R.id.back_to_friend);
         editText = findViewById(R.id.et_content);
         titleBar = findViewById(R.id.title_bar);
-        titleBar.setTitleText(To);
+        if(status != 0 ){
+            titleBar.setTitleText(To+":离线");
+            titleBar.setTitleTextColor(Color.GRAY);
+        }else{
+            titleBar.setTitleText(To);
+        }
+
         mContext = titleBar.getContext();
 
         inputMethodManager = (InputMethodManager) getSystemService(MainChatActivity.this.INPUT_METHOD_SERVICE);
@@ -127,7 +142,6 @@ public class MainChatActivity extends baseActivity {
                 inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(),0);
                 return false;
             }
-
         });
         titleBar.setOnBackListener(new TitleBar.OnBackListener() {
             @Override
@@ -172,7 +186,7 @@ public class MainChatActivity extends baseActivity {
             }catch (JSONException e){
                 e.printStackTrace();
             }
-            chatMsg item1 = new chatMsg(From,To, 1,content);
+            chatMsg item1 = new chatMsg(From,To, 1,content,friendImage);
             Log.d("receive"," receive add");
             msglist.add(item1);
             nowList.add(item1);
@@ -180,14 +194,7 @@ public class MainChatActivity extends baseActivity {
         }
     }
 
-    private void initMsg() {
-        chatMsg item1 = new chatMsg("s","r", 0, "你好");
-        msglist.add(item1);
-        chatMsg item2 = new chatMsg("r","s", 1, "你好");
-        msglist.add(item2);
-        chatMsg item3 = new chatMsg("s","r", 0, "你好");
-        msglist.add(item3);
-    }
+
 
     private void initChatUi(){
         LinearLayoutManager mLinearManager = new LinearLayoutManager(this);
@@ -207,7 +214,7 @@ public class MainChatActivity extends baseActivity {
         }
         editText.setText("");
         Log.d("send event:","content");
-        chatMsg msg = new chatMsg("test2","test2",0,content);
+        chatMsg msg = new chatMsg("test2","test2",0,content,senderImage);
         //nowList.add(msg);
         Log.d("send"," send add");
         msglist.add(msg);
@@ -230,8 +237,10 @@ public class MainChatActivity extends baseActivity {
             Log.d("senderid",temp.getSenderID());
             if( From.equals(temp.getReceiveID())&& To.equals(temp.getSenderID())){
                 Log.d("test","asasas");
+                temp.setAvatar(friendImage);
                 tempList.add(temp);
             }else if(To.equals(temp.getReceiveID())&& From.equals(temp.getSenderID())){
+                temp.setAvatar(senderImage);
                 tempList.add(temp);
             }
         }
