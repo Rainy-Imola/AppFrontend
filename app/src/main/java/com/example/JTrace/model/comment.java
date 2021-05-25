@@ -13,7 +13,7 @@ public class comment extends CommentEnable {
     @SerializedName("content")
     private String content;
     @SerializedName("date")
-    private Date date;
+    private String date;
     @SerializedName("msg_id")
     private String msg_id;
 
@@ -23,13 +23,13 @@ public class comment extends CommentEnable {
     public void setContent(String content){this.content=content;}
     public String getContent(){return this.content;}
 
-    public void setDate(Date date){this.date=date;}
-    public Date getDate(){return this.date;}
+    public void setDate(String date){this.date=date;}
+    public String getDate(){return this.date;}
 
     public void setMsg_id(String id){this.msg_id=id;}
     public String getMsg_id(){return this.msg_id;}
 
-    public comment(String author,String content,String msg_id,Date date){
+    public comment(String author,String content,String msg_id,String date){
         setAuthor(author);
         setContent(content);
         setMsg_id(msg_id);

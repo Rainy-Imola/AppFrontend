@@ -87,10 +87,8 @@ public class MessageDetailActivity extends baseActivity {
         authorView=findViewById(R.id.author_textView);
         dateView=findViewById(R.id.date_textView);
         authorView.setText(msg.getAuthor());
-        Date date=msg.getCreatedAt();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        String resDate=format.format(date);
-        dateView.setText(resDate);
+        String date=msg.getCreatedAt();
+        dateView.setText(date);
         context=this;
         commentPostEditTextView=findViewById(R.id.postCommentText);
         commentPostButton=findViewById(R.id.postCommentButton);
@@ -173,7 +171,9 @@ public class MessageDetailActivity extends baseActivity {
                     return;
                 }
                 Date date=new Date(System.currentTimeMillis());
-                comment comment=new comment(author,content,msg.getId(),date);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String time = sdf.format(date);
+                comment comment=new comment(author,content,msg.getId(),time);
 
                 //post comment
                 HttpAPI httpAPI=new HttpAPI();

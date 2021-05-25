@@ -61,11 +61,11 @@ public class ItemGroup extends FrameLayout {
     private void initAttrs(Context context, AttributeSet attrs) {
 
         //标题的默认字体颜色
-        int defaultTitleColor = context.getResources().getColor(R.color.black);
+        int defaultTitleColor = context.getResources().getColor(R.color.red);
         //输入框的默认字体颜色
-        int defaultEdtColor = context.getResources().getColor(R.color.black);
+        int defaultEdtColor = context.getResources().getColor(R.color.red);
         //输入框的默认的提示内容的字体颜色
-        int defaultHintColor = context.getResources().getColor(R.color.black);
+        int defaultHintColor = context.getResources().getColor(R.color.red);
 
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ItemGroup);
         String title = typedArray.getString(R.styleable.ItemGroup_title);

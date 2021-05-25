@@ -81,25 +81,13 @@ public class commentViewModel extends AndroidViewModel {
                                 JSONObject cur_comment=result.getJSONObject(i);
                                 String author=cur_comment.getString("author");
                                 String content=cur_comment.getString("content");
-                                //process date
-                                JSONObject json_date=cur_comment.getJSONObject("date");
-                                String yyyy=String.valueOf(json_date.getInt("year")+1900);
-                                String MM=String.valueOf(json_date.getInt("month")+1);
-                                String dd=String.valueOf(json_date.getInt("date"));
-                                String hh=String.valueOf(json_date.getInt("hours"));
-                                String mm=String.valueOf(json_date.getInt("minutes"));
-                                String ss=String.valueOf(json_date.getInt("seconds"));
-                                String string_date=yyyy+"-"+MM+"-"+dd+" "+hh+":"+mm+":"+ss;
-                                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Date formatted_date=format.parse(string_date);
-
-                                //String msg_id=cur_comment.getString("message");
-                                comment mComment=new comment(author,content,message_id,formatted_date);
+                                String date=cur_comment.getString("date");
+                                comment mComment=new comment(author,content,message_id,date);
                                 mComments.add(mComment);
                             }
                             Log.d("comment_viewModel", String.valueOf(mComments.size()));
                             setStatus("comment");
-                        } catch (JSONException | ParseException e) {
+                        } catch (JSONException e) {
                             Log.d("comment_viewModel","parse failed");
                             e.printStackTrace();
                         }

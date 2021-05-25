@@ -73,7 +73,7 @@
                     android:layout_marginLeft="32dp"
                     android:layout_marginTop="8dp"
                     android:text="TextView"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
                     app:layout_constraintTop_toTopOf="@+id/user_info_imageView" />
 
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="TextView"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
                     app:layout_constraintStart_toStartOf="@+id/user_info_name" />
 

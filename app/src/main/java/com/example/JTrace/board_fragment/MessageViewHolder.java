@@ -30,8 +30,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder implements View.O
     public void bind(message msg){
         this.author=msg.getAuthor();
         this.content=msg.getContent();
-        SimpleDateFormat format=new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss");
-        this.date=format.format(msg.getCreatedAt());
+        this.date=msg.getCreatedAt();
         this.cover=msg.getImageUrl();
         this.msg=msg;
 
