@@ -13,7 +13,7 @@ public class message implements Serializable {
     @SerializedName("content")
     private String content;
     @SerializedName("createdAt")
-    private Date createdAt;
+    private String createdAt;
     @SerializedName("image_url")
     private String imageUrl;
     @SerializedName("image_w")
@@ -30,8 +30,8 @@ public class message implements Serializable {
     public void setContent(String content1){content=content1;}
     public String getContent(){return content;}
 
-    public void setCreatedAt(Date date){this.createdAt=date;}
-    public Date getCreatedAt(){return this.createdAt;}
+    public void setCreatedAt(String date){this.createdAt=date;}
+    public String getCreatedAt(){return this.createdAt;}
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
@@ -54,7 +54,7 @@ public class message implements Serializable {
         return imageH;
     }
 
-    public message(String id,String author1,String content1,Date date,String imageUrl){
+    public message(String id, String author1, String content1, String date, String imageUrl){
         setId(id);
         setAuthor(author1);
         setContent(content1);
