@@ -61,11 +61,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        SimpleDateFormat format=new SimpleDateFormat( "yyyy-MM-dd HH-mm-ss");
         holder.itemView.setTag(position);
         //holder.mAuthor.setText(mItems.get(position).getAuthor());
         holder.mContent.setText(mItems.get(position).getContent());
-        holder.mcreateat.setText(format.format(mItems.get(position).getCreatedAt()));
+        holder.mcreateat.setText(mItems.get(position).getCreatedAt());
         holder.mcoverView.setImageURI(mItems.get(position).getImageUrl());
     }
 
