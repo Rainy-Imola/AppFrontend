@@ -150,28 +150,19 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                                 String id = cur_msg.getString("id");
                                 String author = cur_msg.getString("author");
                                 String content = cur_msg.getString("content");
-                                JSONObject json_date=cur_msg.getJSONObject("date");
-                                String yyyy=String.valueOf(json_date.getInt("year")+1900);
-                                String MM=String.valueOf(json_date.getInt("month")+1);
-                                String dd=String.valueOf(json_date.getInt("date"));
-                                String hh=String.valueOf(json_date.getInt("hours"));
-                                String mm=String.valueOf(json_date.getInt("minutes"));
-                                String ss=String.valueOf(json_date.getInt("seconds"));
-                                String string_date=yyyy+"-"+MM+"-"+dd+" "+hh+":"+mm+":"+ss;
-                                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Date formatted_date=format.parse(string_date);
+                                String date = cur_msg.getString("date");
                                 String picture;
                                 try {
                                     picture = cur_msg.getString("picture");
                                 } catch (JSONException e) {
                                     picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
                                 }
-                                message msg = new message(id, author, content, formatted_date, picture);
+                                message msg = new message(id, author, content, date, picture);
                                 mMessage.add(msg);
                             }
                             setStatus("0");
                             setStatus("message");
-                        } catch (JSONException | ParseException e) {
+                        } catch (JSONException e) {
                             Log.d("userinfo MessageInfo", "dateParse failed");
                             e.printStackTrace();
                         }

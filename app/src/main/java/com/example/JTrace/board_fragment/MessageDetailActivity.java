@@ -158,10 +158,8 @@ public class MessageDetailActivity extends AppCompatActivity {
         authorView=view.findViewById(R.id.author_textView);
         dateView=view.findViewById(R.id.date_textView);
         authorView.setText(msg.getAuthor());
-        Date date=msg.getCreatedAt();
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-        String resDate=format.format(date);
-        dateView.setText(resDate);
+        String date=msg.getCreatedAt();
+        dateView.setText(date);
         context=this;
 //        commentPostEditTextView=findViewById(R.id.postCommentText);
 //        commentPostButton=findViewById(R.id.postCommentButton);
