@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.example.JTrace.Constants;
+import com.example.JTrace.model.message;
 //import com.example.JTrace.model.comment;
 
 import org.json.JSONArray;
@@ -41,6 +42,15 @@ public class commentViewModel extends AndroidViewModel {
     private int mCommentPage;
     private int mReplyPage;
 
+    public MutableLiveData<message> getMessageMutableLiveData() {
+        return messageMutableLiveData;
+    }
+
+    public void setMessageMutableLiveData(message messageMutableLiveData) {
+        this.messageMutableLiveData.postValue(messageMutableLiveData);
+    }
+
+    private MutableLiveData<message> messageMutableLiveData = new MutableLiveData<>();
 
     private String message_id;
 
@@ -79,6 +89,7 @@ public class commentViewModel extends AndroidViewModel {
         this.status.postValue(status);
     }
 
+    /*
     public void requestData(String message_id){
         new Thread(){
             @Override
@@ -140,23 +151,25 @@ public class commentViewModel extends AndroidViewModel {
         }.start();
     }
 
+     */
+
     public void getCommentModel(int code, MessageDetailActivity.ActivityHandler activityHandler, int handlerId) {
         switch (code){
             case 1:
-                getPageComment(activityHandler,handlerId);
+                getPageCommentAndDetail(activityHandler,handlerId);
                 break;
 
         }
     }
 
-    private void getPageComment(MessageDetailActivity.ActivityHandler activityHandler, int handlerId) {
+    private void getPageCommentAndDetail(MessageDetailActivity.ActivityHandler activityHandler, int handlerId) {
         new Thread() {
             @Override
             public void run() {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
                 Integer user_id = sharedPreferences.getInt("id", 2);
-                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/"+message_id)
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard/"+message_id+"/"+user_id.toString())
                         .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
@@ -170,32 +183,43 @@ public class commentViewModel extends AndroidViewModel {
                         //Log.d("comment_viewModel",res);
                         try{
                             JSONObject results = new JSONObject(res);
-                            JSONArray data = results.getJSONArray("data");
-                            JSONObject mid=data.getJSONObject(0);
-                            JSONArray result=mid.getJSONArray("comment");
-                            Log.d("comment_viewModel","comments_size:"+result.length());
-                            mCustomComments = new ArrayList<>();
-                            for(int i=result.length()-1;i>=0;i--){
-                                JSONObject cur_comment=result.getJSONObject(i);
-                                String author=cur_comment.getString("author");
-                                String content=cur_comment.getString("content");
-                                String date=cur_comment.getString("date");
-                                CustomCommentModel.CustomComment mcustomComment = new CustomCommentModel.CustomComment();
-                                mcustomComment.setReplies(new ArrayList<CustomCommentModel.CustomComment.CustomReply >());
-                                mcustomComment.setPosterName(author);
-                                mcustomComment.setData(content);
-                                mCustomComments.add(mcustomComment);
-                                //String msg_id=cur_comment.getString("message");
+                            if(results.isNull("code")) {
+                                JSONArray data = results.getJSONArray("data");
+                                JSONObject mid = data.getJSONObject(0);
+                                JSONObject message_detail = mid.getJSONObject("message");
+                                JSONArray result = mid.getJSONArray("comment");
+                                message mmessage = new message();
+                                mmessage.setAuthor(message_detail.getString("author"));
+                                mmessage.setContent(message_detail.getString("content"));
+                                mmessage.setCreatedAt(message_detail.getString("date"));
+                                mmessage.setId(message_id);
+                                mmessage.setLike(message_detail.getInt("like"));
+                                mmessage.setImageUrl(message_detail.getString("picture"));
+                                mCustomComments = new ArrayList<>();
+                                for (int i = result.length() - 1; i >= 0; i--) {
+                                    JSONObject cur_comment = result.getJSONObject(i);
+                                    String author = cur_comment.getString("author");
+                                    String content = cur_comment.getString("content");
+                                    String date = cur_comment.getString("date");
+                                    CustomCommentModel.CustomComment mcustomComment = new CustomCommentModel.CustomComment();
+                                    mcustomComment.setReplies(new ArrayList<CustomCommentModel.CustomComment.CustomReply>());
+                                    mcustomComment.setPosterName(author);
+                                    mcustomComment.setData(content);
+                                    mCustomComments.add(mcustomComment);
+                                    //String msg_id=cur_comment.getString("message");
 //                                comment mComment=new comment(author,content,message_id,formatted_date);
 //                                mComments.add(mComment);
-                            }
-                            mCustomCommentModel.setComments(mCustomComments);
-                            Message message = Message.obtain();
-                            message.what = handlerId;
-                            message.obj = mCustomCommentModel;
-                            activityHandler.sendMessage(message);
+                                }
+                                mCustomCommentModel.setComments(mCustomComments);
+                                Message message = Message.obtain();
+                                message.what = handlerId;
+                                message.obj = mCustomCommentModel;
+                                activityHandler.sendMessage(message);
 //                            setStatus("comment");
-                        } catch (JSONException | ParseException e) {
+                            }else if(results.getInt("code") == 401){
+                                Log.d("token","error");
+                            }
+                        } catch (JSONException e) {
                             Log.d("comment_viewModel","parse failed");
                             e.printStackTrace();
                         }

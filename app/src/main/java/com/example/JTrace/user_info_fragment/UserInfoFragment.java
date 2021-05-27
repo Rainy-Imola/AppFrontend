@@ -304,7 +304,8 @@ public class UserInfoFragment extends Fragment {
         tv_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mPopupWindow.dismiss();
+                mnavController.navigate(R.id.action_navigation_myinfo_to_settingFragment);
             }
         });
 

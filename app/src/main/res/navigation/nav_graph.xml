@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_navigation_myinfo_to_loginActivity"
             app:destination="@id/loginActivity" />
+        <action
+            android:id="@+id/action_navigation_myinfo_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/modifyFragment"
@@ -66,6 +69,11 @@
         android:name="com.example.JTrace.modify_fragment.modify_constellationFragment"
         android:label="fragment_modify_constellation"
         tools:layout="@layout/fragment_modify_constellation" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.JTrace.setting_fragment.settingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 
 
 </navigation>

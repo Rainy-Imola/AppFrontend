@@ -59,7 +59,7 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title_b"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="author_name:" />
 
             <com.facebook.drawee.view.SimpleDraweeView
@@ -78,6 +78,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/contentDetail"
                 app:overlayImage="@drawable/bg_round_rect"
                 app:roundedCornerRadius="8dp" />
+
+            <ImageView
+                android:id="@+id/comment_item_like"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+
+                android:padding="3dp"
+                android:src="@drawable/pxjh"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/textView11"
+                app:layout_constraintEnd_toStartOf="@+id/prizes_msg"
+                app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/prizes_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textColor="#666666"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@+id/comment_item_like"
+                app:layout_constraintEnd_toEndOf="@+id/cover"
+                app:layout_constraintTop_toTopOf="@+id/comment_item_like" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

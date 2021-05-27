@@ -21,6 +21,16 @@ public class message implements Serializable {
     @SerializedName("image_h")
     private int imageH;
 
+
+    @SerializedName("like")
+    private int like;
+    public int getLike() {
+        return like;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
+    }
     public void setId(String id){this.id=id;}
     public String getId(){return this.id;}
 
@@ -60,5 +70,8 @@ public class message implements Serializable {
         setContent(content1);
         setCreatedAt(date);
         setImageUrl(imageUrl);
+    }
+    public message(){
+
     }
 }

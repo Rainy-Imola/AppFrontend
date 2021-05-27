@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".setting_fragment.settingFragment">
+
+    <com.loper7.layout.TitleBar
+        android:id="@+id/title_setting"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tBackImage="@drawable/nav_return_white"
+        app:tBackgroundColor="@color/blue_1"
+        app:tCenterTitle="true"
+        app:tMenuTextSize="18sp"
+        app:tTitleText="设置"
+        app:tTitleTextColor="@android:color/white"
+        app:tTitleTextSize="22sp">
+
+    </com.loper7.layout.TitleBar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_setting">
+
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/account_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="账号安全">
+        </com.example.JTrace.widget.ItemGroup>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--    头像-->
+    <!--    编辑界面，此处可以写成一个ItemGroup上传至com上-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/privacy_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="隐私">
+
+        </com.example.JTrace.widget.ItemGroup>
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/ig_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/privacy_id"
+            app:layout_constraintStart_toStartOf="@+id/privacy_id"
+            app:layout_constraintTop_toBottomOf="@+id/privacy_id"
+
+            app:title="聊天">
+
+        </com.example.JTrace.widget.ItemGroup>
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/ig_hobby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="@+id/ig_name"
+            app:layout_constraintStart_toStartOf="@+id/ig_name"
+            app:layout_constraintTop_toBottomOf="@+id/ig_name"
+            app:title="消息提醒" />
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/ig_constellation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/privacy_id"
+            app:layout_constraintStart_toStartOf="@+id/ig_hobby"
+            app:layout_constraintTop_toBottomOf="@+id/ig_hobby"
+            app:title="通用" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_about"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/feedback_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="反馈">
+
+        </com.example.JTrace.widget.ItemGroup>
+
+        <com.example.JTrace.widget.ItemGroup
+            android:id="@+id/about_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/feedback_id"
+            app:layout_constraintStart_toStartOf="@+id/feedback_id"
+
+            app:layout_constraintTop_toBottomOf="@+id/feedback_id"
+            app:title="关于Jtrace">
+
+        </com.example.JTrace.widget.ItemGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout_about_exit"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_about">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退出"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
