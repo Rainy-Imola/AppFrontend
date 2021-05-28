@@ -1,4 +1,4 @@
-package com.jidcoo.android.widgettest.custom;
+package com.example.JTrace.custom_comment;
 
 
 import android.content.Context;

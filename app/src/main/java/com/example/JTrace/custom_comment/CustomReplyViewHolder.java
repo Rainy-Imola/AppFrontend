@@ -8,11 +8,13 @@ import com.example.JTrace.R;
 
 public class CustomReplyViewHolder extends ViewHolder {
     public TextView userName, prizes, reply;
+    public TextView date_reply;
 
     public CustomReplyViewHolder(View view) {
         super(view);
-        userName = view.findViewById(R.id.user);
+        userName = view.findViewById(R.id.reply_item_userName);
         prizes = view.findViewById(R.id.prizes);
-        reply = view.findViewById(R.id.data);
+        reply = view.findViewById(R.id.reply_item_content);
+        date_reply = view.findViewById(R.id.reply_item_time);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.JTrace.board_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -11,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,11 +28,10 @@ import com.example.JTrace.R;
 
 import com.example.JTrace.custom_comment.CustomCommentViewHolder;
 import com.example.JTrace.custom_comment.CustomReplyViewHolder;
+import com.example.JTrace.custom_comment.CustomViewStyleConfigurator;
 import com.example.JTrace.friends_fragment.FriendDetailActivity;
 import com.example.JTrace.model.message;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.jidcoo.android.widget.commentview.CommentView;
 import com.jidcoo.android.widget.commentview.callback.CustomCommentItemCallback;
@@ -43,13 +40,11 @@ import com.jidcoo.android.widget.commentview.callback.OnCommentLoadMoreCallback;
 import com.jidcoo.android.widget.commentview.callback.OnItemClickCallback;
 import com.jidcoo.android.widget.commentview.callback.OnPullRefreshCallback;
 import com.jidcoo.android.widget.commentview.callback.OnReplyLoadMoreCallback;
-import com.jidcoo.android.widget.commentview.defaults.DefaultCommentModel;
 import com.loper7.layout.TitleBar;
 import com.yalantis.ucrop.util.ScreenUtils;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 
 public class MessageDetailActivity extends AppCompatActivity {
@@ -191,7 +186,7 @@ Log.d("hidde",message.getImageUrl());
         });
 
 
-        commentView.setViewStyleConfigurator(new com.jidcoo.android.widgettest.custom.CustomViewStyleConfigurator(this));
+        commentView.setViewStyleConfigurator(new CustomViewStyleConfigurator(this));
         commentView.addHeaderView(constraintLayout_header,true);
         commentView.callbackBuilder()
                 //自定义评论布局(必须使用ViewHolder机制)--CustomCommentItemCallback<C> 泛型C为自定义评论数据类
@@ -212,6 +207,7 @@ Log.d("hidde",message.getImageUrl());
                         holder.prizes.setText("100");
                         holder.userName.setText(comment.getPosterName());
                         holder.comment.setText(comment.getData());
+
                         return convertView;
                     }
                 })
@@ -227,7 +223,7 @@ Log.d("hidde",message.getImageUrl());
                         //此类必须继承自com.jidcoo.android.widget.commentview.view.ViewHolder，否则报错
                         if (convertView == null) {
                             //使用自定义布局
-                            convertView = inflater.inflate(R.layout.custom_item_reply, parent, false);
+                            convertView = inflater.inflate(R.layout.item_reply_more, parent, false);
                             holder = new CustomReplyViewHolder(convertView);
                             //必须使用ViewHolder机制
                             convertView.setTag(holder);
@@ -237,6 +233,7 @@ Log.d("hidde",message.getImageUrl());
                         holder.userName.setText(reply.getReplierName());
                         holder.reply.setText(reply.getData());
                         holder.prizes.setText("100");
+                        holder.date_reply.setText(reply.getDate());
                         return convertView;
                     }
                 })
@@ -260,6 +257,7 @@ Log.d("hidde",message.getImageUrl());
             public boolean onTouch(View v, MotionEvent event) {
                 inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                 commentPostEditTextView.setText("");
+                init_comment();
                 return false;
             }
         });
@@ -289,38 +287,47 @@ Log.d("hidde",message.getImageUrl());
                     //现在需要构建一个回复数据实体类
                     CustomCommentModel.CustomComment.CustomReply reply = new CustomCommentModel.CustomComment.CustomReply();
 //                    reply.setKid(fid);
-                    reply.setReplierName(msg.getAuthor());
+                    reply.setReplierName(author);
                     reply.setData(content);
+                    reply.setLevel(rp);
+                    CustomCommentModel.CustomComment cur_comment = (CustomCommentModel.CustomComment) commentView.getCommentList().get(cp);
+                    reply.setComment_id(cur_comment.getId());
+                    reply.setRepliedName(cur_comment.getReplies().get(rp).getReplierName());
+
+
 //                    reply.setDate(System.currentTimeMillis());
 //                    reply.setPid(pid);
+                    mCommentViewModel.postReply(activityHandler, reply);
+
                     commentView.addReply(reply, cp);
+
                     inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                     commentPostEditTextView.setText("");
+                    init_comment();
                 } else if (isReply && !isChildReply) {
                     //现在需要构建一个回复数据实体类
                     CustomCommentModel.CustomComment.CustomReply reply = new CustomCommentModel.CustomComment.CustomReply();
-//                    reply.setKid(fid);
-                    reply.setReplierName(msg.getAuthor());
+                    reply.setReplierName(author);
                     reply.setData(content);
-//                    reply.setDate(System.currentTimeMillis());
-//                    reply.setPid(0);
+                    reply.setLevel(0);
+                    CustomCommentModel.CustomComment cur_comment = (CustomCommentModel.CustomComment) commentView.getCommentList().get(cp);
+                    reply.setComment_id(cur_comment.getId());
+
                     commentView.addReply(reply, cp);
                     inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                     commentPostEditTextView.setText("");
+                    mCommentViewModel.postReply(activityHandler, reply);
+                    init_comment();
                 } else {
                     CustomCommentModel.CustomComment comment = new CustomCommentModel.CustomComment();
-//                    comment.setFid(System.currentTimeMillis());
-//                    comment.setId(comment.getFid() + 1);
-//                    comment.setDate(comment.getFid());
-//                    comment.setPid(0);
-                    comment.setPosterName(msg.getAuthor());
+                    comment.setPosterName(author);
                     comment.setData(content);
                     commentView.addComment(comment);
                     inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                     commentPostEditTextView.setText("");
-                    mCommentViewModel.postMessageComment(comment);
+                    mCommentViewModel.postMessageComment(activityHandler,comment);
+                    init_comment();
                 }
-                Date date=new Date(System.currentTimeMillis());
 
             }
         });
@@ -435,8 +442,10 @@ Log.d("hidde",message.getImageUrl());
         @Override
         public void commentItemOnClick(int position, CustomCommentModel.CustomComment comment, View view) {
             cp = position;
+            isReply = true;
             isChildReply = false;
-            Toast.makeText(MessageDetailActivity.this, "你点击的评论：" + comment.getData(), Toast.LENGTH_SHORT).show();
+            commentPostEditTextView.setHint("回复@" + comment.getPosterName()+":");
+            Toast.makeText(MessageDetailActivity.this, "你点击的评论：" + comment.getData()+"position"+cp, Toast.LENGTH_SHORT).show();
             inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
             commentPostEditTextView.setText("");
         }
@@ -445,13 +454,21 @@ Log.d("hidde",message.getImageUrl());
         public void replyItemOnClick(int c_position, int r_position, CustomCommentModel.CustomComment.CustomReply reply, View view) {
             cp = c_position;
             rp = r_position;
+            isReply = true;
             isChildReply = true;
-            Toast.makeText(MessageDetailActivity.this, "你点击的回复：" + reply.getData(), Toast.LENGTH_SHORT).show();
+            commentPostEditTextView.setHint("回复@" + reply.getReplierName()+":");
+            Toast.makeText(MessageDetailActivity.this, "你点击的回复：" + reply.getData()+"level"+ rp, Toast.LENGTH_SHORT).show();
             inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
             commentPostEditTextView.setText("");
         }
     }
-
+    public void init_comment(){
+        List<CustomCommentModel.CustomComment> mCustomComment = (List<CustomCommentModel.CustomComment>) commentView.getCommentList();
+        cp = mCustomComment.size()-1;
+        isReply = false;
+        isChildReply = false;
+        commentPostEditTextView.setHint("发表你的评论吧");
+    }
 
 /*
         authorView.setOnClickListener(new View.OnClickListener() {

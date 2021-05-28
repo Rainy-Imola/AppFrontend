@@ -20,10 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
@@ -198,15 +195,50 @@ public class commentViewModel extends AndroidViewModel {
                                 setMessageMutableLiveData(mmessage);
 
                                 mCustomComments = new ArrayList<>();
-                                for (int i = result.length() - 1; i >= 0; i--) {
+                                for (int i = 0; i < result.length(); i++) {
                                     JSONObject cur_comment = result.getJSONObject(i);
-                                    String author = cur_comment.getString("author");
-                                    String content = cur_comment.getString("content");
-                                    String date = cur_comment.getString("date");
+                                    Integer id_comment = cur_comment.getInt("id");
+                                    String author_comment = cur_comment.getString("author");
+                                    String content_comment = cur_comment.getString("content");
+                                    String date_comment = cur_comment.getString("date");
+                                    JSONArray result_replys = cur_comment.getJSONArray("reply");
+                                    List<CustomCommentModel.CustomComment.CustomReply> mreplys = new ArrayList<>();
+                                    for (int j = 0;j<result_replys.length();j++){
+                                        JSONObject cur_reply = result_replys.getJSONObject(j);
+                                        Integer id_reply = cur_reply.getInt("id");
+                                        String author_reply = cur_reply.getString("author");
+                                        String content_reply = cur_reply.getString("content");
+                                        String date_reply = cur_reply.getString("date");
+                                        Integer level = cur_reply.getInt("level");
+                                        Integer comment_id = cur_reply.getInt("comment");
+                                        CustomCommentModel.CustomComment.CustomReply mreply = new CustomCommentModel.CustomComment.CustomReply();
+                                        mreply.setData(date_reply);
+                                        mreply.setId(id_reply);
+                                        mreply.setLevel(level);
+                                        mreply.setReplierName(author_reply);
+                                        mreply.setData(content_reply);
+                                        mreply.setComment_id(comment_id);
+                                        mreplys.add(mreply);
+                                    }
+                                    for (CustomCommentModel.CustomComment.CustomReply mm: mreplys
+                                         ) {
+                                        Integer mlevel = mm.getLevel();
+                                        if(mlevel !=0){
+                                            if(mlevel<mreplys.size()) {
+                                                CustomCommentModel.CustomComment.CustomReply replied = mreplys.get(mlevel-1);
+                                                mm.setRepliedName(replied.getReplierName());
+                                                mm.setData("回复 @"+mm.getRepliedName()+": " + mm.getData());
+                                            }
+                                        }
+                                    }
+                                    
+
                                     CustomCommentModel.CustomComment mcustomComment = new CustomCommentModel.CustomComment();
-                                    mcustomComment.setReplies(new ArrayList<CustomCommentModel.CustomComment.CustomReply>());
-                                    mcustomComment.setPosterName(author);
-                                    mcustomComment.setData(content);
+                                    mcustomComment.setReplies(mreplys);
+                                    mcustomComment.setPosterName(author_comment);
+                                    mcustomComment.setData(content_comment);
+                                    mcustomComment.setId(id_comment);
+                                    mcustomComment.setDate(date_comment);
                                     mCustomComments.add(mcustomComment);
                                     //String msg_id=cur_comment.getString("message");
 //                                comment mComment=new comment(author,content,message_id,formatted_date);
@@ -231,7 +263,67 @@ public class commentViewModel extends AndroidViewModel {
         }.start();
     }
 
-    public void postMessageComment(CustomCommentModel.CustomComment post_comment) {
+    public void postReply(MessageDetailActivity.ActivityHandler activityHandler, CustomCommentModel.CustomComment.CustomReply post_reply){
+        new Thread() {
+            @Override
+            public void run() {
+                // @Headers({"Content-Type:application/json","Accept: application/json"})//需要添加头
+                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                JSONObject json = new JSONObject();
+                try {
+
+                    json.put("author",sharedPreferences.getString("username","test2"));
+                    json.put("content",post_reply.getData());
+                    json.put("comment",post_reply.getComment_id());
+                    json.put("level",post_reply.getLevel());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String token=sharedPreferences.getString("token","");
+                OkHttpClient okHttpClient = new OkHttpClient();
+                //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
+                //json为String类型的json数据
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                //创建一个请求对象
+//                        String format = String.format(KeyPath.Path.head + KeyPath.Path.waybillinfosensor, username, key, current_timestamp);
+                Request request = new Request.Builder()
+                        .url(Constants.baseUrl+"/reply/release/")
+                        .addHeader("Authorization",token)
+                        .post(requestBody)
+                        .build();
+
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("failure","comment");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String string = response.body().string();
+                        Log.d("info",string+"");
+                        try {
+                            JSONObject json = new JSONObject(string);
+                            int status = (int) json.get("status");
+                            String msg = (String) json.get("msg");
+                            if (status==0) {
+                                getPageCommentAndDetail(activityHandler,2);
+                                Log.d("save reply","success");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            }
+        }.start();
+    }
+
+
+
+    public void postMessageComment(MessageDetailActivity.ActivityHandler activityHandler, CustomCommentModel.CustomComment post_comment) {
         new Thread() {
             @Override
             public void run() {
@@ -274,6 +366,7 @@ public class commentViewModel extends AndroidViewModel {
                             int status = (int) json.get("status");
                             String msg = (String) json.get("msg");
                             if (status==0) {
+                                getPageCommentAndDetail(activityHandler,2);
                                 Log.d("save comment","success");
                             }
                         } catch (JSONException e) {
