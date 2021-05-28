@@ -195,6 +195,8 @@ public class commentViewModel extends AndroidViewModel {
                                 mmessage.setId(message_id);
                                 mmessage.setLike(message_detail.getInt("like"));
                                 mmessage.setImageUrl(message_detail.getString("picture"));
+                                setMessageMutableLiveData(mmessage);
+
                                 mCustomComments = new ArrayList<>();
                                 for (int i = result.length() - 1; i >= 0; i--) {
                                     JSONObject cur_comment = result.getJSONObject(i);

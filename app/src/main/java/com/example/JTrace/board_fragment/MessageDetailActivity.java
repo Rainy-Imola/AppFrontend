@@ -45,6 +45,7 @@ import com.jidcoo.android.widget.commentview.callback.OnPullRefreshCallback;
 import com.jidcoo.android.widget.commentview.callback.OnReplyLoadMoreCallback;
 import com.jidcoo.android.widget.commentview.defaults.DefaultCommentModel;
 import com.loper7.layout.TitleBar;
+import com.yalantis.ucrop.util.ScreenUtils;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -75,6 +76,7 @@ public class MessageDetailActivity extends AppCompatActivity {
 
     private TitleBar mTitleBar;
     private ConstraintLayout constraintLayout;
+    private ConstraintLayout constraintLayout_header;
     private boolean isReply = false;
     private boolean isChildReply = false;
     private long reply_id;
@@ -135,7 +137,9 @@ public class MessageDetailActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.custom_item_header,null);
 
-        constraintLayout = view.findViewById(R.id.comment_header);
+        constraintLayout = view.findViewById(R.id.constraintLayout_header);
+        constraintLayout_header = view.findViewById(R.id.comment_header);
+
         Intent intent=getIntent();
         gson = new Gson();
         commentView = findViewById(R.id.myCommentView);
@@ -149,6 +153,8 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         authorView=view.findViewById(R.id.author_textView);
         dateView=view.findViewById(R.id.date_textView);
+        ConstraintLayout.LayoutParams content_params = new ConstraintLayout.LayoutParams(contentView.getLayoutParams());
+
         context=this;
 
 
@@ -161,15 +167,32 @@ public class MessageDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(message message) {
                 contentView.setText(message.getContent());
-                authorView.setText(message.getAuthor());
-                coverView.setImageURI(message.getImageUrl());
+                authorView.setText(msg.getAuthor());
+                if(message.getImageUrl().equals("")){
+                    constraintLayout.removeView(coverView);
+                    content_params.width = ScreenUtils.dip2px(context,0);
+                    content_params.horizontalBias = 0;
+                    content_params.bottomToTop= R.id.view2;
+                    content_params.startToStart = R.id.author_textView;
+                    content_params.endToEnd = R.id.constraintLayout_header;
+                    content_params.topToBottom= R.id.author_textView;
+
+                    content_params.topMargin = ScreenUtils.dip2px(context,24);
+                    content_params.rightMargin = ScreenUtils.dip2px(context,24);
+                    content_params.bottomMargin = ScreenUtils.dip2px(context,16);
+                    contentView.setLayoutParams(content_params);
+
+Log.d("hidde",message.getImageUrl());
+                }else {
+                    coverView.setImageURI(message.getImageUrl());
+                }
                 dateView.setText(message.getCreatedAt());
             }
         });
 
 
         commentView.setViewStyleConfigurator(new com.jidcoo.android.widgettest.custom.CustomViewStyleConfigurator(this));
-        commentView.addHeaderView(constraintLayout,true);
+        commentView.addHeaderView(constraintLayout_header,true);
         commentView.callbackBuilder()
                 //自定义评论布局(必须使用ViewHolder机制)--CustomCommentItemCallback<C> 泛型C为自定义评论数据类
                 .customCommentItem(new CustomCommentItemCallback<CustomCommentModel.CustomComment>() {
