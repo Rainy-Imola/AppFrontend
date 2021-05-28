@@ -167,14 +167,16 @@ public class MessageDetailActivity extends AppCompatActivity {
                     constraintLayout.removeView(coverView);
                     content_params.width = ScreenUtils.dip2px(context,0);
                     content_params.horizontalBias = 0;
-                    content_params.bottomToTop= R.id.view2;
-                    content_params.startToStart = R.id.author_textView;
+                    content_params.bottomToTop= R.id.constraintLayout4;
+                    content_params.startToStart = R.id.constraintLayout_header;
                     content_params.endToEnd = R.id.constraintLayout_header;
-                    content_params.topToBottom= R.id.author_textView;
+                    content_params.topToBottom= R.id.constraintLayout5;
 
-                    content_params.topMargin = ScreenUtils.dip2px(context,24);
-                    content_params.rightMargin = ScreenUtils.dip2px(context,24);
+                    content_params.topMargin = ScreenUtils.dip2px(context,16);
+
                     content_params.bottomMargin = ScreenUtils.dip2px(context,16);
+                    content_params.setMarginStart(ScreenUtils.dip2px(context,24));
+                    content_params.setMarginEnd(ScreenUtils.dip2px(context,24));
                     contentView.setLayoutParams(content_params);
 
 Log.d("hidde",message.getImageUrl());
@@ -289,7 +291,7 @@ Log.d("hidde",message.getImageUrl());
 //                    reply.setKid(fid);
                     reply.setReplierName(author);
                     reply.setData(content);
-                    reply.setLevel(rp);
+                    reply.setLevel(rp+1);
                     CustomCommentModel.CustomComment cur_comment = (CustomCommentModel.CustomComment) commentView.getCommentList().get(cp);
                     reply.setComment_id(cur_comment.getId());
                     reply.setRepliedName(cur_comment.getReplies().get(rp).getReplierName());
@@ -299,7 +301,7 @@ Log.d("hidde",message.getImageUrl());
 //                    reply.setPid(pid);
                     mCommentViewModel.postReply(activityHandler, reply);
 
-                    commentView.addReply(reply, cp);
+                    //commentView.addReply(reply, cp);
 
                     inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                     commentPostEditTextView.setText("");
@@ -313,7 +315,7 @@ Log.d("hidde",message.getImageUrl());
                     CustomCommentModel.CustomComment cur_comment = (CustomCommentModel.CustomComment) commentView.getCommentList().get(cp);
                     reply.setComment_id(cur_comment.getId());
 
-                    commentView.addReply(reply, cp);
+                    //commentView.addReply(reply, cp);
                     inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                     commentPostEditTextView.setText("");
                     mCommentViewModel.postReply(activityHandler, reply);
@@ -322,7 +324,7 @@ Log.d("hidde",message.getImageUrl());
                     CustomCommentModel.CustomComment comment = new CustomCommentModel.CustomComment();
                     comment.setPosterName(author);
                     comment.setData(content);
-                    commentView.addComment(comment);
+                    //commentView.addComment(comment);
                     inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
                     commentPostEditTextView.setText("");
                     mCommentViewModel.postMessageComment(activityHandler,comment);
