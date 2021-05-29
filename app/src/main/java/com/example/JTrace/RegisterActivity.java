@@ -2,9 +2,12 @@ package com.example.JTrace;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +33,7 @@ public class  RegisterActivity extends AppCompatActivity {
     private EditText password2Edit;
     private EditText emailEdit;
     private EditText codeEdit;
+    private TimeCount time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +53,12 @@ public class  RegisterActivity extends AppCompatActivity {
 
         emailEdit = (EditText) findViewById(R.id.email);
         codeEdit = (EditText) findViewById(R.id.codeEdit);
-
+        time = new TimeCount(60000, 1000);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                time.start();
                 String email = emailEdit.getText().toString();
 
                 HttpAPI httpAPI = new HttpAPI();
@@ -69,7 +75,7 @@ public class  RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.e("error", e.getMessage().toString());
-                            Toast.makeText(RegisterActivity.this,"网络出错,请检查网络",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "网络出错,请检查网络", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -92,7 +98,7 @@ public class  RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this, "You should register with a SJTU email", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
-                            Log.d("Login_info","连接成功");
+                            Log.d("Login_info", "连接成功");
                         }
                     });
                 } catch (IOException e) {
@@ -104,6 +110,7 @@ public class  RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String username = usernameEdit.getText().toString();
                 String password1 = password1Edit.getText().toString();
                 String password2 = password2Edit.getText().toString();
@@ -132,7 +139,7 @@ public class  RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String res = response.body().string();
-                            Log.d("Register","连接成功");
+                            Log.d("Register", "连接成功");
 
                             JSONObject result = null;
                             Integer status = -100;
@@ -208,9 +215,30 @@ public class  RegisterActivity extends AppCompatActivity {
                                                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                 } else {
-                                                    Looper.prepare();
-                                                    Toast.makeText(RegisterActivity.this, "Register failed", Toast.LENGTH_SHORT).show();
-                                                    Looper.loop();
+                                                    if (status1 == -100) {
+                                                        Looper.prepare();
+                                                        Toast.makeText(RegisterActivity.this, "用户名重复", Toast.LENGTH_SHORT).show();
+                                                        Looper.loop();
+                                                    } else if (status1 == -99) {
+                                                        Looper.prepare();
+                                                        Toast.makeText(RegisterActivity.this, "密码不一致", Toast.LENGTH_SHORT).show();
+                                                        Looper.loop();
+                                                    }
+                                                    if (status1 == -98) {
+                                                        Looper.prepare();
+                                                        Toast.makeText(RegisterActivity.this, "邮箱重复，请更改邮箱", Toast.LENGTH_SHORT).show();
+                                                        Looper.loop();
+                                                    }
+                                                    if (status1 == -97) {
+                                                        Looper.prepare();
+                                                        Toast.makeText(RegisterActivity.this, "邮箱格式不合要求", Toast.LENGTH_SHORT).show();
+                                                        Looper.loop();
+                                                    } else {
+                                                        Looper.prepare();
+                                                        Toast.makeText(RegisterActivity.this, "注册失败", Toast.LENGTH_SHORT).show();
+                                                        Looper.loop();
+                                                    }
+
                                                 }
                                             }
                                         });
@@ -236,5 +264,27 @@ public class  RegisterActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval); //参数依次为总时长,和计时的时间间隔
+        }
+
+
+        @SuppressLint("ResourceAsColor")
+        @Override
+        public void onFinish() {
+            sendBtn.setText("Send");
+            sendBtn.setBackgroundColor(0xee6699ff);
+            sendBtn.setClickable(true);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) { //计时过程显示
+            sendBtn.setClickable(false);
+            sendBtn.setBackgroundColor(0xff888888);
+            sendBtn.setText(millisUntilFinished / 1000 + "秒");
+        }
     }
 }

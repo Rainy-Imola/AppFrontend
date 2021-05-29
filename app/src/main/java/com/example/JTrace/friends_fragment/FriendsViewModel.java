@@ -146,7 +146,6 @@ public class FriendsViewModel extends AndroidViewModel {
                             Log.d("MessageInfo_viewModel", "dateParse failed");
                             e.printStackTrace();
                         }
-
                     }
                 });
             }
