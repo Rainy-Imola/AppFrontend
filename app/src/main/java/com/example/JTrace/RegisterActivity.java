@@ -2,8 +2,10 @@ package com.example.JTrace;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Looper;
@@ -269,15 +271,19 @@ public class  RegisterActivity extends AppCompatActivity {
             super(millisInFuture, countDownInterval); //参数依次为总时长,和计时的时间间隔
         }
 
+
+        @SuppressLint("ResourceAsColor")
         @Override
-        public void onFinish() { //计时完毕时触发
-            sendBtn.setText("重新验证");
+        public void onFinish() {
+            sendBtn.setText("Send");
+            sendBtn.setBackgroundColor(0xee6699ff);
             sendBtn.setClickable(true);
         }
 
         @Override
         public void onTick(long millisUntilFinished) { //计时过程显示
             sendBtn.setClickable(false);
+            sendBtn.setBackgroundColor(0xff888888);
             sendBtn.setText(millisUntilFinished / 1000 + "秒");
         }
     }
