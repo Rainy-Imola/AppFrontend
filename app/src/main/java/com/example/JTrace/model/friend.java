@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class friend {
     @SerializedName("id")
-    private int id=0;
+    private int id = 0;
     @SerializedName("name")
     private String name;
     @SerializedName("image")
     private String image;
     @SerializedName("status")
-    private int status=0;
+    private int status = 0;
 
     public int getStatus() {
         return status;
@@ -23,9 +23,11 @@ public class friend {
     public void setId(int id) {
         this.id = id;
     }
+
     public int getId() {
         return id;
     }
+
     public void setName(String name) {
         this.name = name;
     }

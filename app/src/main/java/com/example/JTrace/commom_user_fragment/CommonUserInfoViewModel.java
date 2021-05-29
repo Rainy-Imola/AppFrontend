@@ -35,7 +35,7 @@ import okhttp3.Response;
 
 public class CommonUserInfoViewModel extends AndroidViewModel {
     private SharedPreferences sharedPreferences;
-    private User mUser=new User();
+    private User mUser = new User();
     private MutableLiveData<String> status = new MutableLiveData<>();
 
 
@@ -50,13 +50,17 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
     }
 
     private MutableLiveData<String> friendStatus = new MutableLiveData<>();
+
     public MutableLiveData<String> getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status.postValue(status);
     }
+
     private List<message> mMessage = new ArrayList<>();
+
     public MutableLiveData<String> getFriendStatus() {
         return friendStatus;
     }
@@ -64,17 +68,18 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
     public void setFriendStatus(String friendStatus) {
         this.friendStatus.postValue(friendStatus);
     }
-    public CommonUserInfoViewModel(@NonNull Application application, SavedStateHandle handle){
+
+    public CommonUserInfoViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
         sharedPreferences = application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
     }
+
     public void requestUser(String mArgument) {
         new Thread() {
             @Override
             public void run() {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
-                Log.d("MessageInfo_token", token);
                 Request request = new Request.Builder().url(Constants.baseUrl + "/users/" + mArgument + "/info")
                         .addHeader("Authorization", token)
                         .build();
@@ -82,12 +87,11 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d("UserInfo", "request_handle_failed");
-                        //Toast.makeText(getContext(),"请求留言数据失败！",Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String res = response.body().string();
-                        Log.d("User_info", res);
                         try {
                             JSONObject result = new JSONObject(res);
                             JSONArray data = (JSONArray) result.get("data");
@@ -105,11 +109,8 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                                 mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
                                 mUser.setUser_avatar((String) data.getJSONObject(0).get("avatar"));
                                 setUserMutableLiveData(mUser);
-                                Log.d("User_info", "设置成功");
                             }
-                            // TODO: failure question
                         } catch (JSONException e) {
-                            Log.d("userinfo", "userinfo dateParse failed");
                             e.printStackTrace();
                         }
                     }
@@ -130,7 +131,7 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
                 Integer user_id = sharedPreferences.getInt("id", 2);
-                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard" + "?author="+mArgument)
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard" + "?author=" + mArgument)
                         .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
@@ -138,10 +139,10 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                     public void onFailure(Call call, IOException e) {
                         Log.d("user_info", "request_handle_failed");
                     }
+
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String res = response.body().string();
-                        Log.d("user_info_all_message", res);
                         try {
                             JSONObject results = new JSONObject(res);
                             JSONArray result = results.getJSONArray("data");
@@ -163,7 +164,6 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                             setStatus("0");
                             setStatus("message");
                         } catch (JSONException e) {
-                            Log.d("userinfo MessageInfo", "dateParse failed");
                             e.printStackTrace();
                         }
                     }
@@ -171,9 +171,11 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
             }
         }.start();
     }
+
     public List<message> getMessage() {
-        return  mMessage;
+        return mMessage;
     }
+
     public void isFriend(String mArgument) {
         new Thread() {
             @Override
@@ -187,28 +189,28 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                String token=sharedPreferences.getString("token","");
+                String token = sharedPreferences.getString("token", "");
                 OkHttpClient okHttpClient = new OkHttpClient();
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 Request request = new Request.Builder()
-                        .url(Constants.baseUrl+"/friends/check")
-                        .addHeader("Authorization",token)
+                        .url(Constants.baseUrl + "/friends/check")
+                        .addHeader("Authorization", token)
                         .post(requestBody)
                         .build();
 
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("check friend error",mArgument+username1);
+                        Log.d("check friend error", mArgument + username1);
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String string = response.body().string();
-                        if(string.compareTo("1")==0){
+                        if (string.compareTo("1") == 0) {
                             setFriendStatus("0");
                             setFriendStatus("friendyes");
-                        }else if (string.compareTo("0")==0){
+                        } else if (string.compareTo("0") == 0) {
                             setFriendStatus("0");
                             setFriendStatus("friendno");
                         }
@@ -218,6 +220,7 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
             }
         }.start();
     }
+
     public void requestAddFriend(String user_name, String newname) {
         new Thread() {
             @Override
@@ -225,43 +228,42 @@ public class CommonUserInfoViewModel extends AndroidViewModel {
                 MediaType JSON = MediaType.parse("application/json;charset=utf-8");
                 JSONObject json = new JSONObject();
                 try {
-                    json.put("username1", sharedPreferences.getString("username","test2"));
+                    json.put("username1", sharedPreferences.getString("username", "test2"));
                     json.put("username2", user_name);
-                    json.put("reqMsg",newname);
+                    json.put("reqMsg", newname);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                String token=sharedPreferences.getString("token","");
+                String token = sharedPreferences.getString("token", "");
                 OkHttpClient okHttpClient = new OkHttpClient();
                 //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
                 //json为String类型的json数据
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 //创建一个请求对象
-//                        String format = String.format(KeyPath.Path.head + KeyPath.Path.waybillinfosensor, username, key, current_timestamp);
                 Request request = new Request.Builder()
-                        .url(Constants.baseUrl+"/friends/request")
-                        .addHeader("Authorization",token)
+                        .url(Constants.baseUrl + "/friends/request")
+                        .addHeader("Authorization", token)
                         .post(requestBody)
                         .build();
 
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("common friend","failure");
+                        Log.d("common friend", "failure");
                     }
+
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String string = response.body().string();
-                        Log.d("info",string+"");
+                        Log.d("info", string + "");
                         try {
                             JSONObject json = new JSONObject(string);
                             int status = (int) json.get("status");
                             String msg = (String) json.get("msg");
-                            if (status==0) {
+                            if (status == 0) {
                                 setStatus("0");
                                 setStatus("addsuccess");
-                                Log.d("add","success");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -62,8 +62,6 @@
                 tools:text="author_name:" />
 
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -44,7 +44,6 @@ public class AddFriendFragment extends Fragment {
     private String mParam2;
 
     public AddFriendFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -55,7 +54,6 @@ public class AddFriendFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment AddFriendFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AddFriendFragment newInstance(String param1, String param2) {
         AddFriendFragment fragment = new AddFriendFragment();
         Bundle args = new Bundle();
@@ -72,7 +70,6 @@ public class AddFriendFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             username2 = getArguments().getString("name");
-            Log.d("adding username",username2);
         }
     }
 
@@ -103,16 +100,16 @@ public class AddFriendFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String newname = userverifyEdit.getText().toString();
-                if(TextUtils.isEmpty(newname)){
-                    Toast.makeText(mContext,"不能为空",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(newname)) {
+                    Toast.makeText(mContext, "Cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mViewModel.requestAddFriend(username2,newname);
+                mViewModel.requestAddFriend(username2, newname);
                 mViewModel.getStatus().observe(mLifecycleOwner, new Observer<String>() {
                     @Override
                     public void onChanged(String satus) {
-                        if(satus=="addsuccess"){
-                            Toast.makeText(mContext,"请求成功",Toast.LENGTH_SHORT).show();
+                        if (satus == "addsuccess") {
+                            Toast.makeText(mContext, "Request successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

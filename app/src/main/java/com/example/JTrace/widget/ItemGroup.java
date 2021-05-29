@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.JTrace.R;
+
 public class ItemGroup extends FrameLayout {
 
     private ConstraintLayout itemGroupLayout; //组合控件的布局
@@ -40,7 +41,7 @@ public class ItemGroup extends FrameLayout {
     public ItemGroup(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
-        initAttrs(context,attrs);
+        initAttrs(context, attrs);
     }
 
     //初始化View
@@ -52,6 +53,7 @@ public class ItemGroup extends FrameLayout {
         jtRightIv = (ImageView) view.findViewById(R.id.jt_right_iv);
         addView(view); //把自定义的这个组合控件的布局加入到当前FramLayout
     }
+
     /**
      * 初始化相关属性，引入相关属性
      *
@@ -90,18 +92,13 @@ public class ItemGroup extends FrameLayout {
         //设置item的内边距
         itemGroupLayout.setPadding((int) paddingLeft, (int) paddingTop, (int) paddingRight, (int) paddingBottom);
         titleTv.setText(title);
-        //titleTv.setTextSize(titleSize);
         titleTv.setTextColor(titleColor);
 
         contentEdt.setText(content);
-        //contentEdt.setTextSize(contentSize);
 
         contentEdt.setTextColor(contentColor);
         contentEdt.setHint(hintContent);
         contentEdt.setHintTextColor(hintColor);
-//        contentEdt.setFocusable(isEditable); //设置输入框是否可以编辑
-//        contentEdt.setClickable(true);
-//        contentEdt.setKeyListener(null);
         jtRightIv.setVisibility(showJtIcon ? View.VISIBLE : View.GONE);  //设置向右的箭头图标是否可见
     }
 

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/reply_rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/reply_rootView"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="40dp"
+        android:layout_marginTop="4dp"
 
         android:layout_marginRight="10dp"
         android:gravity="center_vertical"
@@ -19,12 +19,12 @@
         <com.jidcoo.android.widget.commentview.view.RoundAngleImageView
             android:id="@+id/ico"
             android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="6dp"
-            android:layout_height="26dp"
-            app:roundWidth="13dp"
+            android:background="@drawable/ico"
             app:roundHeight="13dp"
-            android:background="@drawable/ico" />
+            app:roundWidth="13dp" />
 
         <LinearLayout
 
@@ -76,10 +76,10 @@
         android:id="@+id/reply_item_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:layout_marginLeft="88dp"
-        android:layout_marginRight="40dp"
         android:layout_marginTop="2dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="4dp"
         android:textColor="#1C1C1C"
         android:textSize="15sp" />
 

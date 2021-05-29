@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--    <include layout="@layout/title_welcome"></include>-->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,18 +26,6 @@
             app:layout_constraintVertical_bias="1.0"
             tools:layout_conversion_absoluteHeight="603dp"
             tools:layout_conversion_absoluteWidth="411dp">
-
-
-            <!--
-                    <TextView
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:text="@string/username"
-                android:textSize="20sp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                />
-        -->
 
 
             <TextView

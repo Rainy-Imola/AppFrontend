@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import java.io.Serializable;
 
 public class HobbyBean implements MultiItemEntity, Serializable {
-    private  String hobby;
+    private String hobby;
 
     public String getStyle_tag() {
         return hobby;

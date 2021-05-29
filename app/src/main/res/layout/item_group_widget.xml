@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--个人信息界面（编辑资料界面）的每个item-->
+<?xml version="1.0" encoding="utf-8"?><!--个人信息界面（编辑资料界面）的每个item-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     android:paddingLeft="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,6 +57,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/content_edt" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"

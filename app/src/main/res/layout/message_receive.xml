@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_text_receive"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/ll_text_receive"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -20,23 +20,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp">
 
         <com.example.JTrace.widget.RoundImageView
             android:id="@+id/chat_recv_header"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginRight="5dp"
             android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_baseline_account_circle_24"
-            />
-
-
-
+            android:src="@drawable/ic_baseline_account_circle_24" />
 
 
         <LinearLayout
@@ -57,7 +53,6 @@
                 android:text="你好"
                 android:textColor="#333333"
                 android:textSize="25dp" />
-
 
 
         </LinearLayout>

@@ -24,6 +24,7 @@ public class message implements Serializable {
 
     @SerializedName("like")
     private int like;
+
     public int getLike() {
         return like;
     }
@@ -31,21 +32,43 @@ public class message implements Serializable {
     public void setLike(int like) {
         this.like = like;
     }
-    public void setId(String id){this.id=id;}
-    public String getId(){return this.id;}
 
-    public void setAuthor(String author1){author=author1;}
-    public String getAuthor(){return author;}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public void setContent(String content1){content=content1;}
-    public String getContent(){return content;}
+    public String getId() {
+        return this.id;
+    }
 
-    public void setCreatedAt(String date){this.createdAt=date;}
-    public String getCreatedAt(){return this.createdAt;}
+    public void setAuthor(String author1) {
+        author = author1;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setContent(String content1) {
+        content = content1;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setCreatedAt(String date) {
+        this.createdAt = date;
+    }
+
+    public String getCreatedAt() {
+        return this.createdAt;
+    }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -53,6 +76,7 @@ public class message implements Serializable {
     public void setImageW(int imageW) {
         this.imageW = imageW;
     }
+
     public int getImageW() {
         return imageW;
     }
@@ -60,18 +84,20 @@ public class message implements Serializable {
     public void setImageH(int imageH) {
         this.imageH = imageH;
     }
+
     public int getImageH() {
         return imageH;
     }
 
-    public message(String id, String author1, String content1, String date, String imageUrl){
+    public message(String id, String author1, String content1, String date, String imageUrl) {
         setId(id);
         setAuthor(author1);
         setContent(content1);
         setCreatedAt(date);
         setImageUrl(imageUrl);
     }
-    public message(){
+
+    public message() {
 
     }
 }

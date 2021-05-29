@@ -6,10 +6,10 @@ import com.jidcoo.android.widget.commentview.model.ReplyEnable;
 
 import java.util.List;
 
-public class CustomCommentModel  extends AbstractCommentModel<CustomCommentModel.CustomComment> {
-
+public class CustomCommentModel extends AbstractCommentModel<CustomCommentModel.CustomComment> {
 
     public List<CustomComment> comments;
+
     @Override
     public List<CustomComment> getComments() {
         return comments;
@@ -32,6 +32,7 @@ public class CustomCommentModel  extends AbstractCommentModel<CustomCommentModel
         public CustomComment() {
 
         }
+
         public Integer getId() {
             return id;
         }
@@ -74,7 +75,6 @@ public class CustomCommentModel  extends AbstractCommentModel<CustomCommentModel
             return replies;
         }
 
-
         public static class CustomReply extends ReplyEnable {
             public String date;
             public Integer id;
@@ -94,9 +94,11 @@ public class CustomCommentModel  extends AbstractCommentModel<CustomCommentModel
 
 
             public Integer level;
+
             public CustomReply() {
 
             }
+
             public String getDate() {
                 return date;
             }
@@ -120,6 +122,7 @@ public class CustomCommentModel  extends AbstractCommentModel<CustomCommentModel
             public void setRepliedName(String repliedName) {
                 this.repliedName = repliedName;
             }
+
             public Integer getLevel() {
                 return level;
             }
@@ -143,7 +146,6 @@ public class CustomCommentModel  extends AbstractCommentModel<CustomCommentModel
             public void setData(String data) {
                 this.data = data;
             }
-
 
         }
     }

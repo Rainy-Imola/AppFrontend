@@ -50,7 +50,7 @@ public class MainChatActivity extends baseActivity {
     private EditText editText;
     private TitleBar titleBar;
     private Context mContext;
-    private ChatClient chatClient ;
+    private ChatClient chatClient;
     private InputMethodManager inputMethodManager;
     //Service things
     private ChatService.JWebSocketClientBinder binder;
@@ -65,7 +65,7 @@ public class MainChatActivity extends baseActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.e("ChatMainActivity","服务与活动成功绑定");
+            Log.e("ChatMainActivity", "服务与活动成功绑定");
             binder = (ChatService.JWebSocketClientBinder) service;
             chatService = binder.getService();
             chatClient = chatService.client;
@@ -73,7 +73,7 @@ public class MainChatActivity extends baseActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.e("ChatMainActivity","服务与活动成功断开");
+            Log.e("ChatMainActivity", "服务与活动成功断开");
         }
     };
 
@@ -83,26 +83,25 @@ public class MainChatActivity extends baseActivity {
         setContentView(R.layout.activity_main_chat);
         To = getIntent().getStringExtra("name");
         friendImage = getIntent().getStringExtra("avatar");
-        Log.d("friendImage",friendImage);
-        status = getIntent().getIntExtra("status",0);
+        status = getIntent().getIntExtra("status", 0);
         SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        From = sharedPreferences.getString("username",null);
-        senderImage = sharedPreferences.getString("avatar",null);
-        Log.d("senderImage",senderImage);
-        //initMsg();
-        //startChatService();
+        From = sharedPreferences.getString("username", null);
+        senderImage = sharedPreferences.getString("avatar", null);
+
         bindservice();
         doRegisterReceiver();
+
         recyclerView = findViewById(R.id.chat_list);
         swipeRefreshLayout = findViewById(R.id.swipe_chat);
         send = findViewById(R.id.btn_send);
         back = findViewById(R.id.back_to_friend);
         editText = findViewById(R.id.et_content);
         titleBar = findViewById(R.id.title_bar);
-        if(status != 0 ){
-            titleBar.setTitleText(To+":离线");
+
+        if (status != 0) {
+            titleBar.setTitleText(To + ":离线");
             titleBar.setTitleTextColor(Color.GRAY);
-        }else{
+        } else {
             titleBar.setTitleText(To);
         }
 
@@ -110,8 +109,7 @@ public class MainChatActivity extends baseActivity {
 
         inputMethodManager = (InputMethodManager) getSystemService(MainChatActivity.this.INPUT_METHOD_SERVICE);
         initChatUi();
-        //initChat();
-        //upDateUI();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -122,9 +120,9 @@ public class MainChatActivity extends baseActivity {
                         pullHistory();
                         swipeRefreshLayout.setRefreshing(false);
                         mAdapter.setmItems(msglist);
-                        Toast.makeText(MainChatActivity.this,"刷新成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainChatActivity.this, "Refresh success", Toast.LENGTH_SHORT).show();
                     }
-                },2000);
+                }, 2000);
             }
         });
 
@@ -133,13 +131,13 @@ public class MainChatActivity extends baseActivity {
             public void onClick(View v) {
                 sendMessage(To, From);
 
-            }//pay attention
+            }
         });
 
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 return false;
             }
         });
@@ -147,19 +145,16 @@ public class MainChatActivity extends baseActivity {
             @Override
             public void onBackClick() {
                 finish();
-                Intent intent=new Intent(mContext, MainActivity.class);
-//                  intent.putExtra("id",0);
-//                  intent.putExtra("name",From);
+                Intent intent = new Intent(mContext, MainActivity.class);
                 mContext.startActivity(intent);
             }
         });
     }
 
-    private void bindservice(){
+    private void bindservice() {
         Intent bindIntent = new Intent(MainChatActivity.this, ChatService.class);
-        bindService(bindIntent,serviceConnection,BIND_AUTO_CREATE);
+        bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
     }
-
 
 
     private void doRegisterReceiver() {
@@ -168,26 +163,24 @@ public class MainChatActivity extends baseActivity {
         registerReceiver(chatMessageReceiver, filter);
     }
 
-    private class ChatMessageReceiver extends BroadcastReceiver{
+    private class ChatMessageReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("msg");
-            Log.d("updateUI:",message);
             JSONObject jsonObject = null;
             String From = null;
             String To = null;
             String content = null;
-            try{
+            try {
                 jsonObject = new JSONObject(message);
-                To = (String)jsonObject.get("to");
-                From = (String)jsonObject.get("from");
-                content = (String)jsonObject.get("message");
-            }catch (JSONException e){
+                To = (String) jsonObject.get("to");
+                From = (String) jsonObject.get("from");
+                content = (String) jsonObject.get("message");
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-            chatMsg item1 = new chatMsg(From,To, 1,content,friendImage);
-            Log.d("receive"," receive add");
+            chatMsg item1 = new chatMsg(From, To, 1, content, friendImage);
             msglist.add(item1);
             nowList.add(item1);
             initChatUi();
@@ -195,28 +188,22 @@ public class MainChatActivity extends baseActivity {
     }
 
 
-
-    private void initChatUi(){
+    private void initChatUi() {
         LinearLayoutManager mLinearManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearManager);
         mAdapter = new ChatAdapter(msglist);
         recyclerView.setAdapter(mAdapter);
-        //pullHistory();
     }
 
 
-
-    private  void sendMessage(String To, String From){
+    private void sendMessage(String To, String From) {
         String content = editText.getText().toString();
-        if(TextUtils.isEmpty(content)){
-            Toast.makeText(MainChatActivity.this,"发送内容不能为空",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(content)) {
+            Toast.makeText(MainChatActivity.this, "发送内容不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
         editText.setText("");
-        Log.d("send event:","content");
-        chatMsg msg = new chatMsg("test2","test2",0,content,senderImage);
-        //nowList.add(msg);
-        Log.d("send"," send add");
+        chatMsg msg = new chatMsg("test2", "test2", 0, content, senderImage);
         msglist.add(msg);
         mAdapter.setmItems(msglist);
         if (chatClient != null && chatClient.isOpen()) {
@@ -224,81 +211,21 @@ public class MainChatActivity extends baseActivity {
         }
         initChatUi();
     }
-    private void pullHistory(){
-        Log.d("PullHistory","add");
+
+    private void pullHistory() {
         List<chatMsg> historyChatMessage = chatService.getMessageList();
         List<chatMsg> tempList = new ArrayList<chatMsg>();
-        for(int i = 0;i < historyChatMessage.size(); i++){
+        for (int i = 0; i < historyChatMessage.size(); i++) {
             chatMsg temp = historyChatMessage.get(i);
-            Log.d("chatMsg:",historyChatMessage.get(i).toString());
-            Log.d("From",From);
-            Log.d("To",To);
-            Log.d("receiveid",temp.getReceiveID());
-            Log.d("senderid",temp.getSenderID());
-            if( From.equals(temp.getReceiveID())&& To.equals(temp.getSenderID())){
-                Log.d("test","asasas");
+            if (From.equals(temp.getReceiveID()) && To.equals(temp.getSenderID())) {
                 temp.setAvatar(friendImage);
                 tempList.add(temp);
-            }else if(To.equals(temp.getReceiveID())&& From.equals(temp.getSenderID())){
+            } else if (To.equals(temp.getReceiveID()) && From.equals(temp.getSenderID())) {
                 temp.setAvatar(senderImage);
                 tempList.add(temp);
             }
         }
         msglist = tempList;
-//        for(int i = 0;i <tempList.size();i++){
-//            Log.d("messageList:", tempList.get(i).toString());
-//            msglist.add(tempList.get(i));
-//        }
-        //nowList = msglist;
         initChatUi();
     }
-//    private void initChat(){
-//        System.out.println("Begin to Connection");
-//        URI uri = null;
-//        try {
-//            uri = new URI("ws://echo.websocket.org");
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//        chatClient = new ChatClient(uri){
-//            @Override
-//            public void onMessage(String message) {
-//                super.onMessage(message);
-//                chatMsg msg = new chatMsg("test2","test2",1,message);
-//                msglist.add(msg);
-//                mAdapter.setmItems(msglist);
-//            }
-//        };
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("Begin to Connection");
-//
-//                //try to connect
-//                try {
-//                    chatClient.connectBlocking();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    return;
-//                }
-//                JSONObject msgbody = new JSONObject();
-//                try {
-//                    msgbody.put("From", "test2");
-//                    msgbody.put("To", "test2");
-//                    msgbody.put("msgContent", "Nice to meet you");
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                chatClient.send("hello");
-//                if (chatClient != null && chatClient.isOpen()) {
-//                    chatClient.send(String.valueOf(msgbody));
-//                }
-//
-//
-//            }
-//        }).start();
-//    }
-
-
-    }
+}

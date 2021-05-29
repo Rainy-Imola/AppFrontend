@@ -53,6 +53,7 @@ public class friendsFragment extends Fragment {
     public static friendsFragment newInstance() {
         return new friendsFragment();
     }
+
     private List<friend> messages;
     private FriendAdapter mAdapter;
     private RecyclerView mRecyclerView;
@@ -61,9 +62,9 @@ public class friendsFragment extends Fragment {
     private ImageView newFriendReminderView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private SharedPreferences sp;
-    private NewFriendMsgs friendRequests=new NewFriendMsgs();
+    private NewFriendMsgs friendRequests = new NewFriendMsgs();
     private NewFriendMessagesViewModel mFriendRequestsViewModel;
-    private boolean isNew=false;//标记是否有新的待处理消息
+    private boolean isNew = false;//标记是否有新的待处理消息
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -72,8 +73,8 @@ public class friendsFragment extends Fragment {
         mRecyclerView = (RecyclerView) root.findViewById(R.id.friends);
         TextView title = (TextView) root.findViewById(R.id.title_f);
 
-        NewFriendLayout=root.findViewById(R.id.newFriendLayout);
-        newFriendReminderView=root.findViewById(R.id.newFriend_reminder);
+        NewFriendLayout = root.findViewById(R.id.newFriendLayout);
+        newFriendReminderView = root.findViewById(R.id.newFriend_reminder);
 
         swipeRefreshLayout = root.findViewById(R.id.friends_list_refresh);
         title.setText("Friends");
@@ -84,13 +85,13 @@ public class friendsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 try {
-                    Log.d("Location","OnCreateView");
+                    Log.d("Location", "OnCreateView");
                     getMessages();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(),"刷新成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "刷新成功", Toast.LENGTH_SHORT).show();
             }
         });
         return root;
@@ -102,42 +103,43 @@ public class friendsFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(FriendsViewModel.class);
         // TODO: Get friend requests
         try {
-            Log.d("Location","OnActivityCreated");
+            Log.d("Location", "OnActivityCreated");
             getMessages();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        mFriendRequestsViewModel=new ViewModelProvider(getActivity()).get(NewFriendMessagesViewModel.class);
+        mFriendRequestsViewModel = new ViewModelProvider(getActivity()).get(NewFriendMessagesViewModel.class);
         getFriendRequests();
         NewFriendLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("friendRequests","onClick called");
-                Intent intent=new Intent(getActivity(),FriendRequestsActivity.class);
+                Log.d("friendRequests", "onClick called");
+                Intent intent = new Intent(getActivity(), FriendRequestsActivity.class);
                 intent.putExtra("requests", friendRequests);
-                Log.d("friendRequests","intent put");
+                Log.d("friendRequests", "intent put");
                 startActivity(intent);
             }
         });
     }
-    public void getFriendRequests(){
+
+    public void getFriendRequests() {
         mFriendRequestsViewModel.requestData();
         mFriendRequestsViewModel.getStatus().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
-                Log.d("friendRequests","onchanged called");
+                Log.d("friendRequests", "onchanged called");
 
-                if(status=="request"){
+                if (status == "request") {
                     friendRequests.clearMsgs();
-                    isNew=false;
-                    for(NewFriendMsg request:mFriendRequestsViewModel.getNewFriendMsgs()){
+                    isNew = false;
+                    for (NewFriendMsg request : mFriendRequestsViewModel.getNewFriendMsgs()) {
                         friendRequests.addMsg(request);
-                        if(request.getStatus()==0){
-                            isNew=true;
+                        if (request.getStatus() == 0) {
+                            isNew = true;
                         }
                     }
-                    if(isNew){
+                    if (isNew) {
                         newFriendReminderView.setVisibility(View.VISIBLE);
                     }
                 }
@@ -148,14 +150,14 @@ public class friendsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.friends_bar,menu);
+        inflater.inflate(R.menu.friends_bar, menu);
         MenuItem searchItem = menu.findItem((R.id.user_add));
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = null;
-        if(searchItem != null){
+        if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
-        if(searchView != null){
+        if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -163,9 +165,9 @@ public class friendsFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.user_add:
-                Toast.makeText(getContext(),"添加好友", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "添加好友", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -173,12 +175,11 @@ public class friendsFragment extends Fragment {
     }
 
 
-
     public void initUi() {
         LinearLayoutManager mLinearManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearManager);
-        Log.d("friend list size",String.valueOf(messages.size()));
-        mAdapter=new FriendAdapter(messages);
+        Log.d("friend list size", String.valueOf(messages.size()));
+        mAdapter = new FriendAdapter(messages);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -188,27 +189,25 @@ public class friendsFragment extends Fragment {
         mViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
-                if(status=="message"){
+                if (status == "message") {
                     messages = new ArrayList<>();
 
                     try {
-                        Log.d("MessageStatus",String.valueOf(mViewModel.getMessage().size()));
-                        for(friend imessage:mViewModel.getMessage()){
+                        for (friend imessage : mViewModel.getMessage()) {
                             messages.add(imessage);
                         }
                         initUi();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Log.d("MessageStatus", String.valueOf(messages.size()));
                 }
             }
         });
-        if(!mViewModel.isGetMsgSucc()){
-            Toast.makeText(getContext(),"用户状态异常，请重新登陆！",Toast.LENGTH_SHORT).show();
+        if (!mViewModel.isGetMsgSucc()) {
+            Toast.makeText(getContext(), "用户状态异常，请重新登陆！", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("status",2);
+            editor.putInt("status", 2);
             editor.commit();
             NavHostFragment.findNavController(this).navigate(R.id.action_navigation_myinfo_to_loginActivity);
         }

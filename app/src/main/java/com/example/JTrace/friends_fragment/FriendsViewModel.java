@@ -31,78 +31,69 @@ public class FriendsViewModel extends AndroidViewModel {
     // TODO: Implement the ViewModel
     private List<friend> mMessage = new ArrayList<>();
     private MutableLiveData<String> status = new MutableLiveData<>();
-    private boolean isGetMsgSucc=true;
+    private boolean isGetMsgSucc = true;
     private SharedPreferences sharedPreferences;
     private SavedStateHandle handle;
-    public FriendsViewModel(@NonNull Application application, SavedStateHandle handle){
+
+    public FriendsViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
-        this.handle=handle;
-        sharedPreferences=application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+        this.handle = handle;
+        sharedPreferences = application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
     }
 
     public MutableLiveData<String> getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status.postValue(status);
     }
+
     public List<friend> getMessage() throws IOException {
         return mMessage;
     }
 
-    public void requestMessage(){
-        new Thread(){
+    public void requestMessage() {
+        new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 mMessage = new ArrayList<>();
-                OkHttpClient okHttpClient=new OkHttpClient();
-                String token = sharedPreferences.getString("token","");
-                String username = sharedPreferences.getString("username","");
-                Log.d("MessageInfo_token",token);
-                Request request=new Request.Builder().url(Constants.baseUrl+"/friends/"+username)
-                        .addHeader("Authorization",token)
+                OkHttpClient okHttpClient = new OkHttpClient();
+                String token = sharedPreferences.getString("token", "");
+                String username = sharedPreferences.getString("username", "");
+                Request request = new Request.Builder().url(Constants.baseUrl + "/friends/" + username)
+                        .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Log.d("MessageInfo","request_handle_failed");
+                        Log.d("MessageInfo", "request_handle_failed");
                     }
 
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        String res=response.body().string();
-                        Log.d("MessageInfo",res);
+                        String res = response.body().string();
                         try {
-                            JSONObject result=new JSONObject(res);
-                            Log.d("MessageInfo", "resultLength:"+String.valueOf(result.length()));
+                            JSONObject result = new JSONObject(res);
                             JSONArray data = result.getJSONArray("data");
 
-                            Log.d("friend_list", String.valueOf(data));
-
-                            for(int i=0;i<data.length();i++){
-                                String cur_msg=String.valueOf(data.get(i));
-                                Log.d("friends info", String.valueOf(cur_msg));
-                                //int id=cur_msg.getInt("id");
-                                //String username=cur_msg.getString("username");
-                                //String password=cur_msg.getString("password");
+                            for (int i = 0; i < data.length(); i++) {
+                                String cur_msg = String.valueOf(data.get(i));
                                 JSONObject jsonObject = null;
                                 String name = null;
                                 int onoffstatus = 0;
-                                try{
+                                try {
                                     jsonObject = new JSONObject(cur_msg);
                                     name = jsonObject.getString("name");
                                     onoffstatus = jsonObject.getInt("status");
-                                }catch(JSONException e){
+                                } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                Log.d("name: ",name);
-                                Log.d("status", String.valueOf(status));
 
                                 OkHttpClient okHttpClient = new OkHttpClient();
                                 String token = sharedPreferences.getString("token", "");
-                                Log.d("MessageInfo_token", token);
-                                Request request = new Request.Builder().url(Constants.baseUrl + "/users/" +name + "/info")
+                                Request request = new Request.Builder().url(Constants.baseUrl + "/users/" + name + "/info")
                                         .addHeader("Authorization", token)
                                         .build();
                                 int finalOnoffstatus = onoffstatus;
@@ -115,8 +106,6 @@ public class FriendsViewModel extends AndroidViewModel {
                                     @Override
                                     public void onResponse(Call call, Response response) throws IOException {
                                         String res = response.body().string();
-                                        Log.d("User_info", "接收成功");
-                                        Log.d("userinfo user", res);
 
                                         try {
                                             JSONObject result = new JSONObject(res);
@@ -126,15 +115,11 @@ public class FriendsViewModel extends AndroidViewModel {
                                             if (status == 0) {
                                                 String image = (String) data.getJSONObject(0).get("avatar");
                                                 String name = (String) data.getJSONObject(0).get("username");
-                                                Log.d("username:",name);
-                                                Log.d("avatar",image);
-                                                friend eachFriend=new friend(0,name,image, finalOnoffstatus);
+                                                friend eachFriend = new friend(0, name, image, finalOnoffstatus);
                                                 mMessage.add(eachFriend);
-                                                Log.d("MessageInfo","finished one circle");
                                                 setStatus("message");
                                             }
                                         } catch (JSONException e) {
-                                            Log.d("userinfo", "userinfo dateParse failed");
                                             e.printStackTrace();
                                         }
                                     }
@@ -142,8 +127,7 @@ public class FriendsViewModel extends AndroidViewModel {
                             }
 
                         } catch (JSONException e) {
-                            isGetMsgSucc=false;
-                            Log.d("MessageInfo_viewModel", "dateParse failed");
+                            isGetMsgSucc = false;
                             e.printStackTrace();
                         }
 
@@ -152,6 +136,7 @@ public class FriendsViewModel extends AndroidViewModel {
             }
         }.start();
     }
+
     public boolean isGetMsgSucc() {
         return isGetMsgSucc;
     }

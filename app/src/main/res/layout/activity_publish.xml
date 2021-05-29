@@ -20,15 +20,6 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp">
 
-
-        <!--        <Button-->
-        <!--            android:id="@+id/btn_cover"-->
-        <!--            android:layout_width="100dp"-->
-        <!--            android:layout_height="48dp"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:text="选择封面" />-->
-        <!--        发布按钮-->
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField"
             android:layout_width="316dp"

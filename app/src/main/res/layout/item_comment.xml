@@ -2,49 +2,51 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/author_view"
-        android:text="RidiculousDoge:"
-        android:textSize="20dp"
-        android:textColor="@color/red"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"/>
-    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="RidiculousDoge:"
+        android:textColor="@color/red"
+        android:textSize="20dp" />
+
+    <ScrollView
         android:id="@+id/comment_content_scollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/author_view"
         android:layout_marginTop="10dp">
+
         <TextView
+            android:id="@+id/comment_content_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/comment_content_textview"
-            android:textColor="@color/red"
             android:layout_marginLeft="10dp"
             android:text="sample comment"
-            android:textSize="20dp"/>
+            android:textColor="@color/red"
+            android:textSize="20dp" />
 
 
     </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/comment_content_scollView">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/comment_divider"
-            android:gravity="center"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"/>
+            android:background="@drawable/comment_divider"
+            android:gravity="center" />
 
     </LinearLayout>
-
-
-
 
 
 </RelativeLayout>
