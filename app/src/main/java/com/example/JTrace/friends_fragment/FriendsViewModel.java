@@ -130,7 +130,6 @@ public class FriendsViewModel extends AndroidViewModel {
                             isGetMsgSucc = false;
                             e.printStackTrace();
                         }
-
                     }
                 });
             }
