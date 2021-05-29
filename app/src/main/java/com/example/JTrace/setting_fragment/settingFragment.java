@@ -1,5 +1,7 @@
 package com.example.JTrace.setting_fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.JTrace.R;
+import com.example.JTrace.widget.ItemGroup;
 import com.loper7.layout.TitleBar;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +36,7 @@ public class settingFragment extends Fragment {
     private String mParam2;
     private TitleBar mTitleBar;
 
+    private ItemGroup About;
     public settingFragment() {
         // Required empty public constructor
     }
@@ -40,11 +44,11 @@ public class settingFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment settingFragment.
      */
+
     // TODO: Rename and change types and number of parameters
     public static settingFragment newInstance(String param1, String param2) {
         settingFragment fragment = new settingFragment();
@@ -73,6 +77,7 @@ public class settingFragment extends Fragment {
 
         mTitleBar = root.findViewById(R.id.title_setting);
 
+        About = root.findViewById(R.id.about_id);
         return root;
     }
 
@@ -83,6 +88,16 @@ public class settingFragment extends Fragment {
             @Override
             public void onBackClick() {
                 Navigation.findNavController(view).navigateUp();
+            }
+        });
+        About.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://www.baidu.com");
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                intent.setData(uri);
+                startActivity(intent);
             }
         });
     }
