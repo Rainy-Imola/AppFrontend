@@ -36,11 +36,7 @@ public class  RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-//        TextView tv_title = (TextView) findViewById(R.id.title_w);
-//        tv_title.setText("注册");
-//        tv_title.setGravity(Gravity.CENTER);
-
-        this.getSupportActionBar().hide();//注意是在 setContentView(R.layout.activity_main)后
+        this.getSupportActionBar().hide();
         registerBtn = (Button) findViewById(R.id.registerBtn);
         sendBtn = (Button) findViewById(R.id.sendBtn);
         usernameEdit = (EditText) findViewById(R.id.username);
@@ -69,7 +65,7 @@ public class  RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.e("error", e.getMessage().toString());
-                            Toast.makeText(RegisterActivity.this,"网络出错,请检查网络",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this,"Network failed, please check your network connection",Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -92,7 +88,6 @@ public class  RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(RegisterActivity.this, "You should register with a SJTU email", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
-                            Log.d("Login_info","连接成功");
                         }
                     });
                 } catch (IOException e) {
@@ -125,14 +120,12 @@ public class  RegisterActivity extends AppCompatActivity {
                     httpAPI.postApi(jsonObject, "/email/checkemail", new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Log.e("error", e.getMessage().toString());
-                            Toast.makeText(RegisterActivity.this, "网络出错,请检查网络", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Network failed, please check your network connection", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             String res = response.body().string();
-                            Log.d("Register","连接成功");
 
                             JSONObject result = null;
                             Integer status = -100;
@@ -142,8 +135,6 @@ public class  RegisterActivity extends AppCompatActivity {
                                 result = new JSONObject(res);
                                 status = (Integer) result.get("status");
                                 if (status == 0) {
-                                    Log.d("Register", "CAPTCHA right");
-
                                     // 2. post register request
                                     HttpAPI httpAPI1 = new HttpAPI();
 
@@ -161,15 +152,12 @@ public class  RegisterActivity extends AppCompatActivity {
                                         httpAPI1.postApi(jsonObject1, "/users/register", new Callback() {
                                             @Override
                                             public void onFailure(Call call, IOException e) {
-                                                Log.e("error", e.getMessage().toString());
-                                                Toast.makeText(RegisterActivity.this, "网络出错,请检查网络", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(RegisterActivity.this, "Network failed, please check your network connection", Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
                                             public void onResponse(Call call, Response response) throws IOException {
                                                 String res1 = response.body().string();
-                                                Log.d("Register", "连接成功");
-
                                                 JSONObject result1 = null;
                                                 Integer status1 = -100;
                                                 Integer id = 0;
@@ -226,15 +214,12 @@ public class  RegisterActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         });
-
     }
 }
