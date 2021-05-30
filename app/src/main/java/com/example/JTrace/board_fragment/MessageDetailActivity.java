@@ -2,6 +2,8 @@ package com.example.JTrace.board_fragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -10,6 +12,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,15 +26,18 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.JTrace.R;
 
 import com.example.JTrace.custom_comment.CustomCommentViewHolder;
 import com.example.JTrace.custom_comment.CustomReplyViewHolder;
 import com.example.JTrace.custom_comment.CustomViewStyleConfigurator;
 import com.example.JTrace.friends_fragment.FriendDetailActivity;
+import com.example.JTrace.model.User;
 import com.example.JTrace.model.message;
 import com.example.JTrace.widget.RoundImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -53,6 +61,7 @@ public class MessageDetailActivity extends AppCompatActivity {
 
     private TextView contentView,authorView,dateView;
     private RoundImageView author_avatar;
+    private ImageView prize_image;
     private TextView prizes_message, comments_count;
 
     private EditText commentPostEditTextView;
@@ -81,7 +90,6 @@ public class MessageDetailActivity extends AppCompatActivity {
     private long reply_id;
     private long pid;
     private int cp, rp;
-
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
 
     public MutableLiveData<Integer> getStatus_bar() {
@@ -148,11 +156,11 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         authorView = view.findViewById(R.id.author_textView);
         dateView = view.findViewById(R.id.date_textView);
-        authorView=view.findViewById(R.id.author_textView);
         dateView=view.findViewById(R.id.date_textView);
 
         author_avatar = view.findViewById(R.id.message_user_icon);
         prizes_message = view.findViewById(R.id.prizes_msg);
+        prize_image = view.findViewById(R.id.comment_item_like);
         comments_count = view.findViewById(R.id.textView11);
         ConstraintLayout.LayoutParams content_params = new ConstraintLayout.LayoutParams(contentView.getLayoutParams());
 
@@ -186,11 +194,33 @@ public class MessageDetailActivity extends AppCompatActivity {
                     coverView.setImageURI(message.getImageUrl());
                 }
                 dateView.setText(message.getCreatedAt());
-                //prizes_message.setText(message.getLike());
-
+                prizes_message.setText(String.valueOf(message.getLike()));
+                Drawable bmpDrawable = ContextCompat.getDrawable(context,R.drawable.pxjh);
+                Drawable.ConstantState state = bmpDrawable.getConstantState();
+                Drawable warp = DrawableCompat.wrap(state == null ? bmpDrawable : state.newDrawable()).mutate();
+                Log.d("accept_message",String.valueOf(message.getAccept()));
+                if (Integer.compare(message.getAccept(),1)==0) {
+                    prize_image.setTag(Integer.valueOf(1));
+                    DrawableCompat.setTint(warp, Color.parseColor("#EE6699FF"));
+                }else {
+                    DrawableCompat.setTint(warp, Color.parseColor("#2C2C2C"));
+                    prize_image.setTag(Integer.valueOf(0));
+                }
+                prize_image.setImageDrawable(warp);
             }
         });
-
+        mCommentViewModel.requestAvatar(msg.getAuthor());
+        mCommentViewModel.getUserMutableLiveData().observe(this, new Observer<User>() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onChanged(User user) {
+                if (user.getUser_avatar().length() != 0) {
+                    Glide.with(context).load(user.getUser_avatar()).error(R.string.default_avatar).into(author_avatar);
+                }else {
+                    Glide.with(context).load(R.string.default_avatar).into(author_avatar);
+                }
+            }
+        });
 
         commentView.setViewStyleConfigurator(new CustomViewStyleConfigurator(this));
         commentView.addHeaderView(constraintLayout_header, true);
@@ -268,12 +298,7 @@ public class MessageDetailActivity extends AppCompatActivity {
             }
         });
 
-        authorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MessageDetailActivity.this, "你点击名字：", Toast.LENGTH_SHORT).show();
-            }
-        });
+
         coverView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -341,6 +366,24 @@ public class MessageDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
                 intent.putExtra("name", msg.getAuthor());
                 v.getContext().startActivity(intent);
+            }
+        });
+        author_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
+                intent.putExtra("name", msg.getAuthor());
+                v.getContext().startActivity(intent);
+            }
+        });
+        prize_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ((Integer) prize_image.getTag() == 0){
+                    mCommentViewModel.postPrize(1);
+                } else if((Integer) prize_image.getTag() == 1) {
+                    mCommentViewModel.postPrize(0);
+                }
             }
         });
     }

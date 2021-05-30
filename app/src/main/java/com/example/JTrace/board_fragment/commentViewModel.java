@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.example.JTrace.Constants;
+import com.example.JTrace.model.User;
 import com.example.JTrace.model.message;
 //import com.example.JTrace.model.comment;
 
@@ -37,6 +38,8 @@ public class commentViewModel extends AndroidViewModel {
     private SavedStateHandle handle;
     private int mCommentPage;
     private int mReplyPage;
+    private message mmessage = new message();
+    private User mUser = new User();
 
     public MutableLiveData<message> getMessageMutableLiveData() {
         return messageMutableLiveData;
@@ -48,6 +51,15 @@ public class commentViewModel extends AndroidViewModel {
 
     private MutableLiveData<message> messageMutableLiveData = new MutableLiveData<>();
 
+    private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+
+    public MutableLiveData<User> getUserMutableLiveData() {
+        return userMutableLiveData;
+    }
+
+    public void setUserMutableLiveData(User userMutableLiveData) {
+        this.userMutableLiveData.postValue(userMutableLiveData);
+    }
     private String message_id;
 
     public String getMessage_id() {
@@ -117,16 +129,20 @@ public class commentViewModel extends AndroidViewModel {
                             JSONObject results = new JSONObject(res);
                             if (results.isNull("code")) {
                                 JSONArray data = results.getJSONArray("data");
+
                                 JSONObject mid = data.getJSONObject(0);
                                 JSONObject message_detail = mid.getJSONObject("message");
                                 JSONArray result = mid.getJSONArray("comment");
-                                message mmessage = new message();
+                                int m_accept = mid.getInt("accept");
+
+
                                 mmessage.setAuthor(message_detail.getString("author"));
                                 mmessage.setContent(message_detail.getString("content"));
                                 mmessage.setCreatedAt(message_detail.getString("date"));
                                 mmessage.setId(message_id);
                                 mmessage.setLike(message_detail.getInt("like"));
                                 mmessage.setImageUrl(message_detail.getString("picture"));
+                                mmessage.setAccept(m_accept);
                                 setMessageMutableLiveData(mmessage);
 
                                 mCustomComments = new ArrayList<>();
@@ -295,5 +311,106 @@ public class commentViewModel extends AndroidViewModel {
                 });
             }
         }.start();
+    }
+
+    public void postPrize(int like_status) {
+        new Thread() {
+            @Override
+            public void run() {
+                // @Headers({"Content-Type:application/json","Accept: application/json"})//需要添加头
+                MediaType JSON = MediaType.parse("application/json;charset=utf-8");
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("user", sharedPreferences.getInt("id", 3));
+                    json.put("like", like_status);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String token = sharedPreferences.getString("token", "");
+                OkHttpClient okHttpClient = new OkHttpClient();
+                //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
+                //json为String类型的json数据
+                RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
+                //创建一个请求对象
+                Request request = new Request.Builder()
+                        .url(Constants.baseUrl + "/msgboard/like/" + message_id)
+                        .addHeader("Authorization", token)
+                        .post(requestBody)
+                        .build();
+
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("failure", "comment");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String string = response.body().string();
+                        try {
+                            JSONObject json = new JSONObject(string);
+                            int status = (int) json.get("status");
+                            String msg = (String) json.get("msg");
+                            if (status == 0) {
+                                mmessage.setAccept(like_status);
+                                int xx = mmessage.getLike();
+                                mmessage.setLike(xx+1);
+                                setMessageMutableLiveData(mmessage);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
+
+    }
+
+    public void requestAvatar(String author) {
+        new Thread() {
+            @Override
+            public void run() {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                String token = sharedPreferences.getString("token", "");
+                Request request = new Request.Builder().url(Constants.baseUrl + "/users/" + author + "/info")
+                        .addHeader("Authorization", token)
+                        .build();
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("UserInfo", "request_handle_failed");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String res = response.body().string();
+                        try {
+                            JSONObject result = new JSONObject(res);
+                            JSONArray data = (JSONArray) result.get("data");
+                            int status = (int) result.get("status");
+                            String msg = (String) result.get("msg");
+                            if (status == 0) {
+                                mUser.setUser_name((String) data.getJSONObject(0).get("username"));
+                                JSONArray hobbyJson = (JSONArray) data.getJSONObject(0).get("hobby");
+                                List<String> hobbyList = new ArrayList<>();
+                                for (int i = 0; i < hobbyJson.length(); ++i) {
+                                    hobbyList.add(hobbyJson.getString(i));
+                                }
+                                mUser.setUser_id((Integer) data.getJSONObject(0).get("id"));
+                                mUser.setUser_hobby(hobbyList);
+                                mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
+                                mUser.setUser_avatar((String) data.getJSONObject(0).get("avatar"));
+                                setUserMutableLiveData(mUser);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
+
     }
 }

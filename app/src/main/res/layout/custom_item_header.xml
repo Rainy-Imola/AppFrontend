@@ -87,11 +87,11 @@
                 android:id="@+id/comment_item_like"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-
                 android:layout_marginEnd="8dp"
                 android:padding="3dp"
                 android:src="@drawable/pxjh"
                 android:visibility="visible"
+
                 app:layout_constraintBottom_toBottomOf="@+id/prizes_msg"
                 app:layout_constraintEnd_toStartOf="@+id/prizes_msg"
                 app:layout_constraintTop_toTopOf="@+id/prizes_msg" />

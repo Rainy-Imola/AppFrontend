@@ -25,6 +25,17 @@ public class message implements Serializable {
     @SerializedName("like")
     private int like;
 
+
+    @SerializedName("accept")
+    private int accept;
+    public int getAccept() {
+        return accept;
+    }
+
+    public void setAccept(int accept) {
+        this.accept = accept;
+    }
+
     public int getLike() {
         return like;
     }
