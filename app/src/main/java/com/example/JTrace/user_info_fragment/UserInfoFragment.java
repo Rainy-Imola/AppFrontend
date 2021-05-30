@@ -58,7 +58,7 @@ public class UserInfoFragment extends Fragment {
     private LabelsView user_hobby;
     private TextView user_constellation;
     private RoundImageView user_avatar;
-    private List<message> mItems= new ArrayList<>();
+    private List<message> mItems;
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -102,10 +102,10 @@ public class UserInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root=  inflater.inflate(R.layout.userinfo_fragment, container, false);
-        mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
-        user_name = (TextView)root.findViewById(R.id.user_info_name);
-        user_constellation = (TextView) root.findViewById(R.id.user_info_constellation);
-        user_hobby = (LabelsView) root.findViewById(R.id.labels);
+        mRecyclerView = root.findViewById(R.id.recyclerView);
+        user_name = root.findViewById(R.id.user_info_name);
+        user_constellation = root.findViewById(R.id.user_info_constellation);
+        user_hobby = root.findViewById(R.id.labels);
         mTitleBar = root.findViewById(R.id.main_titleBar);
         user_avatar = root.findViewById(R.id.user_info_imageView);
         app_bar = root.findViewById(R.id.appbar);
@@ -154,6 +154,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
         mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @SuppressLint("ResourceType")
             @Override
             public void onChanged(User mUser) {
                 if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
@@ -169,8 +170,10 @@ public class UserInfoFragment extends Fragment {
                 user_name.setText("昵称："+ mUser.getUser_name());
                 title = mUser.getUser_name();
                 if (mUser.getUser_avatar().length() != 0){
-                    Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
+                    Glide.with(mContext).load(mUser.getUser_avatar()).error(R.string.default_avatar).into(user_avatar);
                     Log.d("avatar_uri：",mUser.getUser_avatar());
+                }else {
+                    Glide.with(mContext).load(R.string.default_avatar).into(user_avatar);
                 }
                 Log.d("setName：",mUser.getUser_name());
             }
@@ -179,6 +182,7 @@ public class UserInfoFragment extends Fragment {
             @Override
             public void onChanged(String status) {
                 if(status == "message") {
+                    mItems = new ArrayList<>();
                     try {
                         for (message imessage:mViewModel.getMessage()) {
                             mItems.add(imessage);

@@ -46,6 +46,8 @@ import com.loper7.layout.TitleBar;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InterruptedIOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +61,7 @@ public class CommonUserInfoFragment extends Fragment {
     private LabelsView user_hobby;
     private TextView user_constellation;
     private RoundImageView user_avatar;
-    private List<message> mItems = new ArrayList<>();
+    private List<message> mItems;
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -155,6 +157,7 @@ public class CommonUserInfoFragment extends Fragment {
             }
         });
         mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+            @SuppressLint("ResourceType")
             @Override
             public void onChanged(User mUser) {
                 if (mUser.getUser_hobby() != null && mUser.getUser_hobby().isEmpty()) {
@@ -170,7 +173,10 @@ public class CommonUserInfoFragment extends Fragment {
                 user_name.setText("昵称：" + mUser.getUser_name());
                 title = mUser.getUser_name();
                 if (mUser.getUser_avatar().length() != 0) {
-                    Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
+                        Glide.with(mContext).load(mUser.getUser_avatar()).error(R.string.default_avatar).into(user_avatar);
+
+                }else {
+                    Glide.with(mContext).load(R.string.default_avatar).into(user_avatar);
                 }
             }
         });
@@ -178,6 +184,7 @@ public class CommonUserInfoFragment extends Fragment {
             @Override
             public void onChanged(String status) {
                 if (status == "message") {
+                    mItems = new ArrayList<>();
                     for (message imessage : mViewModel.getMessage()
                     ) {
                         mItems.add(imessage);

@@ -55,7 +55,6 @@ public class MessageDetailActivity extends AppCompatActivity {
     private RoundImageView author_avatar;
     private TextView prizes_message, comments_count;
 
-    private TextView contentView, authorView, dateView;
     private EditText commentPostEditTextView;
     private Button commentPostButton;
     private SimpleDraweeView coverView;

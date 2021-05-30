@@ -1,5 +1,6 @@
 package com.example.JTrace.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return null;
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         chatMsg msg = mItems.get(position);
@@ -93,14 +95,19 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Sender sender = (Sender) holder;
             sender.content.setText(msg.getContent());
             if (msg.getAvatar() != null) {
-                Glide.with(sender.getmContext()).load(msg.getAvatar()).into(sender.image);
+                Glide.with(sender.getmContext()).load(msg.getAvatar()).error(R.string.default_avatar).into(sender.image);
+            }else {
+                Glide.with(sender.getmContext()).load(R.string.default_avatar).into(sender.image);
             }
 
         } else if (holder instanceof Receiver) {
             Receiver receiver = (Receiver) holder;
             receiver.content.setText(msg.getContent());
             if (msg.getAvatar() != null) {
-                Glide.with(receiver.getmContext()).load(msg.getAvatar()).into(receiver.image);
+                Glide.with(receiver.getmContext()).load(msg.getAvatar()).error(R.string.default_avatar).into(receiver.image);
+            }
+            else {
+                Glide.with(receiver.getmContext()).load(R.string.default_avatar).into(receiver.image);
             }
         }
     }

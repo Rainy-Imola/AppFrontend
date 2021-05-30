@@ -183,6 +183,8 @@ public class PublishActivity extends baseActivity {
             jsonObject.put("content", content);
             if (picture != "null") {
                 jsonObject.put("picture", picture);
+            }else {
+                jsonObject.put("picture", "");
             }
         } catch (JSONException e) {
             e.printStackTrace();

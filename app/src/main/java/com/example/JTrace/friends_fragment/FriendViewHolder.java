@@ -1,5 +1,6 @@
 package com.example.JTrace.friends_fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setOnClickListener(this);
     }
 
+    @SuppressLint("ResourceType")
     public void bind(int id, String name, String image, int status) {
         this.id = id;
         this.name = name;
@@ -41,7 +43,10 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
         this.status = status;
         nameEditor.setText(name);
         if (image != null && image.length() > 0) {
-            Glide.with(mContext).load(image).into(avatar);
+            Glide.with(mContext).load(image).error(R.string.default_avatar).into(avatar);
+        }
+        else {
+            Glide.with(mContext).load(R.string.default_avatar).into(avatar);
         }
         if (status == 0) {
             statusEditor.setText("离线");

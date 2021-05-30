@@ -117,15 +117,15 @@ public class UserInfoViewModel extends AndroidViewModel {
                             JSONArray result = results.getJSONArray("data");
                             for (int i = 0; i < result.length(); i++) {
                                 JSONObject cur_msg = result.getJSONObject(i);
-                                String id = cur_msg.getString("id");
-                                String author = cur_msg.getString("author");
+                                String id = String.valueOf(cur_msg.getInt("id"));
+                                String author = user_name;
                                 String content = cur_msg.getString("content");
                                 String date = cur_msg.getString("date");
                                 String picture;
                                 try {
                                     picture = cur_msg.getString("picture");
                                 } catch (JSONException e) {
-                                    picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
+                                    picture = "";
                                 }
 
                                 message msg = new message(id, author, content, date, picture);
