@@ -31,6 +31,7 @@ import com.example.JTrace.custom_comment.CustomReplyViewHolder;
 import com.example.JTrace.custom_comment.CustomViewStyleConfigurator;
 import com.example.JTrace.friends_fragment.FriendDetailActivity;
 import com.example.JTrace.model.message;
+import com.example.JTrace.widget.RoundImageView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.jidcoo.android.widget.commentview.CommentView;
@@ -51,6 +52,9 @@ public class MessageDetailActivity extends AppCompatActivity {
 
 
     private TextView contentView,authorView,dateView;
+    private RoundImageView author_avatar;
+    private TextView prizes_message, comments_count;
+
     private EditText commentPostEditTextView;
     private Button commentPostButton;
     private SimpleDraweeView coverView;
@@ -148,6 +152,10 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         authorView=view.findViewById(R.id.author_textView);
         dateView=view.findViewById(R.id.date_textView);
+
+        author_avatar = view.findViewById(R.id.message_user_icon);
+        prizes_message = view.findViewById(R.id.prizes_msg);
+        comments_count = view.findViewById(R.id.textView11);
         ConstraintLayout.LayoutParams content_params = new ConstraintLayout.LayoutParams(contentView.getLayoutParams());
 
         context=this;
@@ -179,11 +187,12 @@ public class MessageDetailActivity extends AppCompatActivity {
                     content_params.setMarginEnd(ScreenUtils.dip2px(context,24));
                     contentView.setLayoutParams(content_params);
 
-Log.d("hidde",message.getImageUrl());
                 }else {
                     coverView.setImageURI(message.getImageUrl());
                 }
                 dateView.setText(message.getCreatedAt());
+                //prizes_message.setText(message.getLike());
+
             }
         });
 
@@ -206,7 +215,7 @@ Log.d("hidde",message.getImageUrl());
                         } else {
                             holder = (CustomCommentViewHolder) convertView.getTag();
                         }
-                        holder.prizes.setText("100");
+                        holder.prizes.setText("1");
                         holder.userName.setText(comment.getPosterName());
                         holder.comment.setText(comment.getData());
 

@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.example.JTrace.widget.RoundImageView
-                android:id="@+id/user_info_imageView"
+                android:id="@+id/message_user_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="24dp"
@@ -45,8 +45,8 @@
                 android:text="2021-5-8 10:48:37"
                 android:textColor="#808080"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/user_info_imageView"
-                app:layout_constraintStart_toEndOf="@+id/user_info_imageView" />
+                app:layout_constraintBottom_toBottomOf="@+id/message_user_icon"
+                app:layout_constraintStart_toEndOf="@+id/message_user_icon" />
 
             <TextView
                 android:id="@+id/author_textView"
@@ -57,8 +57,8 @@
                 android:clickable="true"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/user_info_imageView"
-                app:layout_constraintTop_toTopOf="@+id/user_info_imageView"
+                app:layout_constraintStart_toEndOf="@+id/message_user_icon"
+                app:layout_constraintTop_toTopOf="@+id/message_user_icon"
                 tools:text="author_name:" />
 
 
