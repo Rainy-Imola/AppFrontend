@@ -5,6 +5,7 @@
     android:id="@+id/boardFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="56dp"
     tools:context=".board_fragment.boardFragment">
 
     <com.loper7.layout.TitleBar
@@ -20,10 +21,10 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationView"
         android:layout_width="match_parent"
-        android:layout_height="699dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="0dp"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/material_wave_loading" />
@@ -31,16 +32,16 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_board"
         android:layout_width="match_parent"
-        android:layout_height="699dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="60dp"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/board"
             android:layout_width="match_parent"
-            android:layout_height="699dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="60dp">
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -49,14 +50,17 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="178dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="80dp"
-        android:src="@drawable/ic_baseline_add_24" />
+        android:layout_marginBottom="30dp"
+        android:tint="@android:color/background_dark"
+        app:fabSize="normal"
+        android:src="@drawable/fab_add_gray"
+        app:tint = "@color/white"
+        app:backgroundTintMode="src_atop"
+        app:rippleColor="@color/black"
+        app:backgroundTint="@color/blue_1"/>
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent" />-->
 
 </FrameLayout>
