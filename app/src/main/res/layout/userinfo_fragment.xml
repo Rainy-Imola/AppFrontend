@@ -126,6 +126,7 @@
                     app:tCenterTitle="true"
                     app:tMenuImage="@drawable/menu_white_24"
                     app:tTitleText="个人信息"
+                    app:tUseRipple="true"
                     app:tTitleTextColor="@android:color/white"
                     app:tTitleTextSize="22sp" />
             </androidx.appcompat.widget.Toolbar>

@@ -134,11 +134,13 @@
                     android:layout_height="56dp"
                     app:layout_collapseMode="pin"
                     app:tBackImage="@drawable/nav_return_white"
+                    app:tUseRipple="true"
                     app:tCenterTitle="true"
                     app:tMenuImage="@drawable/menu_white_24"
                     app:tTitleText="user info"
                     app:tTitleTextColor="@android:color/white"
-                    app:tTitleTextSize="22sp" />
+                    app:tTitleTextSize="22sp" >
+                </com.loper7.layout.TitleBar>
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

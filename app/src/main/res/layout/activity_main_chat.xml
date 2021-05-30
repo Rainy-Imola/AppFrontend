@@ -27,6 +27,7 @@
             app:tBackgroundColor="@color/blue_1"
             app:tCenterTitle="true"
             app:tTitleText="board"
+            app:tUseRipple="true"
             app:tTitleTextColor="@color/white"
             app:tTitleTextSize="22sp" />
 

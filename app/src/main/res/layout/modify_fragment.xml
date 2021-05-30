@@ -23,6 +23,7 @@
         app:tBackgroundColor="@color/blue_1"
         app:tCenterTitle="true"
         app:tMenuText="保存"
+        app:tUseRipple="true"
         app:tMenuTextColor="@color/white"
         app:tMenuTextSize="18sp"
         app:tTitleText="个人信息修改"

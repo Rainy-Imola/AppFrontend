@@ -8,6 +8,16 @@ import java.io.Serializable;
 public class HobbyBean implements MultiItemEntity, Serializable {
     private String hobby;
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    private boolean isChecked;
+
     public String getStyle_tag() {
         return hobby;
     }

@@ -2,6 +2,7 @@ package com.example.JTrace.modify_fragment;
 
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SectionMultipleItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> implements Filterable {
+public class SectionMultipleItemAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>  {
     public static final int ITEM_FIRST_LEVEL = 1;
 
     public static final int ITEM_SECOND_LEVEL = 2;
@@ -37,15 +38,19 @@ public class SectionMultipleItemAdapter extends BaseMultiItemQuickAdapter<MultiI
                 baseViewHolder.setText(R.id.textView8, tagBean.getTag_style());
                 break;
             case ITEM_SECOND_LEVEL:
+
                 HobbyBean hobbyBean = (HobbyBean) multiItemEntity;
                 baseViewHolder.setText(R.id.textView9, hobbyBean.getStyle_tag());
+
+                if (hobbyBean.isChecked()) {
+                    baseViewHolder.setImageResource(R.id.imageView6,R.drawable.checked);
+                } else {
+                    baseViewHolder.setImageResource(R.id.imageView6,R.drawable.unselected_black);
+                }
+
                 break;
         }
 
     }
 
-    @Override
-    public Filter getFilter() {
-        return null;
-    }
 }
