@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import com.example.JTrace.widget.RoundImageView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.loper7.layout.TitleBar;
+import com.yalantis.ucrop.util.ScreenUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -79,6 +81,7 @@ public class CommonUserInfoFragment extends Fragment {
     private Toolbar toolbar;
     private ConstraintLayout constraintLayout;
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
+    SharedPreferences sharedPreferences;
 
     public MutableLiveData<Integer> getStatus_bar() {
         return status_bar;
@@ -128,6 +131,7 @@ public class CommonUserInfoFragment extends Fragment {
         collapsingToolbarLayout = root.findViewById(R.id.collapsing_com);
         toolbar = root.findViewById(R.id.toolbar);
         constraintLayout = root.findViewById(R.id.visiablecom);
+        sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
         return root;
     }
 
@@ -145,14 +149,23 @@ public class CommonUserInfoFragment extends Fragment {
         mViewModel.requestMessage(mArgument);
         mViewModel.isFriend(mArgument);
         mViewModel.getFriendStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onChanged(String s) {
                 if (s == "friendyes") {
                     addorchar.setText("发消息");
-                    addorchar.setTag(new Integer(1));
+                    addorchar.setTag(Integer.valueOf(1));
                 } else if (s == "friendno") {
-                    addorchar.setText("加好友");
-                    addorchar.setTag(new Integer(2));
+                    if (sharedPreferences.getString("username", "defaultAuthor").equals(mArgument)) {
+                        addorchar.setText("自己噻");
+                        addorchar.setTextColor(R.color.black);
+                        addorchar.setBackgroundColor(Color.parseColor("#FFF5F5F5"));
+                        addorchar.setClickable(false);
+                    } else {
+                        addorchar.setText("加好友");
+
+                        addorchar.setTag(Integer.valueOf(2));
+                    }
                 }
             }
         });
