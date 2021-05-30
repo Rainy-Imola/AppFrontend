@@ -49,6 +49,16 @@ public class UserInfoViewModel extends AndroidViewModel {
     private String path_avatar = "";
     private String status_avatar = "";
     private List<message> mMessage = new ArrayList<>();
+
+    public MutableLiveData<String> getStatus_save() {
+        return status_save;
+    }
+
+    public void setStatus_save(String status_save) {
+        this.status_save.postValue(status_save);
+    }
+
+    private  MutableLiveData<String> status_save = new MutableLiveData<>();
     private MutableLiveData<String> status = new MutableLiveData<>();
 
     public MutableLiveData<String> getStatus() {
@@ -166,7 +176,7 @@ public class UserInfoViewModel extends AndroidViewModel {
      * @param imgSrc 图片路径
      * @return byte[]
      */
-    public byte[] image2Bytes(String imgSrc) {
+    public static byte[] image2Bytes(String imgSrc) {
         File file = null;
         FileInputStream fin;
         byte[] bytes = null;
@@ -196,6 +206,10 @@ public class UserInfoViewModel extends AndroidViewModel {
             @Override
             public void run() {
                 Log.i("starting", "开始create");
+                if (avatar.equals("")) {
+                    setStatus_avatar("avatar_fail");
+                    return;
+                }
                 byte[] coverImageData = image2Bytes(avatar);
                 MultipartBody.Part coverPart = MultipartBody.Part.createFormData("image", "cover.png",
                         RequestBody.create(MediaType.parse("multipart/form-data"), coverImageData));
@@ -208,7 +222,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        setStatus_avatar("avatar_failure");
+                        setStatus_avatar("avatar_fail");
 
                         Log.i("failure", "上传失败" + call.toString());
                         Log.i("failure", "上传失败" + e.toString());
@@ -341,7 +355,7 @@ public class UserInfoViewModel extends AndroidViewModel {
             public void run() {
                 if (getPath_avatar().length() != 0) {
                     setUserAvatar(path_avatar);
-                    while (getStatus_avatar() != "avatar_success" && getStatus_avatar() != "avatar_success") {
+                    while (getStatus_avatar() != "avatar_success" && getStatus_avatar() != "avatar_fail") {
                     }
                     if (getStatus_avatar() == "avatar_success") {
                         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
@@ -380,6 +394,9 @@ public class UserInfoViewModel extends AndroidViewModel {
                                 }
                             }
                         });
+                    }
+                    else if (getStatus_avatar() == "avatar_fail") {
+                        setStatus_save("fail_avatar");
                     }
                 }
 

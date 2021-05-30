@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -176,6 +177,14 @@ public class UserInfoFragment extends Fragment {
                     Glide.with(mContext).load(R.string.default_avatar).into(user_avatar);
                 }
                 Log.d("setName：",mUser.getUser_name());
+            }
+        });
+        mViewModel.getStatus_save().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if ( s.equals("fail_avatar")) {
+                    Toast.makeText(mContext, "图片保存失败", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {

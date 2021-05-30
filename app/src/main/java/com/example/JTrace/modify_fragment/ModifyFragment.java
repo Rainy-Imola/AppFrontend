@@ -10,6 +10,7 @@ import android.app.Activity;
 
 import android.content.Context;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -32,6 +33,9 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.JTrace.R;
 import com.example.JTrace.model.User;
 import com.example.JTrace.user_info_fragment.UserInfoViewModel;
@@ -39,6 +43,7 @@ import com.example.JTrace.widget.ItemGroup;
 import com.example.JTrace.widget.RoundImageView;
 import com.loper7.layout.TitleBar;
 import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.listener.OnResultCallbackListener;
@@ -59,10 +64,12 @@ import java.util.Locale;
 public class ModifyFragment extends Fragment {
 
     private UserInfoViewModel mViewModel;
+    private static final long MAX_FILE_SIZE = 2 * 1024 * 1024;
     private ItemGroup nameIG, idIG, hobbyIG, constellationIG;
     private RoundImageView avatarView;
     private TitleBar mtitleLayout;
     private NavController mnavController;
+    Context mContext;
 
     public static ModifyFragment newInstance() {
         return new ModifyFragment();
@@ -87,7 +94,7 @@ public class ModifyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         mnavController = Navigation.findNavController(view);
-        Context mContext = this.getContext();
+        mContext = this.getContext();
 
 
         mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
@@ -196,25 +203,34 @@ public class ModifyFragment extends Fragment {
         take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (finalPopupWindow != null && finalPopupWindow.isShowing()) {
-                    PictureSelector.create((Activity) view.getContext())
-                            .openCamera(PictureMimeType.ofImage())
-                            .loadImageEngine(GlideEngine.createGlideEngine())
-                            .forResult(new OnResultCallbackListener<LocalMedia>() {
-                                @Override
-                                public void onResult(List<LocalMedia> result) {
-                                    String imagepath = result.get(0).getRealPath();
+                PictureSelector.create((Activity) view.getContext())
+                        .openCamera(PictureMimeType.ofImage())
+                        .imageEngine(GlideEngine.createGlideEngine())
+                        .forResult(new OnResultCallbackListener<LocalMedia>() {
+                            @Override
+                            public void onResult(List<LocalMedia> result) {
+                                String imagepath = result.get(0).getRealPath();
+                                byte[] byte_image = UserInfoViewModel.image2Bytes(imagepath);
+                                Log.d("image size", String.valueOf(byte_image.length));
+                                if (byte_image.length > MAX_FILE_SIZE ){
+                                    Toast.makeText(mContext, "图片过大，请更换！", Toast.LENGTH_SHORT).show();
+                                    Glide.with(view.getContext()).load(imagepath).into(avatarView);
+                                    mViewModel.setPath_avatar("");
+                                }
+                                else {
                                     Glide.with(view.getContext()).load(imagepath).into(avatarView);
                                     mViewModel.setPath_avatar(imagepath);
                                 }
+                            }
 
-                                @Override
-                                public void onCancel() {
-                                    Log.d("select image", String.valueOf("exit"));
-                                }
-                            });
-                    finalPopupWindow.dismiss();
-                }
+                            @Override
+                            public void onCancel() {
+                                Log.d("select image", String.valueOf("exit"));
+                            }
+                        });
+                finalPopupWindow.dismiss();
+
+
             }
         });
         //相册按钮监听
@@ -224,15 +240,30 @@ public class ModifyFragment extends Fragment {
             public void onClick(View view) {
                 PictureSelector.create((Activity) view.getContext())
                         .openGallery(PictureMimeType.ofImage())
-                        .loadImageEngine(GlideEngine.createGlideEngine())
+                        .selectionMode(PictureConfig.SINGLE)
+                        .isWeChatStyle(true)
+                        .isEnableCrop(true)
+                        .isCompress(true)
+                        .compressQuality(80)
+                        .imageEngine(GlideEngine.createGlideEngine())
                         .forResult(new OnResultCallbackListener<LocalMedia>() {
                             @Override
                             public void onResult(List<LocalMedia> result) {
-                                String imagepath = result.get(0).getRealPath();
-                                Glide.with(view.getContext()).load(imagepath).into(avatarView);
-                                mViewModel.setPath_avatar(imagepath);
-                            }
+                                String imagepath = result.get(0).getCompressPath();
+                                Log.d("select image", imagepath);
+                                byte[] byte_image = UserInfoViewModel.image2Bytes(imagepath);
+                                Log.d("image size", String.valueOf(byte_image.length));
+                                if (byte_image.length > MAX_FILE_SIZE ){
+                                    Toast.makeText(mContext, "图片过大，请更换！", Toast.LENGTH_SHORT).show();
+                                    Glide.with(view.getContext()).load(imagepath).into(avatarView);
+                                    mViewModel.setPath_avatar("");
+                                }
+                                else {
+                                    Glide.with(view.getContext()).load(imagepath).into(avatarView);
+                                    mViewModel.setPath_avatar(imagepath);
+                                }
 
+                            }
                             @Override
                             public void onCancel() {
                                 Log.d("select image", String.valueOf("exit"));
