@@ -22,7 +22,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -40,6 +43,25 @@ public class commentViewModel extends AndroidViewModel {
     private int mReplyPage;
     private message mmessage = new message();
     private User mUser = new User();
+
+    public Map<String, String> getAvatar_map() {
+        return avatar_map;
+    }
+
+    public void setAvatar_map(Map<String, String> avatar_map) {
+        this.avatar_map = avatar_map;
+    }
+
+    private Map<String,String> avatar_map = new ConcurrentHashMap<>();
+    public MutableLiveData<Map<String, String>> getResult_avatar_map() {
+        return result_avatar_map;
+    }
+
+    public void setResult_avatar_map(Map<String, String> result_avatar_map) {
+        this.result_avatar_map.postValue(result_avatar_map);
+    }
+
+    private MutableLiveData<Map<String,String>> result_avatar_map = new MutableLiveData<>();
 
     public MutableLiveData<message> getMessageMutableLiveData() {
         return messageMutableLiveData;
@@ -163,7 +185,7 @@ public class commentViewModel extends AndroidViewModel {
                                         Integer level = cur_reply.getInt("level");
                                         Integer comment_id = cur_reply.getInt("comment");
                                         CustomCommentModel.CustomComment.CustomReply mreply = new CustomCommentModel.CustomComment.CustomReply();
-                                        mreply.setData(date_reply);
+                                        mreply.setDate(date_reply);
                                         mreply.setId(id_reply);
                                         mreply.setLevel(level);
                                         mreply.setReplierName(author_reply);
@@ -413,4 +435,45 @@ public class commentViewModel extends AndroidViewModel {
         }.start();
 
     }
+
+    public void requestAllAvatar(String name){
+        new Thread() {
+            @Override
+            public void run() {
+
+                OkHttpClient okHttpClient = new OkHttpClient();
+                String token = sharedPreferences.getString("token", "");
+                Request request = new Request.Builder().url(Constants.baseUrl + "/users/" + name + "/info")
+                        .addHeader("Authorization", token)
+                        .build();
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("UserInfo", "request_handle_failed");
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String res = response.body().string();
+                        try {
+                            JSONObject result = new JSONObject(res);
+                            JSONArray data = (JSONArray) result.get("data");
+                            int status = (int) result.get("status");
+                            String msg = (String) result.get("msg");
+                            if (status == 0) {
+                                String avatar_link = (String) data.getJSONObject(0).get("avatar");
+                                Log.d("request avatar:",avatar_link);
+                                avatar_map.put(name,avatar_link);
+                                setResult_avatar_map(avatar_map);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
+
+    }
+
 }

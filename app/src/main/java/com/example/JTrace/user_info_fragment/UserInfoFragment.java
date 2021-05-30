@@ -5,8 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.donkingliang.labels.LabelsView;
 import com.example.JTrace.R;
 import com.example.JTrace.baseActivity;
@@ -46,6 +50,8 @@ import com.example.JTrace.widget.RoundImageView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.loper7.layout.TitleBar;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +81,7 @@ public class UserInfoFragment extends Fragment {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
     private String title = "user info";
-
+    private String default_link;
 
 
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
@@ -127,6 +133,7 @@ public class UserInfoFragment extends Fragment {
                 }
             }
         });
+        default_link = getResources().getString(R.string.default_avatar);
         return root;
     }
     @Override
@@ -170,13 +177,29 @@ public class UserInfoFragment extends Fragment {
                 }
                 user_name.setText("昵称："+ mUser.getUser_name());
                 title = mUser.getUser_name();
-                if (mUser.getUser_avatar().length() != 0){
-                    Glide.with(mContext).load(mUser.getUser_avatar()).error(R.string.default_avatar).into(user_avatar);
-                    Log.d("avatar_uri：",mUser.getUser_avatar());
+                if (mUser.getUser_avatar().length() != 0) {
+                    Glide.with(mContext).asBitmap().load(mUser.getUser_avatar()).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                            user_avatar.setImageBitmap(resource);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+                        }
+                    });
                 }else {
-                    Glide.with(mContext).load(R.string.default_avatar).into(user_avatar);
+                    Glide.with(mContext).asBitmap().load(default_link).into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                            user_avatar.setImageBitmap(resource);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+
+                        }
+                    });
                 }
-                Log.d("setName：",mUser.getUser_name());
+
             }
         });
         mViewModel.getStatus_save().observe(getViewLifecycleOwner(), new Observer<String>() {

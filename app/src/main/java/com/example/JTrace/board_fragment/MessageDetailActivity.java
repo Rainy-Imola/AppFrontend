@@ -1,5 +1,7 @@
 package com.example.JTrace.board_fragment;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -13,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -31,6 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.JTrace.R;
 
 import com.example.JTrace.custom_comment.CustomCommentViewHolder;
@@ -52,8 +58,16 @@ import com.jidcoo.android.widget.commentview.callback.OnReplyLoadMoreCallback;
 import com.loper7.layout.TitleBar;
 import com.yalantis.ucrop.util.ScreenUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class MessageDetailActivity extends AppCompatActivity {
@@ -63,7 +77,7 @@ public class MessageDetailActivity extends AppCompatActivity {
     private RoundImageView author_avatar;
     private ImageView prize_image;
     private TextView prizes_message, comments_count;
-
+    private Integer count = 0;
     private EditText commentPostEditTextView;
     private Button commentPostButton;
     private SimpleDraweeView coverView;
@@ -91,6 +105,10 @@ public class MessageDetailActivity extends AppCompatActivity {
     private long pid;
     private int cp, rp;
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
+    private String default_link;
+    private Map<RoundImageView,String> map_ico = new ConcurrentHashMap<>();
+
+    private MutableLiveData<Integer> status_icon = new MutableLiveData<>();
 
     public MutableLiveData<Integer> getStatus_bar() {
         return status_bar;
@@ -100,7 +118,10 @@ public class MessageDetailActivity extends AppCompatActivity {
         this.status_bar.postValue(status_bar);
     }
 
-    static class ActivityHandler extends Handler {
+    public void logd(int i){
+        Log.d("init_avatar", String.valueOf(i));
+    }
+    class ActivityHandler extends Handler {
         private final WeakReference<MessageDetailActivity> mActivity;
 
         public ActivityHandler(MessageDetailActivity activity) {
@@ -128,7 +149,10 @@ public class MessageDetailActivity extends AppCompatActivity {
                 }
             }
         }
+
+
     }
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -170,6 +194,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         author_id = sp.getInt("id", -1);
         author = sp.getString("username", "defaultAuthor");
         token = sp.getString("token", null);
+        default_link = getResources().getString(R.string.default_avatar);
         mCommentViewModel.getMessageMutableLiveData().observe(this, new Observer<message>() {
             @Override
             public void onChanged(message message) {
@@ -215,9 +240,26 @@ public class MessageDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 if (user.getUser_avatar().length() != 0) {
-                    Glide.with(context).load(user.getUser_avatar()).error(R.string.default_avatar).into(author_avatar);
+                    Glide.with(context).asBitmap().load(user.getUser_avatar()).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                            author_avatar.setImageBitmap(resource);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+
+                        }
+                    });
                 }else {
-                    Glide.with(context).load(R.string.default_avatar).into(author_avatar);
+                    Glide.with(context).asBitmap().load(default_link).into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                            author_avatar.setImageBitmap(resource);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+                        }
+                    });
                 }
             }
         });
@@ -243,7 +285,20 @@ public class MessageDetailActivity extends AppCompatActivity {
                         holder.prizes.setText("1");
                         holder.userName.setText(comment.getPosterName());
                         holder.comment.setText(comment.getData());
-
+                        holder.date_comment.setText(comment.getDate());
+                        holder.ico.setTag(String.valueOf(groupPosition));
+                        holder.ico.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
+                                intent.putExtra("name", comment.getPosterName());
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+                        map_ico.put(holder.ico,comment.getPosterName());
+                        count++;
+                        status_icon.postValue(count);
+                        Log.d("map_ico", String.valueOf(map_ico.values()));
                         return convertView;
                     }
                 })
@@ -270,6 +325,19 @@ public class MessageDetailActivity extends AppCompatActivity {
                         holder.reply.setText(reply.getData());
                         holder.prizes.setText("100");
                         holder.date_reply.setText(reply.getDate());
+                        holder.ico.setTag(String.valueOf(groupPosition));
+                        holder.ico.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
+                                intent.putExtra("name", reply.getReplierName());
+                                v.getContext().startActivity(intent);
+                            }
+                        });
+                        map_ico.put(holder.ico,reply.getReplierName());
+                        count++;
+                        status_icon.postValue(count);
+                        Log.d("map_ico", String.valueOf(map_ico.values()));
                         return convertView;
                     }
                 })
@@ -284,6 +352,36 @@ public class MessageDetailActivity extends AppCompatActivity {
                 //设置完成后必须调用CallbackBuilder的buildCallback()方法，否则设置的回调无效
                 .buildCallback();
         load(1, 1);
+
+
+        mCommentViewModel.getResult_avatar_map().observe(this, new Observer<Map<String, String>>() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void onChanged(Map<String, String> stringStringMap) {
+                for (String key : stringStringMap.keySet()) {
+                    if (!stringStringMap.get(key).equals("")) {
+                        for (RoundImageView sub_key : map_ico.keySet()) {
+                            if(map_ico.get(sub_key).equals(key)) {
+                                if (!sub_key.getTag().equals("")) {
+                                    Glide.with(context).asBitmap().load(stringStringMap.get(key)).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
+                                        @Override
+                                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                                            sub_key.setImageBitmap(resource);
+                                            sub_key.setTag("");
+                                        }
+                                        @Override
+                                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        });
 
 
         inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -386,6 +484,30 @@ public class MessageDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        status_icon.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                init_avatar();
+            }
+        });
+    }
+     public  void init_avatar() {
+         Log.d("start_init", String.valueOf(map_ico));
+         Map<String,String> name_map = mCommentViewModel.getAvatar_map();
+         for (RoundImageView key : map_ico.keySet()) {
+             name_map.put(map_ico.get(key),"");
+
+         }
+         mCommentViewModel.setAvatar_map(name_map);
+         for (RoundImageView key : map_ico.keySet()) {
+//             SampleCircleImageView sampleCircleImageView = key;
+             if (!mCommentViewModel.getAvatar_map().get(map_ico.get(key)).equals("")) {
+                 Log.d("未渲染", String.valueOf(map_ico));
+                 continue;
+             }
+             mCommentViewModel.requestAllAvatar(map_ico.get(key));
+         }
     }
 
     private void load(int code, int handlerId) {

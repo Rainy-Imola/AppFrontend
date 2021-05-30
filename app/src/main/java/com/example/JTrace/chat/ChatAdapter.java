@@ -19,6 +19,7 @@ import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<chatMsg> mItems = new ArrayList<>();
+    private String default_link;
 
     public ChatAdapter(List<chatMsg> msglist) {
         mItems = msglist;
@@ -91,23 +92,27 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         chatMsg msg = mItems.get(position);
+
         if (holder instanceof Sender) {
             Sender sender = (Sender) holder;
             sender.content.setText(msg.getContent());
+            default_link = sender.getmContext().getResources().getString(R.string.default_avatar);
             if (msg.getAvatar() != null) {
-                Glide.with(sender.getmContext()).load(msg.getAvatar()).error(R.string.default_avatar).into(sender.image);
+                Glide.with(sender.getmContext()).load(msg.getAvatar()).error(R.drawable.defaultavatar).into(sender.image);
             }else {
-                Glide.with(sender.getmContext()).load(R.string.default_avatar).into(sender.image);
+                Glide.with(sender.getmContext()).load(default_link).into(sender.image);
             }
 
         } else if (holder instanceof Receiver) {
+
             Receiver receiver = (Receiver) holder;
             receiver.content.setText(msg.getContent());
+            default_link = receiver.getmContext().getResources().getString(R.string.default_avatar);
             if (msg.getAvatar() != null) {
-                Glide.with(receiver.getmContext()).load(msg.getAvatar()).error(R.string.default_avatar).into(receiver.image);
+                Glide.with(receiver.getmContext()).load(msg.getAvatar()).error(R.drawable.defaultavatar).into(receiver.image);
             }
             else {
-                Glide.with(receiver.getmContext()).load(R.string.default_avatar).into(receiver.image);
+                Glide.with(receiver.getmContext()).load(default_link).into(receiver.image);
             }
         }
     }

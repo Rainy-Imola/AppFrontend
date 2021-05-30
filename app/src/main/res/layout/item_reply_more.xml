@@ -1,86 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:id="@+id/reply_rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="match_parent">
 
-        android:layout_marginRight="10dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <com.jidcoo.android.widget.commentview.view.RoundAngleImageView
+        <com.example.JTrace.widget.RoundImageView
             android:id="@+id/ico"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="6dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/ico"
-            app:roundHeight="13dp"
-            app:roundWidth="13dp" />
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
 
+        <TextView
+            android:id="@+id/reply_item_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/ico"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/reply_item_userName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#666666"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/reply_item_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:textColor="#989898"
-                android:textSize="10sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/reply_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/reply_item_userName"
+            app:layout_constraintTop_toBottomOf="@+id/reply_item_userName" />
 
 
         <ImageView
             android:id="@+id/reply_item_like"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginBottom="13dp"
-            android:padding="5dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+
+            android:layout_marginEnd="8dp"
+            android:padding="3dp"
             android:src="@drawable/pxjh"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/prizes"
+            app:layout_constraintEnd_toStartOf="@+id/prizes"
+            app:layout_constraintTop_toTopOf="@+id/prizes" />
 
         <TextView
             android:id="@+id/prizes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
             android:textColor="#666666"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/reply_item_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="88dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="4dp"
-        android:textColor="#1C1C1C"
-        android:textSize="15sp" />
+        <TextView
+            android:id="@+id/reply_item_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#1C1C1C"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/reply_item_like"
+            app:layout_constraintStart_toStartOf="@+id/reply_item_time"
+            app:layout_constraintTop_toBottomOf="@+id/reply_item_time" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

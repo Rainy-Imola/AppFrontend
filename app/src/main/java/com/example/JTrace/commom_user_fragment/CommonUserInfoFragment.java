@@ -11,7 +11,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -32,12 +34,15 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.donkingliang.labels.LabelsView;
 import com.example.JTrace.R;
 import com.example.JTrace.board_fragment.MessageDetailActivity;
 import com.example.JTrace.chat.MainChatActivity;
 import com.example.JTrace.model.User;
 import com.example.JTrace.model.message;
+import com.example.JTrace.modify_fragment.GlideEngine;
 import com.example.JTrace.user_info_fragment.AnimUtil;
 import com.example.JTrace.user_info_fragment.MessageAdapter;
 import com.example.JTrace.widget.RoundImageView;
@@ -55,6 +60,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CommonUserInfoFragment extends Fragment {
+
     private String mArgument;
     public static final String ARGUMENT = "argument";
     private CommonUserInfoViewModel mViewModel;
@@ -82,6 +88,7 @@ public class CommonUserInfoFragment extends Fragment {
     private ConstraintLayout constraintLayout;
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
     SharedPreferences sharedPreferences;
+    private String default_link;
 
     public MutableLiveData<Integer> getStatus_bar() {
         return status_bar;
@@ -113,6 +120,7 @@ public class CommonUserInfoFragment extends Fragment {
         mArgument = getActivity().getIntent().getStringExtra("name");
         mnavController = NavHostFragment.findNavController(this);
         mContext = this.getContext();
+        default_link = getResources().getString(R.string.default_avatar);
     }
 
     @Override
@@ -186,10 +194,26 @@ public class CommonUserInfoFragment extends Fragment {
                 user_name.setText("昵称：" + mUser.getUser_name());
                 title = mUser.getUser_name();
                 if (mUser.getUser_avatar().length() != 0) {
-                        Glide.with(mContext).load(mUser.getUser_avatar()).error(R.string.default_avatar).into(user_avatar);
+                    Glide.with(mContext).asBitmap().load(mUser.getUser_avatar()).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                            user_avatar.setImageBitmap(resource);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
 
+                        }
+                    });
                 }else {
-                    Glide.with(mContext).load(R.string.default_avatar).into(user_avatar);
+                    Glide.with(mContext).asBitmap().load(default_link).into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                            user_avatar.setImageBitmap(resource);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+                        }
+                    });
                 }
             }
         });
@@ -210,7 +234,6 @@ public class CommonUserInfoFragment extends Fragment {
                             intent.putExtra("message", (message) mItems.get(position));
                             view.getContext().startActivity(intent);
                         }
-
                         @Override
                         public void onItemLongClick(View view, int position) {
                         }
