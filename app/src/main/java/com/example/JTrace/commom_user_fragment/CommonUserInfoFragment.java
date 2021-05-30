@@ -59,7 +59,7 @@ public class CommonUserInfoFragment extends Fragment {
     private LabelsView user_hobby;
     private TextView user_constellation;
     private RoundImageView user_avatar;
-    private List<message> mItems= new ArrayList<>();
+    private List<message> mItems = new ArrayList<>();
     private MessageAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -77,16 +77,20 @@ public class CommonUserInfoFragment extends Fragment {
     private Toolbar toolbar;
     private ConstraintLayout constraintLayout;
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
+
     public MutableLiveData<Integer> getStatus_bar() {
         return status_bar;
     }
+
     public void setStatus_bar(int status_bar) {
         this.status_bar.postValue(status_bar);
     }
+
     private static final long DURATION = 500;
     private static final float START_ALPHA = 0.7f;
     private static final float END_ALPHA = 1f;
     private String title = "user info";
+
     public static CommonUserInfoFragment newInstance(String argument) {
         Bundle bundle = new Bundle();
         bundle.putString(ARGUMENT, argument);
@@ -102,7 +106,6 @@ public class CommonUserInfoFragment extends Fragment {
         if (bundle != null)
             mArgument = bundle.getString(ARGUMENT);
         mArgument = getActivity().getIntent().getStringExtra("name");
-        Log.d("Receive name:",mArgument);
         mnavController = NavHostFragment.findNavController(this);
         mContext = this.getContext();
     }
@@ -113,7 +116,7 @@ public class CommonUserInfoFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.common_user_info_fragment, container, false);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.recyclerView);
-        user_name = (TextView)root.findViewById(R.id.user_info_name);
+        user_name = (TextView) root.findViewById(R.id.user_info_name);
         user_constellation = (TextView) root.findViewById(R.id.user_info_constellation);
         user_hobby = (LabelsView) root.findViewById(R.id.labels);
         mTitleBar = root.findViewById(R.id.main_titleBar);
@@ -142,11 +145,10 @@ public class CommonUserInfoFragment extends Fragment {
         mViewModel.getFriendStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.d("observe friend check",s);
-                if(s=="friendyes"){
+                if (s == "friendyes") {
                     addorchar.setText("发消息");
                     addorchar.setTag(new Integer(1));
-                }else if (s=="friendno"){
+                } else if (s == "friendno") {
                     addorchar.setText("加好友");
                     addorchar.setTag(new Integer(2));
                 }
@@ -155,47 +157,42 @@ public class CommonUserInfoFragment extends Fragment {
         mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User mUser) {
-                if(mUser.getUser_hobby()!=null && mUser.getUser_hobby().isEmpty()){
+                if (mUser.getUser_hobby() != null && mUser.getUser_hobby().isEmpty()) {
                     user_hobby.setLabels(Arrays.asList("未添加任何tag属性"));
-                }else {
+                } else {
                     user_hobby.setLabels(mUser.getUser_hobby());
                 }
-                if(mUser.getUser_constellation().length() == 0){
+                if (mUser.getUser_constellation().length() == 0) {
                     user_constellation.setText("未添加星座");
-                }else {
+                } else {
                     user_constellation.setText("星座：" + mUser.getUser_constellation());
                 }
-                user_name.setText("昵称："+ mUser.getUser_name());
+                user_name.setText("昵称：" + mUser.getUser_name());
                 title = mUser.getUser_name();
-                if (mUser.getUser_avatar().length() != 0){
+                if (mUser.getUser_avatar().length() != 0) {
                     Glide.with(mContext).load(mUser.getUser_avatar()).into(user_avatar);
-                    Log.d("avatar_uri：",mUser.getUser_avatar());
                 }
-                Log.d("setName：",mUser.getUser_name());
             }
         });
         mViewModel.getStatus().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String status) {
-                    if(status == "message"){
-                    Log.d("set","message");
-                    for (message imessage:mViewModel.getMessage()
+                if (status == "message") {
+                    for (message imessage : mViewModel.getMessage()
                     ) {
                         mItems.add(imessage);
                     }
-                    mLayoutManager=new LinearLayoutManager(getContext());
+                    mLayoutManager = new LinearLayoutManager(getContext());
                     mAdapter = new MessageAdapter(mContext, mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
-                            Log.d("debug", String.valueOf(mItems.get(position)));
-                            Intent intent=new Intent(view.getContext(), MessageDetailActivity.class);
-                            intent.putExtra("message", (message)mItems.get(position));
+                            Intent intent = new Intent(view.getContext(), MessageDetailActivity.class);
+                            intent.putExtra("message", (message) mItems.get(position));
                             view.getContext().startActivity(intent);
                         }
+
                         @Override
                         public void onItemLongClick(View view, int position) {
-                            //TODO: delete message
-                            Log.d("debug","onClicklongCalled");
                         }
                     });
                     mRecyclerView.setAdapter(mAdapter);
@@ -213,16 +210,15 @@ public class CommonUserInfoFragment extends Fragment {
         addorchar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((Integer)addorchar.getTag()==2){
+                if ((Integer) addorchar.getTag() == 2) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("name",mArgument);
-                    mnavController.navigate(R.id.action_commonUserInfoFragment_to_addFriendFragment,bundle);
-                }
-                else if((Integer)addorchar.getTag()==1){
-                    Intent intent=new Intent(v.getContext(), MainChatActivity.class);
-                    intent.putExtra("id",mViewModel.readUser().getUser_id());
-                    intent.putExtra("name",mViewModel.readUser().getUser_name());
-                    intent.putExtra("avatar",mViewModel.readUser().getUser_avatar());
+                    bundle.putString("name", mArgument);
+                    mnavController.navigate(R.id.action_commonUserInfoFragment_to_addFriendFragment, bundle);
+                } else if ((Integer) addorchar.getTag() == 1) {
+                    Intent intent = new Intent(v.getContext(), MainChatActivity.class);
+                    intent.putExtra("id", mViewModel.readUser().getUser_id());
+                    intent.putExtra("name", mViewModel.readUser().getUser_name());
+                    intent.putExtra("avatar", mViewModel.readUser().getUser_avatar());
 
                     v.getContext().startActivity(intent);
                 }
@@ -231,35 +227,25 @@ public class CommonUserInfoFragment extends Fragment {
         app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if(verticalOffset == 0){
-                    //collapsingToolbarLayout.setTitleEnabled(false);
+                if (verticalOffset == 0) {
 
                     toolbar.setBackgroundColor(Color.TRANSPARENT);
-setStatus_bar(0);
-                }else if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()/2){
+                    setStatus_bar(0);
+                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange() / 2) {
 
                     toolbar.setBackgroundColor(Color.parseColor("#EE6699FF"));
                     setStatus_bar(1);
-                    /*
-                    if(Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()){
-                        constraintLayout.setVisibility(View.GONE);
-                    }if(Math.abs(verticalOffset) < appBarLayout.getTotalScrollRange()){
-                        constraintLayout.setVisibility(View.VISIBLE);
-                    }
-
-                     */
                 }
             }
         });
         getStatus_bar().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                if(integer==0){
+                if (integer == 0) {
                     mTitleBar.setTitleText("");
                     mTitleBar.setMenuImageResource(R.drawable.menu_24_black);
                     mTitleBar.setBackImageResource(R.drawable.nav_return_black);
-                }
-                else if (integer==1){
+                } else if (integer == 1) {
                     mTitleBar.setTitleText(title);
                     mTitleBar.setMenuImageResource(R.drawable.menu_white_24);
                     mTitleBar.setBackImageResource(R.drawable.nav_return_white);

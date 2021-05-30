@@ -1,66 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_editor_absoluteY="81dp">
+
     <ImageView
+        android:id="@+id/request_avatarView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/defaultavatar"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="3dp"
-        android:id="@+id/request_avatarView"/>
+        android:src="@drawable/defaultavatar" />
+
     <LinearLayout
+        android:id="@+id/request_mainLayout"
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/request_mainLayout">
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/request_authorView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="author:"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
-            android:id="@+id/request_authorView"/>
+            android:text="author:" />
+
         <TextView
+            android:id="@+id/request_msgView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="加个好友~"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="4dp"
-            android:id="@+id/request_msgView"
-            android:textSize="16sp"/>
+            android:text="加个好友~"
+            android:textSize="16sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:src="@drawable/add_friend"
-            android:layout_marginTop="10dp"
             android:id="@+id/request_addImageView"
-            android:clickable="true" />
-        <ImageView
             android:layout_width="50dp"
             android:layout_height="40dp"
-            android:src="@drawable/decline_add_friend"
             android:layout_marginTop="10dp"
-            android:id="@+id/request_declineImageView"
-            android:clickable="true" />
+            android:clickable="true"
+            android:src="@drawable/add_friend" />
+
         <ImageView
+            android:id="@+id/request_declineImageView"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:src="@drawable/decline_add_friend" />
+
+        <ImageView
+            android:id="@+id/request_respondedImageView"
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginLeft="-50dp"
-            android:src="@drawable/responsed"
             android:layout_marginTop="10dp"
-            android:id="@+id/request_respondedImageView"
-            android:visibility="invisible"/>
+            android:src="@drawable/responsed"
+            android:visibility="invisible" />
 
     </LinearLayout>
 

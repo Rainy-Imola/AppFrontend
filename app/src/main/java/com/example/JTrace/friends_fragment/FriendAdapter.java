@@ -14,20 +14,22 @@ import java.util.List;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
     private List<friend> fItems = new ArrayList<friend>();
-    public FriendAdapter(List<friend> friends){
-        this.fItems=friends;
+
+    public FriendAdapter(List<friend> friends) {
+        this.fItems = friends;
     }
+
     @NonNull
     @Override
     public FriendViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view=View.inflate(parent.getContext(), R.layout.item_friends,null);
-        final FriendViewHolder viewHolder= new FriendViewHolder(view,parent.getContext());
+        View view = View.inflate(parent.getContext(), R.layout.item_friends, null);
+        final FriendViewHolder viewHolder = new FriendViewHolder(view, parent.getContext());
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull FriendViewHolder holder, int position) {
-        holder.bind(fItems.get(position).getId(),fItems.get(position).getName(),fItems.get(position).getImage(),fItems.get(position).getStatus());
+        holder.bind(fItems.get(position).getId(), fItems.get(position).getName(), fItems.get(position).getImage(), fItems.get(position).getStatus());
     }
 
     @Override
@@ -35,7 +37,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendViewHolder> {
         return fItems.size();
     }
 
-    public void notifyItems(@NonNull List<friend> items){
+    public void notifyItems(@NonNull List<friend> items) {
         fItems.clear();
         fItems.addAll(items);
         notifyDataSetChanged();

@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    <include layout="@layout/title_welcome"></include>-->
-
     <LinearLayout
         android:layout_width="1383dp"
         android:layout_height="846dp"

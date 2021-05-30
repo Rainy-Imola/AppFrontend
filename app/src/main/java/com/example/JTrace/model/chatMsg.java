@@ -5,6 +5,7 @@ public class chatMsg {
     private String receiveID;
     private boolean status;
     private int type;
+
     public int getType() {
         return type;
     }
@@ -67,7 +68,7 @@ public class chatMsg {
         this.content = content;
     }
 
-    public chatMsg(String senderID, String receiveID, int type, String content,String avatar) {
+    public chatMsg(String senderID, String receiveID, int type, String content, String avatar) {
         this.senderID = senderID;
         this.receiveID = receiveID;
         this.type = type;

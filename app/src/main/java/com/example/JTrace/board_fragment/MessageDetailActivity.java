@@ -55,6 +55,7 @@ public class MessageDetailActivity extends AppCompatActivity {
     private RoundImageView author_avatar;
     private TextView prizes_message, comments_count;
 
+    private TextView contentView, authorView, dateView;
     private EditText commentPostEditTextView;
     private Button commentPostButton;
     private SimpleDraweeView coverView;
@@ -83,6 +84,7 @@ public class MessageDetailActivity extends AppCompatActivity {
     private int cp, rp;
 
     private MutableLiveData<Integer> status_bar = new MutableLiveData<Integer>();
+
     public MutableLiveData<Integer> getStatus_bar() {
         return status_bar;
     }
@@ -105,27 +107,22 @@ public class MessageDetailActivity extends AppCompatActivity {
             if (activity != null) {
                 switch (msg.what) {
                     case 1:
-                        //commentView.loadFailed(true);//实际网络请求中如果加载失败调用此方法
                         activity.commentView.loadComplete((CustomCommentModel) msg.obj);
                         break;
                     case 2:
-                        //commentView.refreshFailed();//实际网络请求中如果加载失败调用此方法
                         activity.commentView.refreshComplete((CustomCommentModel) msg.obj);
-
                         break;
                     case 3:
-                        //commentView.loadFailed();//实际网络请求中如果加载失败调用此方法
                         activity.commentView.loadMoreComplete((CustomCommentModel) msg.obj);
                         break;
                     case 4:
-                        //commentView.loadMoreReplyFailed();//实际网络请求中如果加载失败调用此方法
                         activity.commentView.loadMoreReplyComplete((CustomCommentModel) msg.obj);
                         break;
                 }
             }
         }
-
     }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,22 +131,24 @@ public class MessageDetailActivity extends AppCompatActivity {
         this.getSupportActionBar().hide();
         setContentView(R.layout.activity_message_detail);
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.custom_item_header,null);
+        View view = inflater.inflate(R.layout.custom_item_header, null);
 
         constraintLayout = view.findViewById(R.id.constraintLayout_header);
         constraintLayout_header = view.findViewById(R.id.comment_header);
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         gson = new Gson();
         commentView = findViewById(R.id.myCommentView);
         mTitleBar = findViewById(R.id.title_b);
-        msg= (message) intent.getSerializableExtra("message");
+        msg = (message) intent.getSerializableExtra("message");
         mCommentViewModel.setMessage_id(msg.getId());
-        contentView=view.findViewById(R.id.contentDetail);
-        coverView=view.findViewById(R.id.cover);
+        contentView = view.findViewById(R.id.contentDetail);
+        coverView = view.findViewById(R.id.cover);
         commentPostButton = findViewById(R.id.button);
         commentPostEditTextView = findViewById(R.id.editor);
 
+        authorView = view.findViewById(R.id.author_textView);
+        dateView = view.findViewById(R.id.date_textView);
         authorView=view.findViewById(R.id.author_textView);
         dateView=view.findViewById(R.id.date_textView);
 
@@ -158,36 +157,33 @@ public class MessageDetailActivity extends AppCompatActivity {
         comments_count = view.findViewById(R.id.textView11);
         ConstraintLayout.LayoutParams content_params = new ConstraintLayout.LayoutParams(contentView.getLayoutParams());
 
-        context=this;
+        context = this;
 
-
-
-        sp=getSharedPreferences("user_profile",MODE_PRIVATE);
-        author_id=sp.getInt("id",-1);
-        author=sp.getString("username","defaultAuthor");
-        token=sp.getString("token",null);
+        sp = getSharedPreferences("user_profile", MODE_PRIVATE);
+        author_id = sp.getInt("id", -1);
+        author = sp.getString("username", "defaultAuthor");
+        token = sp.getString("token", null);
         mCommentViewModel.getMessageMutableLiveData().observe(this, new Observer<message>() {
             @Override
             public void onChanged(message message) {
                 contentView.setText(message.getContent());
                 authorView.setText(msg.getAuthor());
-                if(message.getImageUrl().equals("")){
+                if (message.getImageUrl().equals("")) {
                     constraintLayout.removeView(coverView);
-                    content_params.width = ScreenUtils.dip2px(context,0);
+                    content_params.width = ScreenUtils.dip2px(context, 0);
                     content_params.horizontalBias = 0;
-                    content_params.bottomToTop= R.id.constraintLayout4;
+                    content_params.bottomToTop = R.id.constraintLayout4;
                     content_params.startToStart = R.id.constraintLayout_header;
                     content_params.endToEnd = R.id.constraintLayout_header;
-                    content_params.topToBottom= R.id.constraintLayout5;
+                    content_params.topToBottom = R.id.constraintLayout5;
 
-                    content_params.topMargin = ScreenUtils.dip2px(context,16);
+                    content_params.topMargin = ScreenUtils.dip2px(context, 16);
 
-                    content_params.bottomMargin = ScreenUtils.dip2px(context,16);
-                    content_params.setMarginStart(ScreenUtils.dip2px(context,24));
-                    content_params.setMarginEnd(ScreenUtils.dip2px(context,24));
+                    content_params.bottomMargin = ScreenUtils.dip2px(context, 16);
+                    content_params.setMarginStart(ScreenUtils.dip2px(context, 24));
+                    content_params.setMarginEnd(ScreenUtils.dip2px(context, 24));
                     contentView.setLayoutParams(content_params);
-
-                }else {
+                } else {
                     coverView.setImageURI(message.getImageUrl());
                 }
                 dateView.setText(message.getCreatedAt());
@@ -198,7 +194,7 @@ public class MessageDetailActivity extends AppCompatActivity {
 
 
         commentView.setViewStyleConfigurator(new CustomViewStyleConfigurator(this));
-        commentView.addHeaderView(constraintLayout_header,true);
+        commentView.addHeaderView(constraintLayout_header, true);
         commentView.callbackBuilder()
                 //自定义评论布局(必须使用ViewHolder机制)--CustomCommentItemCallback<C> 泛型C为自定义评论数据类
                 .customCommentItem(new CustomCommentItemCallback<CustomCommentModel.CustomComment>() {
@@ -266,7 +262,7 @@ public class MessageDetailActivity extends AppCompatActivity {
         constraintLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+                inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
                 commentPostEditTextView.setText("");
                 init_comment();
                 return false;
@@ -289,30 +285,24 @@ public class MessageDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String content=commentPostEditTextView.getText().toString();
-                if(content.isEmpty()){
-                    Toast.makeText(context,"评论不可以为空！",Toast.LENGTH_SHORT).show();
+                String content = commentPostEditTextView.getText().toString();
+                if (content.isEmpty()) {
+                    Toast.makeText(context, "评论不可以为空！", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (isReply && isChildReply) {
                     //现在需要构建一个回复数据实体类
                     CustomCommentModel.CustomComment.CustomReply reply = new CustomCommentModel.CustomComment.CustomReply();
-//                    reply.setKid(fid);
                     reply.setReplierName(author);
                     reply.setData(content);
-                    reply.setLevel(rp+1);
+                    reply.setLevel(rp + 1);
                     CustomCommentModel.CustomComment cur_comment = (CustomCommentModel.CustomComment) commentView.getCommentList().get(cp);
                     reply.setComment_id(cur_comment.getId());
                     reply.setRepliedName(cur_comment.getReplies().get(rp).getReplierName());
 
-
-//                    reply.setDate(System.currentTimeMillis());
-//                    reply.setPid(pid);
                     mCommentViewModel.postReply(activityHandler, reply);
 
-                    //commentView.addReply(reply, cp);
-
-                    inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+                    inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
                     commentPostEditTextView.setText("");
                     init_comment();
                 } else if (isReply && !isChildReply) {
@@ -324,8 +314,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                     CustomCommentModel.CustomComment cur_comment = (CustomCommentModel.CustomComment) commentView.getCommentList().get(cp);
                     reply.setComment_id(cur_comment.getId());
 
-                    //commentView.addReply(reply, cp);
-                    inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+                    inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
                     commentPostEditTextView.setText("");
                     mCommentViewModel.postReply(activityHandler, reply);
                     init_comment();
@@ -333,10 +322,9 @@ public class MessageDetailActivity extends AppCompatActivity {
                     CustomCommentModel.CustomComment comment = new CustomCommentModel.CustomComment();
                     comment.setPosterName(author);
                     comment.setData(content);
-                    //commentView.addComment(comment);
-                    inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+                    inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
                     commentPostEditTextView.setText("");
-                    mCommentViewModel.postMessageComment(activityHandler,comment);
+                    mCommentViewModel.postMessageComment(activityHandler, comment);
                     init_comment();
                 }
 
@@ -351,12 +339,13 @@ public class MessageDetailActivity extends AppCompatActivity {
         authorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
-                intent.putExtra("name",msg.getAuthor());
+                Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
+                intent.putExtra("name", msg.getAuthor());
                 v.getContext().startActivity(intent);
             }
         });
     }
+
     private void load(int code, int handlerId) {
         mCommentViewModel.getCommentModel(code, activityHandler, handlerId);
     }
@@ -369,8 +358,6 @@ public class MessageDetailActivity extends AppCompatActivity {
         @Override
         public void refreshing() {
             load(1, 2);
-
-
         }
 
         @Override
@@ -380,7 +367,6 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         @Override
         public void failure(String msg) {
-
         }
     }
 
@@ -392,17 +378,6 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         @Override
         public void loading(int currentPage, int willLoadPage, boolean isLoadedAllPages) {
-            //因为测试数据写死了，所以这里的逻辑也是写死的
-            /*
-            if (!isLoadedAllPages) {
-                if (willLoadPage == 2) {
-                    load(2, 3);
-                } else if (willLoadPage == 3) {
-                    load(3, 3);
-                }
-            }
-
-             */
         }
 
         @Override
@@ -423,24 +398,14 @@ public class MessageDetailActivity extends AppCompatActivity {
 
         @Override
         public void loading(CustomCommentModel.CustomComment.CustomReply reply, int willLoadPage) {
-/*
-            if (willLoadPage == 2) {
-                load(5, 4);
-            } else if (willLoadPage == 3) {
-                load(6, 4);
-            }
-
- */
         }
 
         @Override
         public void complete() {
-
         }
 
         @Override
         public void failure(String msg) {
-
         }
     }
 
@@ -449,15 +414,14 @@ public class MessageDetailActivity extends AppCompatActivity {
      */
     class MyOnItemClickCallback implements OnItemClickCallback<CustomCommentModel.CustomComment, CustomCommentModel.CustomComment.CustomReply> {
 
-
         @Override
         public void commentItemOnClick(int position, CustomCommentModel.CustomComment comment, View view) {
             cp = position;
             isReply = true;
             isChildReply = false;
-            commentPostEditTextView.setHint("回复@" + comment.getPosterName()+":");
-            Toast.makeText(MessageDetailActivity.this, "你点击的评论：" + comment.getData()+"position"+cp, Toast.LENGTH_SHORT).show();
-            inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+            commentPostEditTextView.setHint("回复@" + comment.getPosterName() + ":");
+            Toast.makeText(MessageDetailActivity.this, "你点击的评论：" + comment.getData() + "position" + cp, Toast.LENGTH_SHORT).show();
+            inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
             commentPostEditTextView.setText("");
         }
 
@@ -467,65 +431,18 @@ public class MessageDetailActivity extends AppCompatActivity {
             rp = r_position;
             isReply = true;
             isChildReply = true;
-            commentPostEditTextView.setHint("回复@" + reply.getReplierName()+":");
-            Toast.makeText(MessageDetailActivity.this, "你点击的回复：" + reply.getData()+"level"+ rp, Toast.LENGTH_SHORT).show();
-            inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(),0);
+            commentPostEditTextView.setHint("回复@" + reply.getReplierName() + ":");
+            Toast.makeText(MessageDetailActivity.this, "你点击的回复：" + reply.getData() + "level" + rp, Toast.LENGTH_SHORT).show();
+            inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
             commentPostEditTextView.setText("");
         }
     }
-    public void init_comment(){
+
+    public void init_comment() {
         List<CustomCommentModel.CustomComment> mCustomComment = (List<CustomCommentModel.CustomComment>) commentView.getCommentList();
-        cp = mCustomComment.size()-1;
+        cp = mCustomComment.size() - 1;
         isReply = false;
         isChildReply = false;
         commentPostEditTextView.setHint("发表你的评论吧");
     }
-
-/*
-        authorView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //请求，拿到作者id
-                new Thread(){
-                    @Override
-                    public void run(){
-                        OkHttpClient okHttpClient = new OkHttpClient();
-                        Request request = new Request.Builder().url(Constants.baseUrl + "/users/"+
-                                msg.getAuthor()+"/info/")
-                                .addHeader("Authorization", token)
-                                .build();
-                        okHttpClient.newCall(request).enqueue(new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-                                Log.d("requestUsr","请求用户信息失败！");
-                            }
-
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                String res=response.body().string();
-                                Log.d("requestUsr",res);
-                                try {
-                                    JSONObject result=new JSONObject(res);
-                                    JSONArray data=result.getJSONArray("data");
-                                    JSONObject mid=data.getJSONObject(0);
-                                    int id=mid.getInt("id");
-                                    Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
-                                    intent.putExtra("id",id);
-                                    intent.putExtra("name",msg.getAuthor());
-                                    v.getContext().startActivity(intent);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        });
-                    }
-                }.start();
-            }
-        });
-
-
-        mCommentViewModel=new ViewModelProvider(this).get(commentViewModel.class);
-        refreshCommentData();
-        */
-    }
+}

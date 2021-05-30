@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -29,45 +30,45 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-//TODO:耦合严重！
+
 public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsViewHolder> {
-    private NewFriendMsgs msgs=new NewFriendMsgs();
+    private NewFriendMsgs msgs = new NewFriendMsgs();
     private SharedPreferences sharedPreferences;
-    private Handler mHandler=new Handler();
+    private Handler mHandler = new Handler();
+
     @NonNull
     @NotNull
     @Override
     public FriendRequestsViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view=View.inflate(parent.getContext(), R.layout.item_friendrequest,null);
-        final FriendRequestsViewHolder viewHolder=new FriendRequestsViewHolder(view);
+        View view = View.inflate(parent.getContext(), R.layout.item_friendrequest, null);
+        final FriendRequestsViewHolder viewHolder = new FriendRequestsViewHolder(view);
         viewHolder.mainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(){
+                new Thread() {
                     @Override
-                    public void run(){
+                    public void run() {
                         OkHttpClient okHttpClient = new OkHttpClient();
-                        Request request = new Request.Builder().url(Constants.baseUrl + "/users/"+
-                                viewHolder.getFromUsr()+"/info/")
-                                .addHeader("Authorization", sharedPreferences.getString("token",""))
+                        Request request = new Request.Builder().url(Constants.baseUrl + "/users/" +
+                                viewHolder.getFromUsr() + "/info/")
+                                .addHeader("Authorization", sharedPreferences.getString("token", ""))
                                 .build();
                         okHttpClient.newCall(request).enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                                Log.d("requestUsr","请求用户信息失败！");
+                                Log.d("requestUsr", "请求用户信息失败！");
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
-                                String res=response.body().string();
-                                Log.d("requestUsr",res);
+                                String res = response.body().string();
                                 try {
-                                    JSONObject result=new JSONObject(res);
-                                    JSONArray data=result.getJSONArray("data");
-                                    JSONObject mid=data.getJSONObject(0);
-                                    int id=mid.getInt("id");
-                                    Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
-                                    intent.putExtra("id",id);
+                                    JSONObject result = new JSONObject(res);
+                                    JSONArray data = result.getJSONArray("data");
+                                    JSONObject mid = data.getJSONObject(0);
+                                    int id = mid.getInt("id");
+                                    Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
+                                    intent.putExtra("id", id);
                                     intent.putExtra("name", viewHolder.getFromUsr());
                                     v.getContext().startActivity(intent);
                                 } catch (JSONException e) {
@@ -83,14 +84,14 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
         viewHolder.addView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpAPI httpAPI=new HttpAPI();
-                JSONObject jsonObject=new JSONObject();
-                try{
-                    jsonObject.put("username1",viewHolder.getFromUsr());
-                    jsonObject.put("username2",sharedPreferences.getString("username",null));
+                HttpAPI httpAPI = new HttpAPI();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("username1", viewHolder.getFromUsr());
+                    jsonObject.put("username2", sharedPreferences.getString("username", null));
                     //同意加好友，status=1
-                    jsonObject.put("status",1);
-                }catch (JSONException e){
+                    jsonObject.put("status", 1);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -98,10 +99,10 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
                     httpAPI.postApi_withToken(jsonObject, "/friends/response/", new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Runnable runnable=new Runnable() {
+                            Runnable runnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(v.getContext(), "加好友请求发送失败！",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), "加好友请求发送失败！", Toast.LENGTH_SHORT).show();
                                 }
                             };
                             mHandler.post(runnable);
@@ -109,16 +110,16 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Runnable runnable=new Runnable() {
+                            Runnable runnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(v.getContext(), "添加成功",Toast.LENGTH_SHORT).show();
-                                    viewHolder.bind(viewHolder.getFromUsr(),viewHolder.getContent(),1);
+                                    Toast.makeText(v.getContext(), "添加成功", Toast.LENGTH_SHORT).show();
+                                    viewHolder.bind(viewHolder.getFromUsr(), viewHolder.getContent(), 1);
                                 }
                             };
                             mHandler.post(runnable);
                         }
-                    },sharedPreferences.getString("token",null));
+                    }, sharedPreferences.getString("token", null));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -127,14 +128,14 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
         viewHolder.declineView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HttpAPI httpAPI=new HttpAPI();
-                JSONObject jsonObject=new JSONObject();
-                try{
-                    jsonObject.put("username1",viewHolder.getFromUsr());
-                    jsonObject.put("username2",sharedPreferences.getString("username",null));
+                HttpAPI httpAPI = new HttpAPI();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("username1", viewHolder.getFromUsr());
+                    jsonObject.put("username2", sharedPreferences.getString("username", null));
                     //同意加好友，status=1
-                    jsonObject.put("status",2);
-                }catch (JSONException e){
+                    jsonObject.put("status", 2);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -142,10 +143,10 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
                     httpAPI.postApi_withToken(jsonObject, "/friends/response/", new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Runnable runnable=new Runnable() {
+                            Runnable runnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(v.getContext(), "拒绝加好友请求发送失败！",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), "拒绝加好友请求发送失败！", Toast.LENGTH_SHORT).show();
                                 }
                             };
                             mHandler.post(runnable);
@@ -153,16 +154,16 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
-                            Runnable runnable=new Runnable() {
+                            Runnable runnable = new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(v.getContext(), "已拒绝",Toast.LENGTH_SHORT).show();
-                                    viewHolder.bind(viewHolder.getFromUsr(),viewHolder.getContent(),2);
+                                    Toast.makeText(v.getContext(), "已拒绝", Toast.LENGTH_SHORT).show();
+                                    viewHolder.bind(viewHolder.getFromUsr(), viewHolder.getContent(), 2);
                                 }
                             };
                             mHandler.post(runnable);
                         }
-                    },sharedPreferences.getString("token",null));
+                    }, sharedPreferences.getString("token", null));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -173,8 +174,8 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull FriendRequestsViewHolder holder, int position) {
-        holder.bind(msgs.getMsgByIndex(position).getFrom_author_name(),msgs.getMsgByIndex(position).getReqMsg()
-        ,msgs.getMsgByIndex(position).getStatus());
+        holder.bind(msgs.getMsgByIndex(position).getFrom_author_name(), msgs.getMsgByIndex(position).getReqMsg()
+                , msgs.getMsgByIndex(position).getStatus());
     }
 
     @Override
@@ -182,14 +183,16 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsVi
         return msgs.getMsgs().size();
     }
 
-    public void setMsgs(NewFriendMsgs msgs){
-        this.msgs=msgs;
+    public void setMsgs(NewFriendMsgs msgs) {
+        this.msgs = msgs;
     }
-    public FriendRequestsAdapter(NewFriendMsgs msgs,SharedPreferences sp){
+
+    public FriendRequestsAdapter(NewFriendMsgs msgs, SharedPreferences sp) {
         setMsgs(msgs);
         setSharedPreferences(sp);
     }
-    public void setSharedPreferences(SharedPreferences sp){
-        sharedPreferences=sp;
+
+    public void setSharedPreferences(SharedPreferences sp) {
+        sharedPreferences = sp;
     }
 }

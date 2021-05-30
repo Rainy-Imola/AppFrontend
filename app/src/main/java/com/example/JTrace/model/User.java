@@ -40,13 +40,15 @@ public class User {
         this.user_constellation = "";
         this.user_avatar = "";
     }
-    public User(){
+
+    public User() {
         this.user_name = "";
         this.user_hobby = new ArrayList<>();
         this.user_constellation = "";
-        this.user_id=0;
+        this.user_id = 0;
         this.user_avatar = "";
     }
+
     public String getUser_name() {
         return user_name;
     }

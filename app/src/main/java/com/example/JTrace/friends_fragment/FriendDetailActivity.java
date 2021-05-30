@@ -14,6 +14,7 @@ public class FriendDetailActivity extends baseActivity {
         setContentView(R.layout.activity_friend_detail);
         this.getSupportActionBar().hide();
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();

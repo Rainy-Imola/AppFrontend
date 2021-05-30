@@ -47,15 +47,18 @@ public class UserInfoViewModel extends AndroidViewModel {
 
 
     private String path_avatar = "";
-    private String status_avatar= "";
+    private String status_avatar = "";
     private List<message> mMessage = new ArrayList<>();
     private MutableLiveData<String> status = new MutableLiveData<>();
+
     public MutableLiveData<String> getStatus() {
         return status;
     }
+
     public void setStatus(String status) {
         this.status.postValue(status);
     }
+
     private MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<User> getUserMutableLiveData() {
@@ -65,17 +68,21 @@ public class UserInfoViewModel extends AndroidViewModel {
     public void setUserMutableLiveData(User userMutableLiveData) {
         this.userMutableLiveData.postValue(userMutableLiveData);
     }
+
     public UserInfoViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
-        this.handle =handle;
+        this.handle = handle;
         sharedPreferences = application.getSharedPreferences("user_profile", Context.MODE_PRIVATE);
     }
-    public User readUser(){
+
+    public User readUser() {
         return mUser;
     }
+
     public List<message> getMessage() throws IOException {
         return mMessage;
     }
+
     public String getStatus_avatar() {
         return status_avatar;
     }
@@ -84,7 +91,7 @@ public class UserInfoViewModel extends AndroidViewModel {
         this.status_avatar = status_avatar;
     }
 
-    public void requestMessage() throws IOException{
+    public void requestMessage() throws IOException {
         new Thread() {
             @Override
             public void run() {
@@ -93,7 +100,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                 String token = sharedPreferences.getString("token", "");
                 Integer user_id = sharedPreferences.getInt("id", 2);
                 String user_name = sharedPreferences.getString("username", "");
-                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard"+"?author="+user_name)
+                Request request = new Request.Builder().url(Constants.baseUrl + "/msgboard" + "?author=" + user_name)
                         .addHeader("Authorization", token)
                         .build();
                 okHttpClient.newCall(request).enqueue(new Callback() {
@@ -105,11 +112,9 @@ public class UserInfoViewModel extends AndroidViewModel {
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String res = response.body().string();
-                        Log.d("user_info_all_message", res);
                         try {
                             JSONObject results = new JSONObject(res);
                             JSONArray result = results.getJSONArray("data");
-                            Log.d("userinfo Message", "resultLength:" + String.valueOf(result.length()));
                             for (int i = 0; i < result.length(); i++) {
                                 JSONObject cur_msg = result.getJSONObject(i);
                                 String id = cur_msg.getString("id");
@@ -122,17 +127,13 @@ public class UserInfoViewModel extends AndroidViewModel {
                                 } catch (JSONException e) {
                                     picture = "https://pic.cnblogs.com/avatar/1691282/20210114201236.png";
                                 }
-                                Log.d("MessageInfo", "cur_msg_info:" + "id:" + " " + id + " author:" + author + " content:" + content);
 
                                 message msg = new message(id, author, content, date, picture);
                                 mMessage.add(msg);
-                                Log.d("user_info MessageInfo", "finished one circle");
                             }
                             setStatus("0");
                             setStatus("message");
-                            Log.d("MessageInfo", "msgs_Size: " + String.valueOf(mMessage.size()));
                         } catch (JSONException e) {
-                            Log.d("userinfo MessageInfo", "dateParse failed");
                             e.printStackTrace();
                         }
                     }
@@ -145,29 +146,33 @@ public class UserInfoViewModel extends AndroidViewModel {
         questUser();
         return mUser;
     }
+
     public void setUserName(String newname) {
         mUser.setUser_name(newname);
     }
+
     public void setUserHobby(List<String> hobbylist) {
         mUser.setUser_hobby(hobbylist);
     }
+
     public void setUserConstellation(String newconstellation) {
         mUser.setUser_constellation(newconstellation);
         setUserMutableLiveData(mUser);
     }
+
     /**
      * 根据图片路径，把图片转为byte数组
-     * @param imgSrc  图片路径
-     * @return      byte[]
+     *
+     * @param imgSrc 图片路径
+     * @return byte[]
      */
-    public byte[] image2Bytes(String imgSrc)
-    {
+    public byte[] image2Bytes(String imgSrc) {
         File file = null;
         FileInputStream fin;
         byte[] bytes = null;
         try {
             fin = new FileInputStream(new File(imgSrc));
-            bytes  = new byte[fin.available()];
+            bytes = new byte[fin.available()];
             //将文件内容写入字节数组
             fin.read(bytes);
             fin.close();
@@ -181,10 +186,12 @@ public class UserInfoViewModel extends AndroidViewModel {
     public String getPath_avatar() {
         return path_avatar;
     }
-    public void setPath_avatar(String avatar){
+
+    public void setPath_avatar(String avatar) {
         this.path_avatar = avatar;
     }
-    public void setUserAvatar(String avatar){
+
+    public void setUserAvatar(String avatar) {
         new Thread() {
             @Override
             public void run() {
@@ -209,19 +216,16 @@ public class UserInfoViewModel extends AndroidViewModel {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        Log.i("response", response.protocol() + " " + response.code() + " " + response.message());
                         Headers headers = response.headers();
                         for (int i = 0; i < headers.size(); i++) {
                             Log.i("header:", headers.name(i) + ":" + headers.value(i));
                         }
-                        //Log.i("onResponse: ", response.body().string());
                         try {
-                            JSONObject res  = new JSONObject( response.body().string());
-                            String picture = (String)res.get("name");
-                            String user_avatar = pictureUrl+"/"+picture+".jpg";
+                            JSONObject res = new JSONObject(response.body().string());
+                            String picture = (String) res.get("name");
+                            String user_avatar = pictureUrl + "/" + picture + ".jpg";
                             mUser.setUser_avatar(user_avatar);
                             setStatus_avatar("avatar_success");
-                            Log.i("SUCCESS", "图片链接已获取"+user_avatar);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -230,13 +234,13 @@ public class UserInfoViewModel extends AndroidViewModel {
             }
         }.start();
     }
+
     public void questUser() {
         new Thread() {
             @Override
             public void run() {
                 OkHttpClient okHttpClient = new OkHttpClient();
                 String token = sharedPreferences.getString("token", "");
-                Log.d("MessageInfo_token", token);
                 Request request = new Request.Builder().url(Constants.baseUrl + "/users/" + sharedPreferences.getString("username", "") + "/info")
                         .addHeader("Authorization", token)
                         .build();
@@ -244,14 +248,11 @@ public class UserInfoViewModel extends AndroidViewModel {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d("UserInfo", "request_handle_failed");
-                        //Toast.makeText(getContext(),"请求留言数据失败！",Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String res = response.body().string();
-                        Log.d("User_info", "接收成功");
-                        Log.d("userinfo user", res);
 
                         try {
                             JSONObject result = new JSONObject(res);
@@ -269,17 +270,14 @@ public class UserInfoViewModel extends AndroidViewModel {
                                 mUser.setUser_hobby(hobbyList);
                                 mUser.setUser_constellation((String) data.getJSONObject(0).get("constellation"));
                                 mUser.setUser_avatar((String) data.getJSONObject(0).get("avatar"));
-                                Log.d("User_info", "设置成功");
                                 setUserMutableLiveData(mUser);
                             }
 
                         } catch (JSONException e) {
-                            Log.d("userinfo", "userinfo dateParse failed");
                             e.printStackTrace();
                         }
                     }
                 });
-                Log.d("userinfo username", mUser.getUser_name());
             }
         }.start();
     }
@@ -301,35 +299,32 @@ public class UserInfoViewModel extends AndroidViewModel {
 
                 //申明给服务端传递一个json串
                 //创建一个OkHttpClient对象
-                String token=sharedPreferences.getString("token","");
+                String token = sharedPreferences.getString("token", "");
                 OkHttpClient okHttpClient = new OkHttpClient();
                 //创建一个RequestBody(参数1：数据类型 参数2传递的json串)
                 //json为String类型的json数据
                 RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                 //创建一个请求对象
-//                        String format = String.format(KeyPath.Path.head + KeyPath.Path.waybillinfosensor, username, key, current_timestamp);
                 Request request = new Request.Builder()
-                        .url(Constants.baseUrl+"/users/"+sharedPreferences.getString("username","")+"/info")
-                        .addHeader("Authorization",token)
+                        .url(Constants.baseUrl + "/users/" + sharedPreferences.getString("username", "") + "/info")
+                        .addHeader("Authorization", token)
                         .post(requestBody)
                         .build();
 
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        //DialogUtils.showPopMsgInHandleThread(Release_Fragment.this.getContext(), mHandler, "数据获取失败，请重新尝试！");
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String string = response.body().string();
-                        Log.d("info",string+"");
                         try {
                             JSONObject json = new JSONObject(string);
                             int status = (int) json.get("status");
                             String msg = (String) json.get("msg");
-                            if (status==0) {
-                                Log.d("save user hobby","success");
+                            if (status == 0) {
+                                Log.d("save user hobby", "success");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -339,7 +334,8 @@ public class UserInfoViewModel extends AndroidViewModel {
             }
         }.start();
     }
-    public void requestAvatarPost(){
+
+    public void requestAvatarPost() {
         new Thread() {
             @Override
             public void run() {
@@ -347,8 +343,7 @@ public class UserInfoViewModel extends AndroidViewModel {
                     setUserAvatar(path_avatar);
                     while (getStatus_avatar() != "avatar_success" && getStatus_avatar() != "avatar_success") {
                     }
-                    if(getStatus_avatar() == "avatar_success"){
-                        // @Headers({"Content-Type:application/json","Accept: application/json"})//需要添加头
+                    if (getStatus_avatar() == "avatar_success") {
                         MediaType JSON = MediaType.parse("application/json;charset=utf-8");
                         JSONObject json = new JSONObject();
                         try {
@@ -356,31 +351,29 @@ public class UserInfoViewModel extends AndroidViewModel {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        String token=sharedPreferences.getString("token","");
+                        String token = sharedPreferences.getString("token", "");
                         OkHttpClient okHttpClient = new OkHttpClient();
                         RequestBody requestBody = RequestBody.create(JSON, String.valueOf(json));
                         Request request = new Request.Builder()
-                                .url(Constants.baseUrl+"/users/"+sharedPreferences.getString("username","")+"/avatar")
-                                .addHeader("Authorization",token)
+                                .url(Constants.baseUrl + "/users/" + sharedPreferences.getString("username", "") + "/avatar")
+                                .addHeader("Authorization", token)
                                 .post(requestBody)
                                 .build();
 
                         okHttpClient.newCall(request).enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                                //DialogUtils.showPopMsgInHandleThread(Release_Fragment.this.getContext(), mHandler, "数据获取失败，请重新尝试！");
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
                                 String string = response.body().string();
-                                Log.d("info",string+"");
                                 try {
                                     JSONObject json = new JSONObject(string);
                                     int status = (int) json.get("status");
                                     String msg = (String) json.get("msg");
-                                    if (status==0) {
-                                        Log.d("save avatar","success");
+                                    if (status == 0) {
+                                        Log.d("save avatar", "success");
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -396,8 +389,4 @@ public class UserInfoViewModel extends AndroidViewModel {
     }
 
 
-
-
-
-    
 }

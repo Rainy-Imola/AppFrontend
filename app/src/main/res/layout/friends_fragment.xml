@@ -8,65 +8,62 @@
     <include layout="@layout/title_friend"></include>
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
         android:orientation="vertical">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center_horizontal"-->
-        <!--            android:layout_marginTop="40dp"-->
-        <!--            android:text="好友"-->
-        <!--            android:textSize="20dp" />-->
     </LinearLayout>
+
     <RelativeLayout
+        android:id="@+id/newFriendLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="60dp"
-        android:id="@+id/newFriendLayout"
         android:clickable="true">
+
         <ImageView
-            android:layout_marginTop="5dp"
+            android:id="@+id/addImage"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:id="@+id/addImage"
-            android:src="@drawable/add_friend_button2"
-            />
+            android:layout_marginTop="5dp"
+            android:src="@drawable/add_friend_button2" />
+
         <TextView
+            android:id="@+id/newFriendView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/addImage"
-            android:id="@+id/newFriendView"
-            android:text="新的朋友"
             android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/addImage"
+            android:clickable="true"
             android:gravity="center_vertical"
-            android:textSize="16sp"
-            android:clickable="true"/>
+            android:text="新的朋友"
+            android:textSize="16sp" />
+
         <ImageView
+            android:id="@+id/newFriend_reminder"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:src="@drawable/new_friend_reminder"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:id="@+id/newFriend_reminder"
-            android:visibility="invisible"/>
+            android:layout_marginRight="20dp"
+            android:src="@drawable/new_friend_reminder"
+            android:visibility="invisible" />
     </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@drawable/divider"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="100dp"
+        android:background="@drawable/divider" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/friends_list_refresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friends"
             android:layout_width="match_parent"

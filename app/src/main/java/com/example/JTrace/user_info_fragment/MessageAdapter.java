@@ -62,7 +62,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         holder.itemView.setTag(position);
-        //holder.mAuthor.setText(mItems.get(position).getAuthor());
         holder.mContent.setText(mItems.get(position).getContent());
         holder.mcreateat.setText(mItems.get(position).getCreatedAt());
         holder.mcoverView.setImageURI(mItems.get(position).getImageUrl());
@@ -78,7 +77,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         private SimpleDraweeView mcoverView;
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
-            //mAuthor = (TextView)itemView.findViewById(R.id.message_author);
             mContent = (TextView)itemView.findViewById(R.id.message_content);
             mcreateat = itemView.findViewById(R.id.usr_msg_date);
             mcoverView = itemView.findViewById(R.id.sd_cover1);

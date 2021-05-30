@@ -42,7 +42,7 @@ public class AnimUtil {
     }
 
     public void startAnimator() {
-        if (valueAnimator != null){
+        if (valueAnimator != null) {
             valueAnimator = null;
         }
         valueAnimator = ValueAnimator.ofFloat(start, end);
@@ -62,19 +62,24 @@ public class AnimUtil {
         });
         valueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animator) {}
+            public void onAnimationStart(Animator animator) {
+            }
+
             @Override
             public void onAnimationEnd(Animator animator) {
-                if(endListener == null){
+                if (endListener == null) {
                     return;
                 }
                 endListener.endUpdate(animator);
             }
-            @Override
-            public void onAnimationCancel(Animator animator) {}
 
             @Override
-            public void onAnimationRepeat(Animator animator) {}
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
         });
         valueAnimator.start();
     }
@@ -84,7 +89,7 @@ public class AnimUtil {
         this.updateListener = updateListener;
     }
 
-    public void addEndListner(EndListener endListener){
+    public void addEndListner(EndListener endListener) {
         this.endListener = endListener;
     }
 

@@ -18,8 +18,8 @@
         app:tBackImage="@drawable/nav_return_white"
         app:tBackgroundColor="@color/white"
         app:tCenterTitle="true"
-        app:tTitleText="name"
         app:tMenuText="保存"
+        app:tTitleText="name"
         app:tTitleTextColor="@android:color/primary_text_light"
         app:tTitleTextSize="16sp" />
 

@@ -116,8 +116,6 @@ public class UserInfoFragment extends Fragment {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if(verticalOffset == 0){
-                    //collapsingToolbarLayout.setTitleEnabled(false);
-
                     toolbar.setBackgroundColor(Color.TRANSPARENT);
                     setStatus_bar(0);
 

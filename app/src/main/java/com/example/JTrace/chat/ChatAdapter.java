@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<chatMsg> mItems=new ArrayList<>();
+    private List<chatMsg> mItems = new ArrayList<>();
 
     public ChatAdapter(List<chatMsg> msglist) {
         mItems = msglist;
@@ -27,11 +27,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.mItems = mItems;
     }
 
-    static class Sender extends RecyclerView.ViewHolder{
+    static class Sender extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView content;
         public Context mContext;
-        public Sender(@NonNull View itemView,Context mContext) {
+
+        public Sender(@NonNull View itemView, Context mContext) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.chat_send_header);
             content = (TextView) itemView.findViewById(R.id.chat_send_content_text);
@@ -47,11 +48,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    static class Receiver extends RecyclerView.ViewHolder{
+    static class Receiver extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView content;
         public Context mContext;
-        public Receiver(@NonNull View itemView,Context mContext) {
+
+        public Receiver(@NonNull View itemView, Context mContext) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.chat_recv_header);
             content = (TextView) itemView.findViewById(R.id.chat_recv_content_text);
@@ -71,14 +73,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        switch (viewType){
+        switch (viewType) {
             case 0:
-                View view1 = View.inflate(parent.getContext(),R.layout.message_send,null);
+                View view1 = View.inflate(parent.getContext(), R.layout.message_send, null);
                 final Sender sender = new Sender(view1, parent.getContext());
                 return sender;
             case 1:
-                View view2 = View.inflate(parent.getContext(),R.layout.message_receive,null);
-                final Receiver receiver = new Receiver(view2,parent.getContext());
+                View view2 = View.inflate(parent.getContext(), R.layout.message_receive, null);
+                final Receiver receiver = new Receiver(view2, parent.getContext());
                 return receiver;
         }
         return null;
@@ -86,18 +88,18 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        chatMsg msg  = mItems.get(position);
-        if(holder instanceof Sender){
-            Sender sender = (Sender)holder;
+        chatMsg msg = mItems.get(position);
+        if (holder instanceof Sender) {
+            Sender sender = (Sender) holder;
             sender.content.setText(msg.getContent());
-            if(msg.getAvatar() != null){
+            if (msg.getAvatar() != null) {
                 Glide.with(sender.getmContext()).load(msg.getAvatar()).into(sender.image);
             }
 
-        }else if (holder instanceof Receiver){
-            Receiver receiver = (Receiver)holder;
+        } else if (holder instanceof Receiver) {
+            Receiver receiver = (Receiver) holder;
             receiver.content.setText(msg.getContent());
-            if(msg.getAvatar() != null){
+            if (msg.getAvatar() != null) {
                 Glide.with(receiver.getmContext()).load(msg.getAvatar()).into(receiver.image);
             }
         }
@@ -110,6 +112,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-       return mItems.get(position).getType();
+        return mItems.get(position).getType();
     }
 }

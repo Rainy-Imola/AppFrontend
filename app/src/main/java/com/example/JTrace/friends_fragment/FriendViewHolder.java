@@ -23,6 +23,7 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
     private int status;
     private Context mContext;
     private View view;
+
     public FriendViewHolder(@NonNull View itemView, Context mContext) {
         super(itemView);
         this.mContext = mContext;
@@ -33,35 +34,33 @@ public class FriendViewHolder extends RecyclerView.ViewHolder implements View.On
         itemView.setOnClickListener(this);
     }
 
-    public void bind(int id,String name, String image,int status){
+    public void bind(int id, String name, String image, int status) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.status = status;
         nameEditor.setText(name);
-        Log.d("friend list",image);
-        if(image != null&&image.length()>0){
+        if (image != null && image.length() > 0) {
             Glide.with(mContext).load(image).into(avatar);
         }
-        if(status == 0){
+        if (status == 0) {
             statusEditor.setText("离线");
-            statusEditor.setCompoundDrawablesRelativeWithIntrinsicBounds(null,view.getResources().getDrawable(R.drawable.ic_offline_list,null),null,null);
+            statusEditor.setCompoundDrawablesRelativeWithIntrinsicBounds(null, view.getResources().getDrawable(R.drawable.ic_offline_list, null), null, null);
 
-        }else {
+        } else {
             statusEditor.setText("在线");
-            statusEditor.setCompoundDrawablesRelativeWithIntrinsicBounds(null,view.getResources().getDrawable(R.drawable.ic_online_list,null),null,null);
-
+            statusEditor.setCompoundDrawablesRelativeWithIntrinsicBounds(null, view.getResources().getDrawable(R.drawable.ic_online_list, null), null, null);
         }
 
     }
+
     @Override
     public void onClick(View v) {
-        Log.d("ClickEvent","onClick called");
-        Intent intent=new Intent(v.getContext(), FriendDetailActivity.class);
-        intent.putExtra("id",id);
-        intent.putExtra("name",name);
-        intent.putExtra("status",status);
-        intent.putExtra("avatar",image);
+        Intent intent = new Intent(v.getContext(), FriendDetailActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("name", name);
+        intent.putExtra("status", status);
+        intent.putExtra("avatar", image);
         v.getContext().startActivity(intent);
     }
 }

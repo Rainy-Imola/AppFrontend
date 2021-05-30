@@ -42,7 +42,6 @@ import static com.example.JTrace.Constants.pictureUrl;
 public class PublishActivity extends baseActivity {
     private static final MediaType JSON = MediaType.parse("application/json;charset=utf-8");
     private EditText editAuthor;
-    //private EditText editContent;
     private TextInputLayout editContent;
     private static final long MAX_FILE_SIZE = 2 * 1024 * 1024;
     private static final int REQUEST_CODE_COVER_IMAGE = 101;
@@ -57,23 +56,15 @@ public class PublishActivity extends baseActivity {
         super.onCreate(savedInstanceState);
         Fresco.initialize(PublishActivity.this);
         setContentView(R.layout.activity_publish);
-        //init
-        //editContent = (EditText)findViewById(R.id.content);
+
         editContent = (TextInputLayout) findViewById(R.id.textField);
         coverSD = (SimpleDraweeView) findViewById(R.id.sd_cover);
         publish = (Button)findViewById(R.id.publish_btn);
-//        selectPicture = (Button)findViewById(R.id.btn_cover);
-//        selectPicture.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFile(REQUEST_CODE_COVER_IMAGE,COVER_IMAGE_TYPE,"选择图片");
-//            }
-//        });
 
         coverSD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFile(REQUEST_CODE_COVER_IMAGE,COVER_IMAGE_TYPE,"选择图片");
+                getFile(REQUEST_CODE_COVER_IMAGE, COVER_IMAGE_TYPE,"Select Picture");
             }
         });
         publish.setOnClickListener(new View.OnClickListener() {
@@ -96,59 +87,49 @@ public class PublishActivity extends baseActivity {
         Log.i("length", String.valueOf(coverImageData.length));
 
         if (coverImageData.length == 0) {
-            Toast.makeText(this, "图片不存在", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Picture not exists", Toast.LENGTH_SHORT).show();
             Publish_core("null");
             return;
         }
         if ( coverImageData.length >= MAX_FILE_SIZE) {
-            Toast.makeText(this, "文件过大", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Size of file is too large", Toast.LENGTH_SHORT).show();
             Publish_core("null");
             return;
         }
         OkHttpClient pictureClient = new OkHttpClient();
-        if(coverImageData!=null) {
-            Log.i("starting", "开始create");
+        if (coverImageData != null) {
             MultipartBody.Part coverPart = MultipartBody.Part.createFormData("image", "cover.png",
                     RequestBody.create(MediaType.parse("multipart/form-data"), coverImageData));
             RequestBody requestBody = new MultipartBody.Builder().addPart(coverPart).build();
-            Log.i("starting", "开始上传");
+            Log.i("starting", "Start loading");
             Request request = new Request.Builder().url(pictureUrl).post(requestBody).build();
             pictureClient.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-
-                    Log.i("failure", "上传失败" + call.toString());
-                    Log.i("failure", "上传失败" + e.toString());
+                    Log.i("failure", "uploading failed" + e.toString());
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    Log.i("response", response.protocol() + " " + response.code() + " " + response.message());
                     Headers headers = response.headers();
                     for (int i = 0; i < headers.size(); i++) {
                         Log.i("header:", headers.name(i) + ":" + headers.value(i));
                     }
-                    //Log.i("onResponse: ", response.body().string());
                     try {
                         JSONObject res  = new JSONObject( response.body().string());
                         String picture = (String)res.get("name");
-                        Publish_core(pictureUrl+"/"+picture+".jpg");
-                        //int resultCode = (int)res.get("result_code");
+                        Publish_core(pictureUrl+"/" + picture + ".jpg");
                         Looper.prepare();
-                        Toast.makeText(PublishActivity.this,"上传图片成功",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PublishActivity.this, "Uploading picture successfully", Toast.LENGTH_SHORT).show();
                         Looper.loop();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
             });
         }
-
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -163,7 +144,6 @@ public class PublishActivity extends baseActivity {
                 } else {
                     Log.d("infomation_tag", "uri2File fail " + data.getData());
                 }
-
             } else {
                 Log.d("infomation_tag", "file pick fail");
             }
@@ -183,7 +163,6 @@ public class PublishActivity extends baseActivity {
         try {
             InputStream is = getContentResolver().openInputStream(uri);
             data = Util.inputStream2bytes(is);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -191,34 +170,32 @@ public class PublishActivity extends baseActivity {
     }
     private void Publish_core(String picture){
         String content = editContent.getEditText().getText().toString();
-        if(TextUtils.isEmpty(content)){
-//            Toast.makeText(this,"信息不完整",Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(content)) {
             return;
         }
         SharedPreferences sharedPreferences = getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString("token","");
-        int author = sharedPreferences.getInt("id",0);
+        String token = sharedPreferences.getString("token", "");
+        int author = sharedPreferences.getInt("id", 0);
+
         JSONObject jsonObject = new JSONObject();
-        try{
-            jsonObject.put("author",sharedPreferences.getInt("id",0));
-            jsonObject.put("content",content);
-            if(picture != "null") {
+        try {
+            jsonObject.put("author", sharedPreferences.getInt("id", 0));
+            jsonObject.put("content", content);
+            if (picture != "null") {
                 jsonObject.put("picture", picture);
             }
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("json",String.valueOf(jsonObject));
+
         //publish part
         OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody formBody = RequestBody.create(JSON,String.valueOf(jsonObject));
-        Request request = new Request.Builder().url(baseUrl+"/msgboard/release").post(formBody).addHeader("Authorization",token).build();
+        Request request = new Request.Builder().url(baseUrl + "/msgboard/release").post(formBody).addHeader("Authorization", token).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
-                Log.i("failure","上传失败"+call.toString());
-                Log.i("failure","上传失败"+e.toString());
+                Log.i("failure","Uploading failed" + e.toString());
             }
 
             @Override
@@ -228,12 +205,11 @@ public class PublishActivity extends baseActivity {
                 for (int i = 0; i < headers.size(); i++) {
                     Log.i("header:", headers.name(i) + ":" + headers.value(i));
                 }
-                Log.i("onResponse: " ,response.body().string());
+                Log.i("onResponse: ", response.body().string());
                 Looper.prepare();
-                Toast.makeText(PublishActivity.this,"上传动态成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(PublishActivity.this, "Uploading message successfully", Toast.LENGTH_SHORT).show();
                 Looper.loop();
             }
         });
     }
-
 }

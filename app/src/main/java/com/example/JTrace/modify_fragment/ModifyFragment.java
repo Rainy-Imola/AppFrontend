@@ -90,7 +90,6 @@ public class ModifyFragment extends Fragment {
         Context mContext = this.getContext();
 
 
-
         mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -112,7 +111,7 @@ public class ModifyFragment extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(mContext, "点击了更改星座", Toast.LENGTH_SHORT).show();
                 boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
-                SinglePicker picker = new SinglePicker((Activity)mContext,
+                SinglePicker picker = new SinglePicker((Activity) mContext,
                         isChinese ? new String[]{
                                 "水瓶", "双鱼", "白羊", "金牛", "双子", "巨蟹",
                                 "狮子", "处女", "天秤", "天蝎", "射手", "摩羯"
@@ -140,20 +139,18 @@ public class ModifyFragment extends Fragment {
                 picker.setSelectedTextColor(0xFFEE0000);
                 picker.setUnSelectedTextColor(0xFF999999);
                 //中间滚动项文字颜色
-                picker.setSize(800,800);
+                picker.setSize(800, 800);
                 picker.setBackgroundColor(0xFFF5F5F5);
-                //picker.setSelectedItem(isChinese ? "射手" : "Sagittarius");
                 picker.setSelectedIndex(10);//默认选中项
                 picker.setOnItemPickListener(new OnItemPickListener() {
                     @Override
                     public void onItemPicked(int index, Object item) {
                         mViewModel.setUserConstellation(item.toString());
-                        Toast.makeText(mContext,"选择星座:"+item.toString(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "选择星座:" + item.toString(), Toast.LENGTH_SHORT).show();
                     }
-            });
+                });
 
                 picker.show();
-                //Navigation.findNavController(v).navigate(R.id.action_modifyFragment_to_modify_constellationFragment);
             }
         });
         avatarView.setOnClickListener(new View.OnClickListener() {
@@ -182,41 +179,40 @@ public class ModifyFragment extends Fragment {
 
 
     //展示修改头像的选择框，并设置选择框的监听器
-    private void show_popup_windows(){
-        RelativeLayout layout_photo_selected = (RelativeLayout) getLayoutInflater().inflate(R.layout.photo_select,null);
+    private void show_popup_windows() {
+        RelativeLayout layout_photo_selected = (RelativeLayout) getLayoutInflater().inflate(R.layout.photo_select, null);
         PopupWindow popupWindow = null;
-        if(popupWindow==null){
+        if (popupWindow == null) {
             popupWindow = new PopupWindow(layout_photo_selected, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
         }
         //显示popupwindows
         popupWindow.showAtLocation(layout_photo_selected, Gravity.CENTER, 0, 0);
         //设置监听器
-        TextView take_photo =  (TextView) layout_photo_selected.findViewById(R.id.take_photo);
-        TextView from_albums = (TextView)  layout_photo_selected.findViewById(R.id.from_albums);
+        TextView take_photo = (TextView) layout_photo_selected.findViewById(R.id.take_photo);
+        TextView from_albums = (TextView) layout_photo_selected.findViewById(R.id.from_albums);
         LinearLayout cancel = (LinearLayout) layout_photo_selected.findViewById(R.id.cancel);
         //拍照按钮监听
         PopupWindow finalPopupWindow = popupWindow;
         take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(finalPopupWindow != null && finalPopupWindow.isShowing()) {
+                if (finalPopupWindow != null && finalPopupWindow.isShowing()) {
                     PictureSelector.create((Activity) view.getContext())
                             .openCamera(PictureMimeType.ofImage())
                             .loadImageEngine(GlideEngine.createGlideEngine())
                             .forResult(new OnResultCallbackListener<LocalMedia>() {
-                        @Override
-                        public void onResult(List<LocalMedia> result) {
-                            String imagepath = result.get(0).getRealPath();
-                            Glide.with(view.getContext()).load(imagepath).into(avatarView);
-                            Log.d("select image of uri", String.valueOf(imagepath));
-                            mViewModel.setPath_avatar(imagepath);
-                        }
+                                @Override
+                                public void onResult(List<LocalMedia> result) {
+                                    String imagepath = result.get(0).getRealPath();
+                                    Glide.with(view.getContext()).load(imagepath).into(avatarView);
+                                    mViewModel.setPath_avatar(imagepath);
+                                }
 
-                        @Override
-                        public void onCancel() {
-                            Log.d("select image", String.valueOf("exit"));
-                        }
-                    });
+                                @Override
+                                public void onCancel() {
+                                    Log.d("select image", String.valueOf("exit"));
+                                }
+                            });
                     finalPopupWindow.dismiss();
                 }
             }
@@ -234,15 +230,12 @@ public class ModifyFragment extends Fragment {
                             public void onResult(List<LocalMedia> result) {
                                 String imagepath = result.get(0).getRealPath();
                                 Glide.with(view.getContext()).load(imagepath).into(avatarView);
-                                Log.d("select image", String.valueOf(imagepath));
                                 mViewModel.setPath_avatar(imagepath);
-                                // onResult Callback
                             }
 
                             @Override
                             public void onCancel() {
                                 Log.d("select image", String.valueOf("exit"));
-                                // onCancel Callback
                             }
                         });
                 finalPopupWindow1.dismiss();

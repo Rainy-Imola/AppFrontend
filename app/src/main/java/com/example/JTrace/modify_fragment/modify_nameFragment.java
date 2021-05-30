@@ -38,9 +38,11 @@ public class modify_nameFragment extends Fragment {
     private EditText usernameEdit;
     private TitleBar mTitleBar;
     private UserInfoViewModel mViewModel;
+
     public modify_nameFragment() {
         // Required empty public constructor
     }
+
     public static ModifyFragment newInstance() {
         return new ModifyFragment();
     }
@@ -69,13 +71,12 @@ public class modify_nameFragment extends Fragment {
             @Override
             public void onMenuClick() {
                 String newname = usernameEdit.getText().toString();
-                if(TextUtils.isEmpty(newname)){
-                    Toast.makeText(mContext,"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
-                    Log.d("Login_info","用户名和密码不能为空");
+                if (TextUtils.isEmpty(newname)) {
+                    Toast.makeText(mContext, "用户名和密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mViewModel.setUserName(newname);
-                Toast.makeText(mContext,"new name"+newname,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "new name" + newname, Toast.LENGTH_SHORT).show();
             }
         });
         mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {

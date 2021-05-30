@@ -41,8 +41,8 @@ public class modify_constellationFragment extends Fragment {
     private EditText constellationEdit;
     private TitleBar mTitleBar;
     private UserInfoViewModel mViewModel;
+
     public modify_constellationFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -76,7 +76,7 @@ public class modify_constellationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root =  inflater.inflate(R.layout.fragment_modify_constellation, container, false);
+        View root = inflater.inflate(R.layout.fragment_modify_constellation, container, false);
         constellationEdit = root.findViewById(R.id.new_constellation);
         mTitleBar = root.findViewById(R.id.commmon_return);
         return root;
@@ -91,13 +91,13 @@ public class modify_constellationFragment extends Fragment {
             @Override
             public void onMenuClick() {
                 String newname = constellationEdit.getText().toString();
-                if(TextUtils.isEmpty(newname)){
-                    Toast.makeText(mContext,"用户名和密码不能为空",Toast.LENGTH_SHORT).show();
-                    Log.d("Login_info","用户名和密码不能为空");
+                if (TextUtils.isEmpty(newname)) {
+                    Toast.makeText(mContext, "用户名和密码不能为空", Toast.LENGTH_SHORT).show();
+                    Log.d("Login_info", "用户名和密码不能为空");
                     return;
                 }
                 mViewModel.setUserConstellation(newname);
-                Toast.makeText(mContext,"new name"+newname,Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "new name" + newname, Toast.LENGTH_SHORT).show();
             }
         });
         mTitleBar.setOnBackListener(new TitleBar.OnBackListener() {
