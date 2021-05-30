@@ -2,10 +2,12 @@ package com.example.JTrace.modify_fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link modify_hobbyFragment#newInstance} factory method to
@@ -48,12 +53,10 @@ import java.util.List;
  */
 public class modify_hobbyFragment extends Fragment {
     private UserInfoViewModel mViewModel;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private Button msave;
@@ -66,7 +69,7 @@ public class modify_hobbyFragment extends Fragment {
     private SectionMultipleItemAdapter sectionMultipleItemAdapter;
     private EditText editText;
     private List<MultiItemEntity> list_data;
-
+    private InputMethodManager inputMethodManager;
     public modify_hobbyFragment() {
         // Required empty public constructor
     }
@@ -98,6 +101,7 @@ public class modify_hobbyFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,6 +112,7 @@ public class modify_hobbyFragment extends Fragment {
         addTag = root.findViewById(R.id.button3);
         recyclerView = root.findViewById(R.id.recycle_hobby);
         editText = root.findViewById(R.id.editTextTextPersonName);
+        inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return root;
     }
 
@@ -274,6 +279,8 @@ public class modify_hobbyFragment extends Fragment {
                 }
                 hobbylist.add(hobbylist.size() - 1, newhobby);
                 mLablesView.setLabels(hobbylist);
+                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                editText.setText("");
 
                 sectionMultipleItemAdapter.setNewInstance(check(list_data,hobbylist));
             }
@@ -333,7 +340,6 @@ public class modify_hobbyFragment extends Fragment {
                 }
                 hobbylist.add(hobbylist.size() - 1, mmhobby.getStyle_tag());
                 mLablesView.setLabels(hobbylist);
-                mLablesView.refreshDrawableState();
                 sectionMultipleItemAdapter.setNewInstance(check(list_data,hobbylist));
             }
         });

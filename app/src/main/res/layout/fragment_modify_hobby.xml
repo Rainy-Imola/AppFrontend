@@ -35,8 +35,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:lineMargin="10dp"
-            app:maxColumns="5"
-            app:maxLines="3"
             app:maxSelect="5"
             app:minSelect="1"
             app:selectType="SINGLE"

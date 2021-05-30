@@ -58,8 +58,6 @@
                     app:layout_constraintStart_toStartOf="@+id/user_info_imageView"
                     app:layout_constraintTop_toBottomOf="@+id/user_info_imageView"
                     app:lineMargin="10dp"
-                    app:maxColumns="5"
-                    app:maxLines="3"
                     app:maxSelect="5"
                     app:minSelect="1"
                     app:selectType="SINGLE"
