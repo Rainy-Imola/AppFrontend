@@ -17,6 +17,7 @@
         app:tBackImage="@drawable/nav_return_white"
         app:tBackgroundColor="@color/blue_1"
         app:tCenterTitle="true"
+        app:tUseRipple="true"
         app:tMenuTextSize="18sp"
         app:tTitleText="设置"
         app:tTitleTextColor="@android:color/white"

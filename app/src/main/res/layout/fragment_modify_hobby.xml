@@ -7,6 +7,40 @@
     android:layout_height="match_parent"
     tools:context=".modify_fragment.modify_hobbyFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName">
+
+        <com.donkingliang.labels.LabelsView
+            android:id="@+id/labels_hobby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            app:isIndicator="true"
+            app:labelBackground="@drawable/ic_userinfo_lable"
+            app:labelTextColor="@drawable/ic_userinfo_lable_text"
+            app:labelTextPaddingBottom="5dp"
+            app:labelTextPaddingLeft="10dp"
+            app:labelTextPaddingRight="10dp"
+            app:labelTextPaddingTop="5dp"
+            app:labelTextSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lineMargin="10dp"
+            app:maxSelect="5"
+            app:minSelect="1"
+            app:selectType="SINGLE"
+            app:wordMargin="10dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.loper7.layout.TitleBar
         android:id="@+id/commmon_return"
         android:layout_width="0dp"
@@ -19,36 +53,10 @@
         app:tCenterTitle="true"
         app:tMenuText="保存"
         app:tMenuTextColor="@color/white"
+        app:tUseRipple="true"
         app:tTitleText="hobby"
         app:tTitleTextColor="@android:color/white"
         app:tTitleTextSize="16sp" />
-
-    <com.donkingliang.labels.LabelsView
-        android:id="@+id/labels_hobby"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        app:isIndicator="true"
-        app:labelBackground="@drawable/ic_userinfo_lable"
-        app:labelTextColor="@drawable/ic_userinfo_lable_text"
-        app:labelTextPaddingBottom="5dp"
-        app:labelTextPaddingLeft="10dp"
-        app:labelTextPaddingRight="10dp"
-        app:labelTextPaddingTop="5dp"
-        app:labelTextSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-        app:lineMargin="10dp"
-        app:maxColumns="5"
-        app:maxLines="3"
-        app:maxSelect="5"
-        app:minSelect="1"
-        app:selectType="SINGLE"
-        app:wordMargin="10dp" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -85,7 +93,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labels_hobby" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
     <!-- TODO: Update blank fragment layout -->
 

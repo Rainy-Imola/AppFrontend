@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tBackImage="@drawable/nav_return_white"
         app:tBackgroundColor="@color/white"
+        app:tUseRipple="true"
         app:tCenterTitle="true"
         app:tTitleText="提交验证信息"
         app:tTitleTextColor="@android:color/primary_text_light"

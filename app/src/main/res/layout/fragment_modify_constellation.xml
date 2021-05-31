@@ -18,6 +18,7 @@
         app:tBackImage="@drawable/nav_return_icon_24"
         app:tBackgroundColor="@color/white"
         app:tCenterTitle="true"
+        app:tUseRipple="true"
         app:tMenuText="保存"
         app:tTitleText="costellation"
         app:tTitleTextColor="@android:color/primary_text_light"

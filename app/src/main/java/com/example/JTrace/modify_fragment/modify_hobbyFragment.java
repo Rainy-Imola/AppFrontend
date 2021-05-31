@@ -2,10 +2,12 @@ package com.example.JTrace.modify_fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link modify_hobbyFragment#newInstance} factory method to
@@ -48,12 +53,10 @@ import java.util.List;
  */
 public class modify_hobbyFragment extends Fragment {
     private UserInfoViewModel mViewModel;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private Button msave;
@@ -66,7 +69,7 @@ public class modify_hobbyFragment extends Fragment {
     private SectionMultipleItemAdapter sectionMultipleItemAdapter;
     private EditText editText;
     private List<MultiItemEntity> list_data;
-
+    private InputMethodManager inputMethodManager;
     public modify_hobbyFragment() {
         // Required empty public constructor
     }
@@ -98,6 +101,7 @@ public class modify_hobbyFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -108,6 +112,7 @@ public class modify_hobbyFragment extends Fragment {
         addTag = root.findViewById(R.id.button3);
         recyclerView = root.findViewById(R.id.recycle_hobby);
         editText = root.findViewById(R.id.editTextTextPersonName);
+        inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return root;
     }
 
@@ -197,6 +202,7 @@ public class modify_hobbyFragment extends Fragment {
         mLablesView.setLabels(hobbylist);
         Context mContext = this.getContext();
 
+
         mLablesView.setOnLabelClickListener(new LabelsView.OnLabelClickListener() {
             @Override
             public void onLabelClick(TextView label, Object data, int position) {
@@ -244,6 +250,7 @@ public class modify_hobbyFragment extends Fragment {
                             hobbylist.remove(hobbylist.size() - 1);
                         }
                         mViewModel.setUserHobby(hobbylist);
+                        sectionMultipleItemAdapter.setNewInstance(check(list_data,hobbylist));
                     }
                 });
                 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -266,8 +273,16 @@ public class modify_hobbyFragment extends Fragment {
                     Toast.makeText(mContext, "不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (hobbylist.contains(newhobby)) {
+                    Toast.makeText(mContext, "存在重复，请检查", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 hobbylist.add(hobbylist.size() - 1, newhobby);
                 mLablesView.setLabels(hobbylist);
+                inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                editText.setText("");
+
+                sectionMultipleItemAdapter.setNewInstance(check(list_data,hobbylist));
             }
         });
         editText.addTextChangedListener(new TextWatcher() {
@@ -290,6 +305,7 @@ public class modify_hobbyFragment extends Fragment {
             @Override
             public void onMenuClick() {
 
+
                 if (hobbylist.size() != 0 && hobbylist.get(hobbylist.size() - 1) == "+") {
                     hobbylist.remove(hobbylist.size() - 1);
                 }
@@ -306,24 +322,49 @@ public class modify_hobbyFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        sectionMultipleItemAdapter = new SectionMultipleItemAdapter(list_data);
+        sectionMultipleItemAdapter = new SectionMultipleItemAdapter(check(list_data,hobbylist));
 
         sectionMultipleItemAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull @NotNull BaseQuickAdapter<?, ?> adapter, @NonNull @NotNull View view, int position) {
             }
         });
-        sectionMultipleItemAdapter.addChildClickViewIds(R.id.textView9);
+        sectionMultipleItemAdapter.addChildClickViewIds(R.id.textView9,R.id.imageView6);
         sectionMultipleItemAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
                 HobbyBean mmhobby = (HobbyBean) adapter.getItem(position);
+                if ( hobbylist.contains(mmhobby.getStyle_tag())) {
+                    Toast.makeText(mContext, "存在重复，请检查", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 hobbylist.add(hobbylist.size() - 1, mmhobby.getStyle_tag());
                 mLablesView.setLabels(hobbylist);
+                sectionMultipleItemAdapter.setNewInstance(check(list_data,hobbylist));
             }
         });
         recyclerView.setAdapter(sectionMultipleItemAdapter);
     }
+    public List<MultiItemEntity> check(List<MultiItemEntity> models, List<String> mhobbylist ) {
+        List<MultiItemEntity> filter_data = new ArrayList<>();
+        for (MultiItemEntity oj : models
+        ) {
+            if (oj.getItemType() == 1) {
+                filter_data.add(oj);
+                continue;
+            }
+            HobbyBean hobby = (HobbyBean) oj;
+            if (mhobbylist.contains(hobby.getStyle_tag())) {
+                ((HobbyBean) oj).setChecked(true);
+
+            } else {
+                ((HobbyBean) oj).setChecked(false);
+            }
+            filter_data.add(oj);
+        }
+        return filter_data;
+    }
+
 
     public List<MultiItemEntity> filter(List<MultiItemEntity> models, String query) {
         List<MultiItemEntity> filter_data = new ArrayList<>();
