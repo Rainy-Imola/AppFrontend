@@ -40,7 +40,6 @@ import java.util.List;
 //TODO: 加入上拉刷新机制 or 在标题上加个按钮刷新
 public class boardFragment extends Fragment {
 
-    //private BoardViewModel mViewModel;
     private FloatingActionButton fabAdd;
 
     public static boardFragment newInstance() {
@@ -100,7 +99,7 @@ public class boardFragment extends Fragment {
             public void onRefresh() {
                 refreshMessages();
                 swipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(context, "Refresh success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "刷新成功", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -142,7 +141,7 @@ public class boardFragment extends Fragment {
             }
         });
         if (!boardViewModel.isGetMsgSucc()) {
-            Toast.makeText(getContext(), "Error user state, please login again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "用户状态错误，请重新登陆", Toast.LENGTH_SHORT).show();
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt("status", 2);

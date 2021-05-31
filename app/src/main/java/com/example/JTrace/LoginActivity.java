@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 String username = usernameEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
                 if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)){
-                    Toast.makeText(LoginActivity.this, "username and password cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 HttpAPI httpAPI = new HttpAPI();
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                     httpAPI.postApi(jsonObject, "/users/login", new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Toast.makeText(LoginActivity.this,"Network failed, please check your network connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"请求失败，请检查你的网络连接", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         if (status != 0) {
                             Looper.prepare();
-                            Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                             Looper.loop();
                             return;
                         }
@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                         }else{
-                            Toast.makeText(LoginActivity.this, "Wrong username or password", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
                         }
                     }
                     });

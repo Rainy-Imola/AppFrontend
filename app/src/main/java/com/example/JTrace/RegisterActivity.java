@@ -71,7 +71,7 @@ public class  RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call call, IOException e) {
                             Log.e("error", e.getMessage().toString());
-                            Toast.makeText(RegisterActivity.this,"Network failed, please check your network connection",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this,"请求失败，请检查你的网络连接",Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -91,7 +91,7 @@ public class  RegisterActivity extends AppCompatActivity {
                             }
                             if (status != 0) {
                                 Looper.prepare();
-                                Toast.makeText(RegisterActivity.this, "You should register with a SJTU email", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "请使用交大邮箱进行注册", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
                         }
@@ -127,7 +127,7 @@ public class  RegisterActivity extends AppCompatActivity {
                     httpAPI.postApi(jsonObject, "/email/checkemail", new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Toast.makeText(RegisterActivity.this, "Network failed, please check your network connection", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "请求失败，请检查你的网络连接", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
@@ -159,7 +159,7 @@ public class  RegisterActivity extends AppCompatActivity {
                                         httpAPI1.postApi(jsonObject1, "/users/register", new Callback() {
                                             @Override
                                             public void onFailure(Call call, IOException e) {
-                                                Toast.makeText(RegisterActivity.this, "Network failed, please check your network connection", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(RegisterActivity.this, "请求失败，请检查你的网络连接", Toast.LENGTH_SHORT).show();
                                             }
 
                                             @Override
@@ -236,7 +236,7 @@ public class  RegisterActivity extends AppCompatActivity {
 
                                 } else {
                                     Looper.prepare();
-                                    Toast.makeText(RegisterActivity.this, "Wrong CAPTCHA", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
                                     Looper.loop();
                                 }
                             } catch (JSONException e) {

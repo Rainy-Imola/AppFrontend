@@ -120,7 +120,7 @@ public class MainChatActivity extends baseActivity {
                         pullHistory();
                         swipeRefreshLayout.setRefreshing(false);
                         mAdapter.setmItems(msglist);
-                        Toast.makeText(MainChatActivity.this, "Refresh success", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainChatActivity.this, "刷新成功", Toast.LENGTH_SHORT).show();
                     }
                 }, 2000);
             }
