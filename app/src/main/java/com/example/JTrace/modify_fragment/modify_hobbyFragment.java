@@ -148,7 +148,7 @@ public class modify_hobbyFragment extends Fragment {
         list_data.addAll(list1);
 
         TagBean item2 = new TagBean("书籍/作家");
-        list_data.add(item1);
+        list_data.add(item2);
         HobbyBean item2_1 = new HobbyBean("麦田的守望者");
         HobbyBean item2_2 = new HobbyBean("百年孤独");
         HobbyBean item2_3 = new HobbyBean("小王子");
@@ -160,7 +160,7 @@ public class modify_hobbyFragment extends Fragment {
         list_data.addAll(list2);
 
         TagBean item3 = new TagBean("运动");
-        list_data.add(item1);
+        list_data.add(item3);
         HobbyBean item3_1 = new HobbyBean("游泳");
         HobbyBean item3_2 = new HobbyBean("足球");
         HobbyBean item3_3 = new HobbyBean("篮球");
@@ -174,7 +174,7 @@ public class modify_hobbyFragment extends Fragment {
         list_data.addAll(list3);
 
         TagBean item4 = new TagBean("出没地点");
-        list_data.add(item1);
+        list_data.add(item4);
         HobbyBean item4_1 = new HobbyBean("自习室");
         HobbyBean item4_2 = new HobbyBean("学校食堂");
         HobbyBean item4_3 = new HobbyBean("健身房");
