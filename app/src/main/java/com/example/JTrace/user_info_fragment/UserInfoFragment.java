@@ -178,13 +178,21 @@ public class UserInfoFragment extends Fragment {
                 user_name.setText("昵称："+ mUser.getUser_name());
                 title = mUser.getUser_name();
                 if (mUser.getUser_avatar().length() != 0) {
-                    Glide.with(mContext).asBitmap().load(mUser.getUser_avatar()).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
+                    Glide.with(mContext).asBitmap().load(mUser.getUser_avatar()).into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
                             user_avatar.setImageBitmap(resource);
                         }
                         @Override
                         public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                            super.onLoadFailed(errorDrawable);
+                            Glide.with(mContext).asBitmap().load(default_link).into(user_avatar);
+                            Toast.makeText(mContext, "您的头像已失效，请尽快更换！", Toast.LENGTH_LONG).show();
+
                         }
                     });
                 }else {
@@ -196,6 +204,12 @@ public class UserInfoFragment extends Fragment {
                         @Override
                         public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
 
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                            super.onLoadFailed(errorDrawable);
+                            user_avatar.setImageResource(R.drawable.defaultavatar);
                         }
                     });
                 }

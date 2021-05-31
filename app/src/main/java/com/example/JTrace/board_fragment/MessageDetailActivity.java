@@ -240,7 +240,7 @@ public class MessageDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 if (user.getUser_avatar().length() != 0) {
-                    Glide.with(context).asBitmap().load(user.getUser_avatar()).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
+                    Glide.with(context).asBitmap().load(user.getUser_avatar()).into(new CustomTarget<Bitmap>() {
                         @Override
                         public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
                             author_avatar.setImageBitmap(resource);
@@ -248,6 +248,13 @@ public class MessageDetailActivity extends AppCompatActivity {
                         @Override
                         public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
 
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                            super.onLoadFailed(errorDrawable);
+
+                            Glide.with(context).asBitmap().load(default_link).into(author_avatar);
                         }
                     });
                 }else {
@@ -259,6 +266,7 @@ public class MessageDetailActivity extends AppCompatActivity {
                         @Override
                         public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
                         }
+
                     });
                 }
             }
@@ -359,21 +367,45 @@ public class MessageDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(Map<String, String> stringStringMap) {
                 for (String key : stringStringMap.keySet()) {
-                    if (!stringStringMap.get(key).equals("")) {
+                    if (!stringStringMap.get(key).equals("no")) {
                         for (RoundImageView sub_key : map_ico.keySet()) {
                             if(map_ico.get(sub_key).equals(key)) {
                                 if (!sub_key.getTag().equals("")) {
-                                    Glide.with(context).asBitmap().load(stringStringMap.get(key)).error(R.drawable.defaultavatar).into(new CustomTarget<Bitmap>() {
-                                        @Override
-                                        public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
-                                            sub_key.setImageBitmap(resource);
-                                            sub_key.setTag("");
-                                        }
-                                        @Override
-                                        public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
-
-                                        }
-                                    });
+                                    if(stringStringMap.get(key).equals("")){
+                                        Log.d("null picture",default_link);
+                                        // 可以对这两个函数进行封装
+                                        Glide.with(context).asBitmap().load(default_link).into(new CustomTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                                                sub_key.setImageBitmap(resource);
+                                                sub_key.setTag("");
+                                            }
+                                            @Override
+                                            public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+                                            }
+                                            @Override
+                                            public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                                                super.onLoadFailed(errorDrawable);
+                                                sub_key.setImageResource(R.drawable.defaultavatar);
+                                            }
+                                        });
+                                    } else {
+                                        Glide.with(context).asBitmap().load(stringStringMap.get(key)).into(new CustomTarget<Bitmap>() {
+                                            @Override
+                                            public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                                                sub_key.setImageBitmap(resource);
+                                                sub_key.setTag("");
+                                            }
+                                            @Override
+                                            public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+                                            }
+                                            @Override
+                                            public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                                                super.onLoadFailed(errorDrawable);
+                                                Glide.with(context).asBitmap().load(default_link).into(sub_key);
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -496,14 +528,13 @@ public class MessageDetailActivity extends AppCompatActivity {
          Log.d("start_init", String.valueOf(map_ico));
          Map<String,String> name_map = mCommentViewModel.getAvatar_map();
          for (RoundImageView key : map_ico.keySet()) {
-             name_map.put(map_ico.get(key),"");
+             name_map.put(map_ico.get(key),"no");
 
          }
          mCommentViewModel.setAvatar_map(name_map);
          for (RoundImageView key : map_ico.keySet()) {
 //             SampleCircleImageView sampleCircleImageView = key;
-             if (!mCommentViewModel.getAvatar_map().get(map_ico.get(key)).equals("")) {
-                 Log.d("未渲染", String.valueOf(map_ico));
+             if (!mCommentViewModel.getAvatar_map().get(map_ico.get(key)).equals("no")) {
                  continue;
              }
              mCommentViewModel.requestAllAvatar(map_ico.get(key));
@@ -584,7 +615,7 @@ public class MessageDetailActivity extends AppCompatActivity {
             isReply = true;
             isChildReply = false;
             commentPostEditTextView.setHint("回复@" + comment.getPosterName() + ":");
-            Toast.makeText(MessageDetailActivity.this, "你点击的评论：" + comment.getData() + "position" + cp, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MessageDetailActivity.this, "回复" + comment.getPosterName() , Toast.LENGTH_SHORT).show();
             inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
             commentPostEditTextView.setText("");
         }
@@ -596,7 +627,7 @@ public class MessageDetailActivity extends AppCompatActivity {
             isReply = true;
             isChildReply = true;
             commentPostEditTextView.setHint("回复@" + reply.getReplierName() + ":");
-            Toast.makeText(MessageDetailActivity.this, "你点击的回复：" + reply.getData() + "level" + rp, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MessageDetailActivity.this, "回复：" + reply.getReplierName() , Toast.LENGTH_SHORT).show();
             inputMethodManager.hideSoftInputFromWindow(commentPostEditTextView.getWindowToken(), 0);
             commentPostEditTextView.setText("");
         }

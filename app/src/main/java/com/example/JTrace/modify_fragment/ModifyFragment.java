@@ -2,6 +2,7 @@ package com.example.JTrace.modify_fragment;
 
 import androidx.appcompat.app.ActionBar;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.transition.Transition;
@@ -70,8 +73,9 @@ public class ModifyFragment extends Fragment {
     private RoundImageView avatarView;
     private TitleBar mtitleLayout;
     private NavController mnavController;
-    Context mContext;
-
+    private Context mContext;
+    private ConstraintLayout constraintLayout_avatar;
+    private String default_link;
     public static ModifyFragment newInstance() {
         return new ModifyFragment();
     }
@@ -87,6 +91,7 @@ public class ModifyFragment extends Fragment {
         nameIG = root.findViewById(R.id.ig_name);
         avatarView = root.findViewById(R.id.ri_portrait);
         mtitleLayout = root.findViewById(R.id.tl_title);
+        constraintLayout_avatar = root.findViewById(R.id.constraintLayout2);
         return root;
     }
 
@@ -104,20 +109,37 @@ public class ModifyFragment extends Fragment {
                 nameIG.setContentEdt(user.getUser_name());
                 idIG.setContentEdt(String.valueOf(user.getUser_id()));
                 constellationIG.setContentEdt(user.getUser_constellation());
-                Glide.with(mContext).load(user.getUser_avatar()).into(avatarView);
+                Glide.with(mContext).asBitmap().load(user.getUser_avatar()).into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull @NotNull Bitmap resource, @Nullable @org.jetbrains.annotations.Nullable Transition<? super Bitmap> transition) {
+                        avatarView.setImageBitmap(resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable @org.jetbrains.annotations.Nullable Drawable placeholder) {
+
+                    }
+
+                    @Override
+                    public void onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable Drawable errorDrawable) {
+                        super.onLoadFailed(errorDrawable);
+                        Glide.with(mContext).asBitmap().load(default_link).into(avatarView);
+                        Toast.makeText(mContext, "图片失效，请及时更换！", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
         hobbyIG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了更改爱好", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "更改爱好", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(v).navigate(R.id.action_modifyFragment_to_modify_hobbyFragment);
             }
         });
         constellationIG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了更改星座", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "更改星座", Toast.LENGTH_SHORT).show();
                 boolean isChinese = Locale.getDefault().getDisplayLanguage().contains("中文");
                 SinglePicker picker = new SinglePicker((Activity) mContext,
                         isChinese ? new String[]{
@@ -161,10 +183,10 @@ public class ModifyFragment extends Fragment {
                 picker.show();
             }
         });
-        avatarView.setOnClickListener(new View.OnClickListener() {
+        constraintLayout_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "点击了更改头像", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "更改头像", Toast.LENGTH_SHORT).show();
                 show_popup_windows();
             }
         });
