@@ -227,15 +227,18 @@ public class CommonUserInfoFragment extends Fragment {
                         mItems.add(imessage);
                     }
                     mLayoutManager = new LinearLayoutManager(getContext());
-                    mAdapter = new MessageAdapter(mContext, mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
+                    mAdapter = new MessageAdapter(mContext, mItems);
+                    mAdapter.setOnItemClickListener(new MessageAdapter.OnRecyclerViewItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
+                        public void onItemClick(View view, int str) {
                             Intent intent = new Intent(view.getContext(), MessageDetailActivity.class);
-                            intent.putExtra("message", (message) mItems.get(position));
+                            intent.putExtra("message", (message) mItems.get(str));
                             view.getContext().startActivity(intent);
                         }
+
                         @Override
-                        public void onItemLongClick(View view, int position) {
+                        public void onItemLongClick(View view, int str) {
+
                         }
                     });
                     mRecyclerView.setAdapter(mAdapter);

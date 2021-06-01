@@ -3,6 +3,7 @@ package com.example.JTrace.user_info_fragment;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -237,18 +239,41 @@ public class UserInfoFragment extends Fragment {
                         e.printStackTrace();
                     }
                     mLayoutManager=new LinearLayoutManager(getActivity());
-                    mAdapter = new MessageAdapter(mRecyclerView.getContext(), mItems, new MessageAdapter.OnRecyclerViewItemClickListener() {
+                    mAdapter = new MessageAdapter(mRecyclerView.getContext(), mItems);
+
+                    mAdapter.setOnItemClickListener(new MessageAdapter.OnRecyclerViewItemClickListener() {
                         @Override
-                        public void onItemClick(View view, int position) {
-                            Log.d("debug", String.valueOf(mItems.get(position)));
+                        public void onItemClick(View view, int str) {
                             Intent intent=new Intent(view.getContext(), MessageDetailActivity.class);
-                            intent.putExtra("message", (message)mItems.get(position));
+                            intent.putExtra("message", (message)mItems.get(str));
                             view.getContext().startActivity(intent);
                         }
+
                         @Override
-                        public void onItemLongClick(View view, int position) {
-                            //TODO: delete message
+                        public void onItemLongClick(View view, int str) {
                             Log.d("debug","onClicklongCalled");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setTitle("确定删除？");    //设置对话框标题
+                            builder.setIcon(android.R.drawable.btn_star);   //设置对话框标题前的图标
+                            builder.setCancelable(true);
+                            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mViewModel.deleteMessage(mItems.get(str).getId(),str);
+                                    Toast.makeText(mContext, "已删除 ", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(mContext, "已取消", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();  //创建对话框
+                            dialog.setCanceledOnTouchOutside(true); //设置弹出框失去焦点是否隐藏,即点击屏蔽其它地方是否隐藏
+                            dialog.show();
+                            //
+
                         }
                     });
                     mRecyclerView.setAdapter(mAdapter);

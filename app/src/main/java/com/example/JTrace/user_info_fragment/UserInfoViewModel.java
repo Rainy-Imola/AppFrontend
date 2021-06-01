@@ -406,4 +406,45 @@ public class UserInfoViewModel extends AndroidViewModel {
     }
 
 
+    public void deleteMessage(String id, int position) {
+        new Thread() {
+            @Override
+            public void run() {
+
+                String token = sharedPreferences.getString("token", "");
+                OkHttpClient okHttpClient = new OkHttpClient();
+                //创建一个请求对象
+                Request request = new Request.Builder()
+                        .url(Constants.baseUrl + "/msgboard/" + id)
+                        .addHeader("Authorization", token)
+                        .delete()
+                        .build();
+
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String string = response.body().string();
+                        try {
+                            JSONObject json = new JSONObject(string);
+                            int status = (int) json.get("status");
+                            String msg = (String) json.get("msg");
+                            if (status == 0) {
+                                mMessage.remove(position);
+                                setStatus("0");
+                                setStatus("message");
+                                Log.d("delete", "success");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
+
+    }
 }

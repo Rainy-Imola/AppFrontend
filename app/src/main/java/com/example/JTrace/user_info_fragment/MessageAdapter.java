@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import com.example.JTrace.model.message;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> implements View.OnClickListener,View.OnLongClickListener{
+
+
     //定义Item点击事件
     public  interface OnRecyclerViewItemClickListener{
         //点击事件
@@ -29,10 +32,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     private OnRecyclerViewItemClickListener mOnItemClickListener;
     private Context mContext;
     private List<message> mItems=new ArrayList<>();
-    public MessageAdapter(Context mContext, List<message> mItems, OnRecyclerViewItemClickListener onRecyclerViewItemClickListener) {
+    public MessageAdapter(Context mContext, List<message> mItems) {
         this.mContext = mContext;
         this.mItems = mItems;
-        mOnItemClickListener = onRecyclerViewItemClickListener;
     }
 
     @Override
@@ -41,7 +43,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
         }
     }
-
     @Override
     public boolean onLongClick(View v) {
         if(mOnItemClickListener != null){
@@ -50,12 +51,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return false;
     }
 
+
+
+
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.message_card_base,parent,false);
         MessageViewHolder holder = new MessageViewHolder(view);
         view.setOnClickListener(this);
+        view.setOnLongClickListener(this);
         return holder;
     }
 

@@ -101,8 +101,6 @@ public class ModifyFragment extends Fragment {
         mViewModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
         mnavController = Navigation.findNavController(view);
         mContext = this.getContext();
-
-
         mViewModel.getUserMutableLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
             @Override
             public void onChanged(User user) {
